@@ -5,8 +5,6 @@ import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-import org.osbot.rs07.utility.ConditionalSleep;
-import java.util.function.BooleanSupplier;
 
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
 public class QuestPlagueCity extends Script

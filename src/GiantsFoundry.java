@@ -1,6 +1,5 @@
 import Util.FormattingForPaint;
 import Util.Sleep;
-import org.osbot.Sl;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.RS2Widget;
@@ -8,8 +7,6 @@ import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 /* I NEED TO ADD THE ABILITY TO USE EXTRA MOLDS AS OF NOW
 THIS SCRIPT WILL ONLY USE THE BASE MOULDS AND IS MOSTLY ONLY
 USED FOR GETTING THE CANNONBALL MOULD ASAP.

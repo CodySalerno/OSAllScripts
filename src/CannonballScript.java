@@ -4,7 +4,6 @@ import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

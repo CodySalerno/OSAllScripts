@@ -1,7 +1,6 @@
 package Util;
 
 import org.osbot.rs07.utility.ConditionalSleep;
-
 import java.util.function.BooleanSupplier;
 
 

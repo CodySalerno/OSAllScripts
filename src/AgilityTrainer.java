@@ -8,8 +8,6 @@ import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import java.awt.*;
 
-import static org.osbot.rs07.script.MethodProvider.random;
-
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script{

@@ -3,7 +3,6 @@ import org.osbot.rs07.event.Event;
 import org.osbot.rs07.input.mouse.RectangleDestination;
 import org.osbot.rs07.listener.LoginResponseCodeListener;
 import org.osbot.rs07.utility.ConditionalSleep;
-
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,11 +1,7 @@
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-import org.osbot.rs07.utility.ConditionalSleep;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.function.BooleanSupplier;
-
 import java.io.*;
 
 @ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs muler as needed", version = 0.1, logo = "")
