@@ -200,7 +200,6 @@ public class AgilityTrainer extends  Script {
                     walking.webWalk(StartList[currentCourse]);
                     nearCourse = true;
                 }
-
         }
         return random(1200, 1800);
     }
@@ -268,7 +267,6 @@ public class AgilityTrainer extends  Script {
 
     public void Varrock() throws InterruptedException
     {
-
         if (AllVarrockGround.contains(myPosition()))
         {
             walking.webWalk(StartVarrock);
@@ -293,6 +291,7 @@ public class AgilityTrainer extends  Script {
         if (VarrockFourthObstacle.contains(myPosition()))
         {
             obstacleSolver("Gap","Leap",VarrockFourthObstacle,VarrockFifthObstacle);
+            sleep(random(1200,1800));
         }
         if (VarrockFifthObstacle.contains(myPosition()))
         {
@@ -309,9 +308,8 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockEighthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,StartVarrock);
+            obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,AllVarrockGround);
         }
-
     }
 
     public void Draynor() throws InterruptedException
