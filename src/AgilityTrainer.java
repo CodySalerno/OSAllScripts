@@ -201,6 +201,67 @@ public class AgilityTrainer extends  Script {
 
     public void Varrock() throws InterruptedException
     {
+        Area allofVarrock = new Area(3190,3383,3240,3419);
+        Area startofVarrock = new Area(3221,3413,3223,3415);
+        Area VarrockFall = new Area(3208,3410,3214,3421);
+        Area firstObstacle = new Area(3214,3410,3219,3419);
+        firstObstacle.setPlane(3);
+        Area secondObstacle = new Area(3201,3413,3208,3417);
+        secondObstacle.setPlane(3);
+        Area thirdObstacle = new Area(3193,3416,3197,3416);
+        thirdObstacle.setPlane(1);
+        Area fourthObstacle = new Area(3192,3402,3198,3406);
+        fourthObstacle.setPlane(3);
+        Area fifthObstacle = new Area(3183,3383,3208,3403);
+        fifthObstacle.setPlane(3);
+        Area sixthObstacle = new Area(3218,3393,3232,3402);
+        sixthObstacle.setPlane(3);
+        Area seventhObstacle = new Area(3236,3403,3240,3408);
+        seventhObstacle.setPlane(3);
+        Area eighthOstable = new Area(3236,3410,3240,3415);
+        eighthOstable.setPlane(3);
+
+        if (allofVarrock.contains(myPosition()))
+        {
+            walking.webWalk(startofVarrock);
+            sleep(random(600,1200));
+        }
+        if (startofVarrock.contains(myPosition()))
+        {
+            obstacleSolver("Rough wall","Climb",startofVarrock,firstObstacle);
+        }
+        if (firstObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Clothes line","Cross",firstObstacle,secondObstacle);
+        }
+        if (secondObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Leap",secondObstacle,thirdObstacle);
+        }
+        if (thirdObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Wall","Balance",thirdObstacle,fourthObstacle);
+        }
+        if (fourthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Leap",fourthObstacle,fifthObstacle);
+        }
+        if (fifthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Leap",fifthObstacle,sixthObstacle);
+        }
+        if (sixthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Leap",sixthObstacle,seventhObstacle);
+        }
+        if (seventhObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Ledge","Hurdle",seventhObstacle,eighthOstable);
+        }
+        if (eighthOstable.contains(myPosition()))
+        {
+            obstacleSolver("Edge","Jump-off",eighthOstable,startofVarrock);
+        }
 
     }
 
