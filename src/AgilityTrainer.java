@@ -1,5 +1,5 @@
-import Util.FormattingForPaint;
-import Util.Sleep;
+import util.FormattingForPaint;
+import util.Sleep;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.GroundItem;
@@ -11,15 +11,15 @@ import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script{
-    Position GnomeStrongholdStart = new Position(2474,3436,0);
-    Area GnomeAreaGround = new Area(2467,3413,2492,3441);
-    Area GnomeAreaMiddle = new Area(2467,3413,2492,3441);
-    Area GnomeAreaTop = new Area(2467,3413,2492,3441);
+    final Position GnomeStrongholdStart = new Position(2474,3436,0);
+    final Area GnomeAreaGround = new Area(2467,3413,2492,3441);
+    final Area GnomeAreaMiddle = new Area(2467,3413,2492,3441);
+    final Area GnomeAreaTop = new Area(2467,3413,2492,3441);
 
-    Position DraynorVillageStart = new Position(3103,3279,0);
-    Position VarrockStart = new Position(3221,3414,0);
-    Position CanifisStart = new Position(3507,3488,0);
-    Position[] StartList = {GnomeStrongholdStart,DraynorVillageStart,VarrockStart,CanifisStart};
+    final Position DraynorVillageStart = new Position(3103,3279,0);
+    final Position VarrockStart = new Position(3221,3414,0);
+    final Position CanifisStart = new Position(3507,3488,0);
+    final Position[] StartList = {GnomeStrongholdStart,DraynorVillageStart,VarrockStart,CanifisStart};
     boolean PriestInPerilDone = false;
     boolean nearCourse = false;
     int currentCourse;

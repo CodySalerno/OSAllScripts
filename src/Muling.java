@@ -12,7 +12,7 @@ public final class Muling extends Script
     static boolean needToTrade = false;
 
     @Override
-    public final int onLoop() throws InterruptedException
+    public int onLoop() throws InterruptedException
     {
         log("Starting onLoop: Login State = " + client.getLoginUIState());
         if (!loggingIn && client.getLoginUIState() == 0)

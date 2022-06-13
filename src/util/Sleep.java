@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 import org.osbot.rs07.utility.ConditionalSleep;
 import java.util.function.BooleanSupplier;
@@ -18,8 +18,8 @@ public class Sleep extends ConditionalSleep
         return condition.getAsBoolean();
     }
 
-    public static boolean sleepUntil(final BooleanSupplier condition, final int timeout) {
-        return new Sleep(condition, timeout).sleep();
+    public static void sleepUntil(final BooleanSupplier condition, final int timeout) {
+        new Sleep(condition, timeout).sleep();
     }
 }
 

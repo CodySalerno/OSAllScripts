@@ -1,4 +1,4 @@
-import Util.Sleep;
+import util.Sleep;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.EquipmentSlot;
@@ -9,24 +9,24 @@ import org.osbot.rs07.script.ScriptManifest;
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
 public class QuestPlagueCity extends Script
 {
-    int[] supplyID = {2126,954,952,1929,1927,1975,231};
-    String[] supplyName = {"Dwellberries", "Rope", "Spade", "bucket of water", "Bucket of milk", "Chocolate dust", "Snape grass"};
-    int[] supplyQuantity = {1, 1, 1, 1, 4, 1, 1};
+    final int[] supplyID = {2126,954,952,1929,1927,1975,231};
+    final String[] supplyName = {"Dwellberries", "Rope", "Spade", "bucket of water", "Bucket of milk", "Chocolate dust", "Snape grass"};
+    final int[] supplyQuantity = {1, 1, 1, 1, 4, 1, 1};
     private final Area GeArea = new Area(3159,3482,3168,3492);
     private final Area edmondArea = new Area(2563,3335,2570,3330);
-    Area undergroundTunnel = new Area(2509,9765,2519,9738);
-    Area Cellar = new Area(2536,9669,2542,9673);
-    Area southHouse = new Area(2532,3272,2541,3268);
-    Position Outsidealrena = new Position(2570,3333,0);
-    Position alrenaDoor = new Position(2573,3333,0);
-    Position dugHole = new Position (2566, 3332, 0);
-    Position Grateunder = new Position(2514,9739,0);
-    Position EdmondUnder = new Position(2517,9755,0);
-    Position northHouse = new Position(2531, 3328, 0);
-    Position SouthHouseDoor = new Position(2534,3272,0);
-    Position mayorHouse = new Position(2526,3311,0);
-    Position BravekDoor = new Position(2529,3314,0);
-    Position mudPile = new Position(2518,9759,0);
+    final Area undergroundTunnel = new Area(2509,9765,2519,9738);
+    final Area Cellar = new Area(2536,9669,2542,9673);
+    final Area southHouse = new Area(2532,3272,2541,3268);
+    final Position Outsidealrena = new Position(2570,3333,0);
+    final Position alrenaDoor = new Position(2573,3333,0);
+    final Position dugHole = new Position (2566, 3332, 0);
+    final Position Grateunder = new Position(2514,9739,0);
+    final Position EdmondUnder = new Position(2517,9755,0);
+    final Position northHouse = new Position(2531, 3328, 0);
+    final Position SouthHouseDoor = new Position(2534,3272,0);
+    final Position mayorHouse = new Position(2526,3311,0);
+    final Position BravekDoor = new Position(2529,3314,0);
+    final Position mudPile = new Position(2518,9759,0);
     public int onLoop() throws InterruptedException {
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {

@@ -79,7 +79,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     }
 
     @Override
-    public final int execute() throws InterruptedException {
+    public int execute() throws InterruptedException {
         if (loginEventResult != null) {
             handleLoginResponse();
         }

@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 public class FormattingForPaint {
     public final String formatValue(final long l) {
