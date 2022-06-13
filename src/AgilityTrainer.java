@@ -181,7 +181,7 @@ public class AgilityTrainer extends  Script {
 
     public void Draynor() throws InterruptedException {
         log("In draynor method");
-        Area allOfDraynor = new Area(3073, 3239, 3073, 3290);
+        Area allOfDraynor = new Area(3066, 3238, 3111, 3290);
         Area startDraynor = new Area(3103, 3274, 3111, 3284);
         Area firstObstacle = new Area(3097, 3277, 3102, 3281);
         firstObstacle.setPlane(3);
