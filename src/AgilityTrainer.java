@@ -13,7 +13,7 @@ import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script {
-    EnergyCheck StaminaChecker;
+    EnergyCheck StaminaChecker = new EnergyCheck();
     final Position GnomeStrongholdStart = new Position(2474, 3436, 0);
     final Area GnomeAreaGround = new Area(2467, 3413, 2492, 3441);
     final Area GnomeAreaMiddle = new Area(2467, 3413, 2492, 3441);
@@ -129,7 +129,14 @@ public class AgilityTrainer extends  Script {
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
-        StaminaChecker.Stamina();
+        log("Before Stamina");
+        try{
+            StaminaChecker.Stamina();
+        }
+        catch (Exception e){
+            log(e);
+        }
+        log("After stamina");
         for (int i = 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)

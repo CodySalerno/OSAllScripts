@@ -8,6 +8,7 @@ public class EnergyCheck extends Script
     @Override
     public int onLoop() throws InterruptedException
     {
+        log("tester");
         return 0;
     }
     public void Stamina()
