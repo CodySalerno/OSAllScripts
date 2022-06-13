@@ -14,7 +14,6 @@ import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script {
-    EnergyCheck StaminaChecker = new EnergyCheck();
     final Position GnomeStrongholdStart = new Position(2474, 3436, 0);
     final Area GnomeAreaGround = new Area(2467, 3413, 2492, 3441);
     final Area GnomeAreaMiddle = new Area(2467, 3413, 2492, 3441);
@@ -128,12 +127,12 @@ public class AgilityTrainer extends  Script {
     @Override
     public final int onLoop() throws InterruptedException
     {
+        EnergyCheck energyCheck = new EnergyCheck(this);
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
         log("Before Stamina");
-        StaminaChecker.Stamina();
-        log("After stamina");
+        energyCheck.Stamina();
         for (int i = 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)
