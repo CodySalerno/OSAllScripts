@@ -22,7 +22,7 @@ public final class GiantsFoundry extends Script{
     RS2Widget progressTwo = null;
     RS2Widget progressThree = null;
     RS2Widget progressFour = null;
-    boolean currentlMakingSword = false;
+    boolean currentlyMakingSword = false;
     int currentHeat;//1 = too cold, 2 = cold, 3 = between cold and warm, 4 = warm, 5 = between warm and hot, 6 = hot 7 = too hot
     int progress; //1 = first prog bar 2 = second prog bar 3 = third prog bar 4 = fourth prog bar
     Color progOneColor;
@@ -66,7 +66,9 @@ public final class GiantsFoundry extends Script{
             {
                 findHeat();
             }
-            catch (InterruptedException e) {
+            catch (InterruptedException e)
+            {
+                log(e.toString());
             }
             try
             {
@@ -74,14 +76,16 @@ public final class GiantsFoundry extends Script{
             }
             catch (InterruptedException e)
             {
+                log(e.toString());
             }
             runningTime = FormattingForPaint.formatTime(System.currentTimeMillis()-startTime);
             repGained = configs.get(3436)-repStart;
             try {
                 Thread.sleep(300);
             }
-            catch (InterruptedException e) {
-
+            catch (InterruptedException e)
+            {
+                log(e.toString());
             }
         }
     });
@@ -89,7 +93,6 @@ public final class GiantsFoundry extends Script{
     @Override
     public void onPaint(final Graphics2D g)
     {
-        Graphics2D gr = g;
         Font font = new Font("Open Sans", Font.BOLD, 18);
         g.setFont(font);
         g.setColor(Color.green);
@@ -102,7 +105,7 @@ public final class GiantsFoundry extends Script{
 
 
     @Override
-    public final void onStart() throws InterruptedException {
+    public void onStart() {
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.SMITHING);
         repStart = configs.get(3436);
@@ -110,7 +113,7 @@ public final class GiantsFoundry extends Script{
     }
 
     @Override
-    public final int onLoop() throws InterruptedException {
+    public int onLoop() throws InterruptedException {
         if (configs.get(3436) > 2000)//stops at 2k foundry rep
         {
             walking.walk(getNpcs().closest("Kovac"));
@@ -126,7 +129,7 @@ public final class GiantsFoundry extends Script{
         setWidgets();
         findProgress();
         findHeat();
-        if (currentlMakingSword) {
+        if (currentlyMakingSword) {
             log("WE ARE MAKING A SWORD");
             log("CURRENT PROGRESS IS: " + progress);
             log("CURRENT HEAT IS: " + currentHeat);
@@ -188,7 +191,7 @@ public final class GiantsFoundry extends Script{
                 npcs.closest("Kovac").interact("Hand-in");
                 while(!dialogues.isPendingContinuation())
                 {
-
+                    log("Zack had an empty while loop here for some reason");//TODO: Remove
                 }
                 dialogues.completeDialogueU("Yes");
                 sleep(random(700,900));
@@ -206,7 +209,7 @@ public final class GiantsFoundry extends Script{
             }
             String reqOneString = "";
             String reqTwoString = "";
-            while (Open == true)
+            while (Open)
             {
                 if (reqOneString.equals(""))
                 {
@@ -653,9 +656,6 @@ public final class GiantsFoundry extends Script{
             tipSet = false;
             bladeSet = false;
             forteSet = false;
-            Open = false;
-            reqOneString = "";
-            reqTwoString = "";
             while (!inventory.contains("Bucket of water"))
             {
                 log("Walk to bank");
@@ -743,28 +743,9 @@ public final class GiantsFoundry extends Script{
     }
 
     @Override
-    public final void onExit() {
+    public void onExit() {
         thread1.stop();
     }
-
-/*
-    public final String formatValue(final long l) {
-        return (l > 1_000_000) ? String.format("%.2fm", ((double) l / 1_000_000))
-                : (l > 1000) ? String.format("%.1fk", ((double) l / 1000))
-                : l + "";
-    }
-    public final String formatValue(final int l) {
-        return (l > 1_000_000) ? String.format("%.2fm", ((double) l / 1_000_000))
-                : (l > 1000) ? String.format("%.1fk", ((double) l / 1000))
-                : l + "";
-    }
-    public final String formatTime(final long ms){
-        long s = ms / 1000, m = s / 60, h = m / 60;
-        s %= 60; m %= 60; h %= 24;
-        return String.format("%02d:%02d:%02d", h, m, s);
-    }
-
- */
 
     public void setWidgets() {
         try {
@@ -783,16 +764,16 @@ public final class GiantsFoundry extends Script{
 
             if (heatProgressWarm.isVisible()) {
                 log("making it true");
-                currentlMakingSword = true;
+                currentlyMakingSword = true;
             } else
             {
                 log("making it false");
-                currentlMakingSword = false;
+                currentlyMakingSword = false;
             }
 
         } catch (Exception e) {
             log("hit exception");
-            currentlMakingSword = false;
+            currentlyMakingSword = false;
         }
     }
 
@@ -836,7 +817,7 @@ public final class GiantsFoundry extends Script{
         }
         catch(Exception e)
         {
-
+            log(e.toString());
         }
 
     } //do not touch this code this is good
@@ -866,10 +847,10 @@ public final class GiantsFoundry extends Script{
                 //log("Progress is within HOT box");
                 currentHeat = 6;
             } else if (rectHeat.x + (rectHeat.width / 2) > rectOne.x + rectOne.width && rectHeat.x + (rectHeat.width / 2) <= rectTwo.x) {
-                //log("inbetween COLD and WARM");
+                //log("between COLD and WARM");
                 currentHeat = 3;
             } else if (rectHeat.x + (rectHeat.width / 2) > rectTwo.x + rectTwo.width && rectHeat.x + (rectHeat.width / 2) <= rectThree.x) {
-                //log("inbetween WARM and HOT");
+                //log("between WARM and HOT");
                 currentHeat = 5;
             } else if (rectHeat.x + (rectHeat.width / 2) <= rectOne.x + 1) {
                 //log("BELOW COLD");
@@ -883,7 +864,7 @@ public final class GiantsFoundry extends Script{
         }
         catch (Exception e)
         {
-
+            log(e.toString());
         }
     }
 
@@ -895,7 +876,7 @@ public final class GiantsFoundry extends Script{
                 walking.walk(objects.closest("Waterfall"));
                 sleep(random(400, 600));
             }
-            if (interactingFirst == false) {
+            if (!interactingFirst) {
                 log("Interacting with waterfall");
                 objects.closest("Waterfall").interact("Cool-preform");
                 interactingFirst = true;
@@ -912,7 +893,7 @@ public final class GiantsFoundry extends Script{
                     walking.walk(objects.closest("Lava pool"));
                     sleep(random(400, 600));
                 }
-                if (interactingFirst == false) {
+                if (!interactingFirst) {
                     log("Interacting with lava pool");
                     objects.closest("Lava pool").interact("Heat-preform");
                     interactingFirst = true;
@@ -927,12 +908,10 @@ public final class GiantsFoundry extends Script{
                 walking.walk(objects.closest("Polishing wheel"));
             }
             //log("No longer waiting");
-            if (interactingSecond == false) {
-                if (!interactingSecond) {
-                    log("interact with Polishing wheel");
-                    objects.closest("Polishing wheel").interact("Use");
-                    interactingSecond = true;
-                }
+            if (!interactingSecond) {
+                log("interact with Polishing wheel");
+                objects.closest("Polishing wheel").interact("Use");
+                interactingSecond = true;
             }
             sleep(random(100, 250));
         }
@@ -944,11 +923,11 @@ public final class GiantsFoundry extends Script{
         while (redAscending > arrowPosition) // if heat is low heat it up
         {
             while (!lavaPool.contains(myPosition())) {
-                log("Walking to lavapool");
+                log("Walking to lava pool");
                 walking.walk(objects.closest("Lava pool"));
                 sleep(random(400, 600));
             }
-            if (interactingFirst == false) {
+            if (!interactingFirst) {
                 log("Interacting with lava pool");
                 sleep(600);
                 objects.closest("Lava pool").interact("Heat-preform");
@@ -968,14 +947,11 @@ public final class GiantsFoundry extends Script{
         }
         while (arrowPosition > redBot && progress == currentProgress) {
             //log("No longer waiting");
-            if (interactingSecond == false)
+            if (!interactingSecond)
             {
-                if (!interactingSecond)
-                {
-                    log("interact with hammer");
-                    objects.closest("Trip hammer").interact("Use");
-                    interactingSecond = true;
-                }
+                log("interact with hammer");
+                objects.closest("Trip hammer").interact("Use");
+                interactingSecond = true;
             }
             sleep(random(100, 250));
         }
@@ -991,7 +967,7 @@ public final class GiantsFoundry extends Script{
                 walking.walk(objects.closest("Waterfall"));
                 sleep(random(400, 600));
             }
-            if (interactingFirst == false) {
+            if (!interactingFirst) {
                 log("Interacting with Waterfall");
                 sleep(600);
                 objects.closest("Waterfall").interact("Cool-preform");
@@ -1007,7 +983,7 @@ public final class GiantsFoundry extends Script{
                 walking.walk(objects.closest("Lava pool"));
                 sleep(random(400, 600));
             }
-            if (interactingFirst == false) {
+            if (!interactingFirst) {
                 log("Interacting with lava pool");
                 sleep(600);
                 objects.closest("Lava pool").interact("Heat-preform");
@@ -1024,14 +1000,11 @@ public final class GiantsFoundry extends Script{
             walking.walk(objects.closest("Grindstone"));
         }
         while (arrowPosition < yellowTop && progress == currentProgress) {
-            if (interactingSecond == false)
+            if (!interactingSecond)
             {
-                if (!interactingSecond)
-                {
-                    log("interact with grindstone");
-                    objects.closest("Grindstone").interact("Use");
-                    interactingSecond = true;
-                }
+                log("interact with grindstone");
+                objects.closest("Grindstone").interact("Use");
+                interactingSecond = true;
             }
             sleep(random(100, 250));
         }
