@@ -54,7 +54,7 @@ public class AgilityTrainer extends  Script {
     boolean PriestInPerilDone = false;
     boolean nearCourse = false;
     int currentCourse;
-    int nextLevel = 60;
+    int nextLevel ;
     private long startTime;
     GroundItem groundItem;
     Position itemPosition;
@@ -100,35 +100,26 @@ public class AgilityTrainer extends  Script {
     public void onPaint(final Graphics2D g)
     {
         Font font = new Font("Open Sans", Font.BOLD, 18);
-        log("onpaint" + nextLevel);
+        nextLevel = courseReqs[currentCourse + 1];
         g.setFont(font);
         g.setColor(Color.green);
         g.drawString("Running Time: " + (FormattingForPaint.formatTime(System.currentTimeMillis() - startTime)), 10, 250);
         g.drawString("Agility xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.AGILITY)), 10, 270);
         g.drawString("Agility xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.AGILITY)), 10, 290);
         g.drawString("Current Level: " + skills.getStatic(Skill.AGILITY), 10, 310);
-        //log("next level in onPaint is  " + nextLevel);
-        //log("experience for 40 " + skills.getExperienceForLevel(nextLevel));
         int xpTillDone = (skills.getExperienceForLevel(nextLevel) - skills.getExperience(Skill.AGILITY));
-        //log("xptill done is " + xpTillDone);
         int xpPerSecond = (experienceTracker.getGainedXPPerHour(Skill.AGILITY)) / 3600;
-        //log("xp per second is " + xpPerSecond);
         long timeTillDone = (xpTillDone / xpPerSecond);
-        //log("time till done is " +timeTillDone);
         String S = FormattingForPaint.formatTimeSeconds(timeTillDone);
-        //g.drawString("Time until level 30: " + S, 10, 330);
-        g.drawString("Time until level " + 40 + ":" + S, 10, 330);
+        g.drawString("Time until level " + nextLevel + ":" + S, 10, 330);
     }
 
     @Override
     public final int onLoop() throws InterruptedException
     {
-        log("next level in onLoop is " + nextLevel);
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
-
-
 
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
@@ -139,13 +130,8 @@ public class AgilityTrainer extends  Script {
         {
             if (courseReqs[i] <= level) {
                 currentCourse = i;
-                log("currentcourse is " + currentCourse);
             }
         }
-        log("current course is out of loop" + currentCourse);
-        int nextLevel = courseReqs[currentCourse+1];
-        log("next level is here" + nextLevel);
-        log("Current course is " + courses[currentCourse]);
         switch (currentCourse)
         {
             case 0:
