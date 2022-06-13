@@ -27,18 +27,19 @@ public class AgilityTrainer extends  Script {
     final Area allOfDraynorFloor = new Area(3066, 3238, 3111, 3290);
     final Area allOfDraynorRoof = new Area(3066,3238,3111,3290);
     final Area startDraynor = new Area(3103, 3274, 3111, 3284);
-    final Area firstObstacle = new Area(3097, 3277, 3102, 3281);
-    final Area secondObstacle = new Area(3088, 3273, 3091, 3276);
-    final Area thirdObstacle = new Area(3089, 3265, 3094, 3267);
-    final Area fourthObstacle = new Area(3088, 3257, 3088, 3261);
-    final Area fifthObstacle = new Area(3088, 3255, 3094, 3255);
-    final Area sixthObstacle = new Area(3096, 3256, 3101, 3261);
+    final Area DraynorFirstObstacle = new Area(3097, 3277, 3102, 3281);
+    final Area DraynorSecondObstacle = new Area(3088, 3273, 3091, 3276);
+    final Area DraynorThirdObstacle = new Area(3089, 3265, 3094, 3267);
+    final Area DraynorFourthObstacle = new Area(3088, 3257, 3088, 3261);
+    final Area DraynorFifthObstacle = new Area(3088, 3255, 3094, 3255);
+    final Area DraynorSixthObstacle = new Area(3096, 3256, 3101, 3261);
     final Area endOfDraynor = new Area(3102, 3259, 3105, 3263);
     final Area draynorFall = new Area(3089, 3256, 3095, 3264);
     final Position VarrockStart = new Position(3221, 3414, 0);
-    final Area AllVarrock = new Area(3190,3383,3240,3419);
+    final Area AllVarrockGround = new Area(3190,3383,3240,3419);
+    final Area AllVarrockMiddle = new Area(3190,3383,3240,3419);
+    final Area AllVarrockRoof = new Area(3190,3383,3240,3419);
     final Area StartVarrock = new Area(3221,3413,3223,3415);
-    final Area VarrockFall = new Area(3208,3410,3214,3421);
     final Area VarrockFirstObstacle = new Area(3214,3410,3219,3419);
     final Area VarrockSecondObstacle = new Area(3201,3413,3208,3417);
     final Area VarrockThirdObstacle = new Area(3193,3416,3197,3416);
@@ -67,12 +68,14 @@ public class AgilityTrainer extends  Script {
         GnomeThirdObstacle.setPlane(2);
         GnomeFourthObstacle.setPlane(2);
         allOfDraynorRoof.setPlane(3);
-        firstObstacle.setPlane(3);
-        secondObstacle.setPlane(3);
-        thirdObstacle.setPlane(3);
-        fourthObstacle.setPlane(3);
-        fifthObstacle.setPlane(3);
-        sixthObstacle.setPlane(3);
+        DraynorFirstObstacle.setPlane(3);
+        DraynorSecondObstacle.setPlane(3);
+        DraynorThirdObstacle.setPlane(3);
+        DraynorFourthObstacle.setPlane(3);
+        DraynorFifthObstacle.setPlane(3);
+        DraynorSixthObstacle.setPlane(3);
+        AllVarrockMiddle.setPlane(1);
+        AllVarrockRoof.setPlane(3);
         VarrockFirstObstacle.setPlane(3);
         VarrockSecondObstacle.setPlane(3);
         VarrockThirdObstacle.setPlane(1);
@@ -182,6 +185,16 @@ public class AgilityTrainer extends  Script {
                 }
                 break;
             case 2:
+                nearCourse = (AllVarrockGround.contains(myPosition()) || AllVarrockMiddle.contains(myPosition()) || AllVarrockRoof.contains(myPosition()));
+                if (nearCourse) {
+                    Varrock();
+                }
+                else
+                {
+                    log("Not in varrock");
+                    walking.webWalk(StartList[currentCourse]);
+                    nearCourse = true;
+                }
 
         }
         return random(1200, 1800);
@@ -250,7 +263,7 @@ public class AgilityTrainer extends  Script {
 
     public void Varrock() throws InterruptedException
     {
-        if (AllVarrock.contains(myPosition()))
+        if (AllVarrockGround.contains(myPosition()))
         {
             walking.webWalk(StartVarrock);
             sleep(random(600,1200));
@@ -305,31 +318,31 @@ public class AgilityTrainer extends  Script {
         }
         if (startDraynor.contains(myPosition()))
         {
-            obstacleSolver("Rough wall","Climb", startDraynor, firstObstacle);
+            obstacleSolver("Rough wall","Climb", startDraynor, DraynorFirstObstacle);
         }
-        if (firstObstacle.contains(myPosition()))
+        if (DraynorFirstObstacle.contains(myPosition()))
         {
-            obstacleSolver("Tightrope","Cross", firstObstacle, secondObstacle);
+            obstacleSolver("Tightrope","Cross", DraynorFirstObstacle, DraynorSecondObstacle);
         }
-        if (secondObstacle.contains(myPosition()))
+        if (DraynorSecondObstacle.contains(myPosition()))
         {
-            obstacleSolver("Tightrope","Cross", secondObstacle, thirdObstacle);
+            obstacleSolver("Tightrope","Cross", DraynorSecondObstacle, DraynorThirdObstacle);
         }
-        if (thirdObstacle.contains(myPosition()))
+        if (DraynorThirdObstacle.contains(myPosition()))
         {
-            obstacleSolver("Narrow wall","Balance", thirdObstacle, fourthObstacle);
+            obstacleSolver("Narrow wall","Balance", DraynorThirdObstacle, DraynorFourthObstacle);
         }
-        if (fourthObstacle.contains(myPosition()))
+        if (DraynorFourthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Wall","Jump-up", fourthObstacle, fifthObstacle);
+            obstacleSolver("Wall","Jump-up", DraynorFourthObstacle, DraynorFifthObstacle);
         }
-        if (fifthObstacle.contains(myPosition()))
+        if (DraynorFifthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Jump", fifthObstacle, sixthObstacle);
+            obstacleSolver("Gap","Jump", DraynorFifthObstacle, DraynorSixthObstacle);
         }
-        if (sixthObstacle.contains(myPosition()))
+        if (DraynorSixthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Crate","Climb-down", sixthObstacle, endOfDraynor);
+            obstacleSolver("Crate","Climb-down", DraynorSixthObstacle, endOfDraynor);
         }
         if (endOfDraynor.contains(myPosition()))
         {
