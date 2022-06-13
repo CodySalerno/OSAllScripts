@@ -45,7 +45,9 @@ public class AgilityTrainer extends  Script {
     final Area VarrockThirdObstacle = new Area(3193,3416,3197,3416);
     final Area VarrockFourthObstacle = new Area(3192,3402,3198,3406);
     final Area VarrockFifthObstacle = new Area(3183,3383,3208,3403);
+    final Area VarrockFifthHelper = new Area(3205,3398,3208,3403);
     final Area VarrockSixthObstacle = new Area(3218,3393,3232,3402);
+    final Area VarrockSixthHelper = new Area(3227,3402,3232,3402);
     final Area VarrockSeventhObstacle = new Area(3236,3403,3240,3408);
     final Area VarrockEighthObstacle = new Area(3236,3410,3240,3415);
 
@@ -84,7 +86,9 @@ public class AgilityTrainer extends  Script {
         VarrockThirdObstacle.setPlane(1);
         VarrockFourthObstacle.setPlane(3);
         VarrockFifthObstacle.setPlane(3);
+        VarrockFifthHelper.setPlane(3);
         VarrockSixthObstacle.setPlane(3);
+        VarrockSixthHelper.setPlane(3);
         VarrockSeventhObstacle.setPlane(3);
         VarrockEighthObstacle.setPlane(3);
         PriestInPerilDone = (configs.get(302) == 61);
@@ -292,11 +296,12 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockFifthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",VarrockFifthObstacle,VarrockSixthObstacle);
+            pickUpMark(VarrockFifthObstacle);
+            obstacleSolver("Gap","Leap",VarrockFifthObstacle,VarrockSixthObstacle,VarrockFifthHelper);
         }
         if (VarrockSixthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",VarrockSixthObstacle,VarrockSeventhObstacle);
+            obstacleSolver("Gap","Leap",VarrockSixthObstacle,VarrockSeventhObstacle,VarrockSixthHelper);
         }
         if (VarrockSeventhObstacle.contains(myPosition()))
         {
@@ -361,6 +366,14 @@ public class AgilityTrainer extends  Script {
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd) throws InterruptedException
     {
         pickUpMark(areaStart);
+        objects.closest(obstacle).interact(interaction);
+        Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
+        sleep(random(1200,1800));
+    }
+    public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle) throws InterruptedException
+    {//use this version if you need to webwalk first
+        pickUpMark(areaStart);
+        walking.webWalk(nearObstacle);
         objects.closest(obstacle).interact(interaction);
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
         sleep(random(1200,1800));
