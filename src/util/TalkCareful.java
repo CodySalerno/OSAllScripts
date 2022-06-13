@@ -7,7 +7,11 @@ public class TalkCareful extends Script
     @Override
     public int onLoop()
     {
-        return 0;
+        return random(1200, 1800);
+    }
+    public void Stamina()
+    {
+        log("Can get here");
     }
 
     public boolean TalkandWait(String npc, String option)

@@ -9,6 +9,7 @@ import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
+
 import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
@@ -103,6 +104,7 @@ public class AgilityTrainer extends  Script {
         }
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.AGILITY);
+        //
     }
 
     @Override
@@ -130,12 +132,7 @@ public class AgilityTrainer extends  Script {
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
         log("Before Stamina");
-        try{
-            StaminaChecker.Stamina();
-        }
-        catch (Exception e){
-            log(e);
-        }
+        StaminaChecker.Stamina();
         log("After stamina");
         for (int i = 0; i < courseReqs.length; i++)
         {
