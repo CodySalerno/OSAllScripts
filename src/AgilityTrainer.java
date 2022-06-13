@@ -56,7 +56,7 @@ public class AgilityTrainer extends  Script {
     boolean PriestInPerilDone = false;
     boolean nearCourse = false;
     int currentCourse;
-    int nextLevel ;
+    int nextLevel;
     private long startTime;
     GroundItem groundItem;
     Position itemPosition;
