@@ -16,8 +16,38 @@ public class AgilityTrainer extends  Script {
     final Area GnomeAreaGround = new Area(2467, 3413, 2492, 3441);
     final Area GnomeAreaMiddle = new Area(2467, 3413, 2492, 3441);
     final Area GnomeAreaTop = new Area(2467, 3413, 2492, 3441);
+    final Area GnomeEnd = new Area(2471, 3435, 2489, 3440);
+    final Area GnomeFirstObstacle = new Area(2470, 3430, 2477, 3425);
+    final Area GnomeSecondObstacle = new Area(2471, 3422, 2476, 3424);
+    final Area GnomeThirdObstacle = new Area(2472, 3421, 2477, 3418);
+    final Area GnomeFourthObstacle = new Area(2483, 3421, 2488, 3418);
+    final Area GnomeFifthObstacle = new Area(2480, 3425, 2489, 3417);
+    final Area GnomeSixthObstacle = new Area(2480, 3426, 2490, 3432);
     final Position DraynorVillageStart = new Position(3103, 3279, 0);
+    final Area allOfDraynorFloor = new Area(3066, 3238, 3111, 3290);
+    final Area allOfDraynorRoof = new Area(3066,3238,3111,3290);
+    final Area startDraynor = new Area(3103, 3274, 3111, 3284);
+    final Area firstObstacle = new Area(3097, 3277, 3102, 3281);
+    final Area secondObstacle = new Area(3088, 3273, 3091, 3276);
+    final Area thirdObstacle = new Area(3089, 3265, 3094, 3267);
+    final Area fourthObstacle = new Area(3088, 3257, 3088, 3261);
+    final Area fifthObstacle = new Area(3088, 3255, 3094, 3255);
+    final Area sixthObstacle = new Area(3096, 3256, 3101, 3261);
+    final Area endOfDraynor = new Area(3102, 3259, 3105, 3263);
+    final Area draynorFall = new Area(3089, 3256, 3095, 3264);
     final Position VarrockStart = new Position(3221, 3414, 0);
+    final Area AllVarrock = new Area(3190,3383,3240,3419);
+    final Area StartVarrock = new Area(3221,3413,3223,3415);
+    final Area VarrockFall = new Area(3208,3410,3214,3421);
+    final Area VarrockFirstObstacle = new Area(3214,3410,3219,3419);
+    final Area VarrockSecondObstacle = new Area(3201,3413,3208,3417);
+    final Area VarrockThirdObstacle = new Area(3193,3416,3197,3416);
+    final Area VarrockFourthObstacle = new Area(3192,3402,3198,3406);
+    final Area VarrockFifthObstacle = new Area(3183,3383,3208,3403);
+    final Area VarrockSixthObstacle = new Area(3218,3393,3232,3402);
+    final Area VarrockSeventhObstacle = new Area(3236,3403,3240,3408);
+    final Area VarrockEighthObstacle = new Area(3236,3410,3240,3415);
+
     final Position CanifisStart = new Position(3507, 3488, 0);
     final Position[] StartList = {GnomeStrongholdStart, DraynorVillageStart, VarrockStart, CanifisStart};
     boolean PriestInPerilDone = false;
@@ -33,6 +63,24 @@ public class AgilityTrainer extends  Script {
         GnomeAreaGround.setPlane(0);
         GnomeAreaMiddle.setPlane(1);
         GnomeAreaTop.setPlane(2);
+        GnomeSecondObstacle.setPlane(1);
+        GnomeThirdObstacle.setPlane(2);
+        GnomeFourthObstacle.setPlane(2);
+        allOfDraynorRoof.setPlane(3);
+        firstObstacle.setPlane(3);
+        secondObstacle.setPlane(3);
+        thirdObstacle.setPlane(3);
+        fourthObstacle.setPlane(3);
+        fifthObstacle.setPlane(3);
+        sixthObstacle.setPlane(3);
+        VarrockFirstObstacle.setPlane(3);
+        VarrockSecondObstacle.setPlane(3);
+        VarrockThirdObstacle.setPlane(1);
+        VarrockFourthObstacle.setPlane(3);
+        VarrockFifthObstacle.setPlane(3);
+        VarrockSixthObstacle.setPlane(3);
+        VarrockSeventhObstacle.setPlane(3);
+        VarrockEighthObstacle.setPlane(3);
         PriestInPerilDone = (configs.get(302) == 61);
 
         if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
@@ -87,7 +135,8 @@ public class AgilityTrainer extends  Script {
                 if (nearCourse)
                 {
                     Gnome();
-                } else if (!inventory.contains("Ardougne teleport"))
+                }
+                else if (!inventory.contains("Ardougne teleport"))
                 {
                     log("not in course");
                     try
@@ -120,53 +169,53 @@ public class AgilityTrainer extends  Script {
                 }
                 break;
             case 1:
-                log("Go to draynor");
-                Draynor();
+                nearCourse = (allOfDraynorFloor.contains(myPosition()) || allOfDraynorRoof.contains(myPosition()));
+                if (nearCourse)
+                {
+                    Draynor();
+                }
+                else
+                {
+                    log("not in course");
+                    walking.webWalk(StartList[currentCourse]);
+                    nearCourse = true;
+                }
                 break;
+            case 2:
+
         }
         return random(1200, 1800);
     }
 
     public void Gnome() throws InterruptedException
     {
-        Area GnomeEnd = new Area(2471, 3435, 2489, 3440);//0
-        Area firstObstacle = new Area(2470, 3430, 2477, 3425);//0
-        Area secondObstacle = new Area(2471, 3422, 2476, 3424);//1
-        secondObstacle.setPlane(1);
-        Area thirdObstacle = new Area(2472, 3421, 2477, 3418);//2
-        thirdObstacle.setPlane(2);
-        Area fourthObstacle = new Area(2483, 3421, 2488, 3418);//2
-        fourthObstacle.setPlane(2);
-        Area fifthObstacle = new Area(2480, 3425, 2489, 3417);//0
-        Area sixthObstacle = new Area(2480, 3426, 2490, 3432);//0
-
         if (GnomeEnd.contains(myPosition()))
         {
-            obstacleSolver("Log balance","Walk-across",GnomeEnd,firstObstacle);
+            obstacleSolver("Log balance","Walk-across",GnomeEnd,GnomeFirstObstacle);
         }
-        if (firstObstacle.contains(myPosition()))
+        if (GnomeFirstObstacle.contains(myPosition()))
         {
-            obstacleSolver("Obstacle net", "Climb-over", firstObstacle, secondObstacle);
+            obstacleSolver("Obstacle net", "Climb-over", GnomeFirstObstacle, GnomeSecondObstacle);
         }
-        if (secondObstacle.contains(myPosition()))
+        if (GnomeSecondObstacle.contains(myPosition()))
         {
-            obstacleSolver("Tree branch", "Climb", secondObstacle, thirdObstacle);
+            obstacleSolver("Tree branch", "Climb", GnomeSecondObstacle, GnomeThirdObstacle);
         }
-        if (thirdObstacle.contains(myPosition()))
+        if (GnomeThirdObstacle.contains(myPosition()))
         {
-            obstacleSolver("Balancing rope", "Walk-on", thirdObstacle, fourthObstacle);
+            obstacleSolver("Balancing rope", "Walk-on", GnomeThirdObstacle, GnomeFourthObstacle);
         }
-        if (fourthObstacle.contains(myPosition()) && (myPosition().getZ() > 0))
+        if (GnomeFourthObstacle.contains(myPosition()) && (myPosition().getZ() > 0))
         {
-            obstacleSolver("Tree branch", "Climb-down", fourthObstacle, fifthObstacle);
+            obstacleSolver("Tree branch", "Climb-down", GnomeFourthObstacle, GnomeFifthObstacle);
         }
-        if (fifthObstacle.contains(myPosition()) && (myPosition().getZ() == 0))
+        if (GnomeFifthObstacle.contains(myPosition()) && (myPosition().getZ() == 0))
         {
-            obstacleSolver("Obstacle net", "Climb-over", fifthObstacle, sixthObstacle);
+            obstacleSolver("Obstacle net", "Climb-over", GnomeFifthObstacle, GnomeSixthObstacle);
         }
-        else if (sixthObstacle.contains(myPosition()))
+        else if (GnomeSixthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Obstacle pipe", "Squeeze-through", sixthObstacle, GnomeEnd);
+            obstacleSolver("Obstacle pipe", "Squeeze-through", GnomeSixthObstacle, GnomeEnd);
             log("last pipe");
             walking.walk(objects.closest("Obstacle pipe"));
             sleep(random(200, 400));
@@ -176,23 +225,23 @@ public class AgilityTrainer extends  Script {
         else
         {
             sleep(random(3000, 3600));
-            if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
-                    || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 0)
+            if ((!(GnomeEnd.contains(myPosition()) || GnomeFirstObstacle.contains(myPosition()) || GnomeSecondObstacle.contains(myPosition())
+                    || GnomeThirdObstacle.contains(myPosition()) || GnomeFourthObstacle.contains(myPosition()) || GnomeFifthObstacle.contains(myPosition())
+                    || GnomeSixthObstacle.contains(myPosition()))) && myPosition().getZ() == 0)
             {
                 log("fucked up");
                 walking.webWalk(GnomeStrongholdStart);
             }
-            else if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
-                    || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
+            else if ((!(GnomeEnd.contains(myPosition()) || GnomeFirstObstacle.contains(myPosition()) || GnomeSecondObstacle.contains(myPosition())
+                    || GnomeThirdObstacle.contains(myPosition()) || GnomeFourthObstacle.contains(myPosition()) || GnomeFifthObstacle.contains(myPosition())
+                    || GnomeSixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
             {
                 log("fucked up upstairs");
 
             }
-            else if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
-                    || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
+            else if ((!(GnomeEnd.contains(myPosition()) || GnomeFirstObstacle.contains(myPosition()) || GnomeSecondObstacle.contains(myPosition())
+                    || GnomeThirdObstacle.contains(myPosition()) || GnomeFourthObstacle.contains(myPosition()) || GnomeFifthObstacle.contains(myPosition())
+                    || GnomeSixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
             {
                 log("fucked up upstairs x2");
             }
@@ -201,66 +250,46 @@ public class AgilityTrainer extends  Script {
 
     public void Varrock() throws InterruptedException
     {
-        Area allofVarrock = new Area(3190,3383,3240,3419);
-        Area startofVarrock = new Area(3221,3413,3223,3415);
-        Area VarrockFall = new Area(3208,3410,3214,3421);
-        Area firstObstacle = new Area(3214,3410,3219,3419);
-        firstObstacle.setPlane(3);
-        Area secondObstacle = new Area(3201,3413,3208,3417);
-        secondObstacle.setPlane(3);
-        Area thirdObstacle = new Area(3193,3416,3197,3416);
-        thirdObstacle.setPlane(1);
-        Area fourthObstacle = new Area(3192,3402,3198,3406);
-        fourthObstacle.setPlane(3);
-        Area fifthObstacle = new Area(3183,3383,3208,3403);
-        fifthObstacle.setPlane(3);
-        Area sixthObstacle = new Area(3218,3393,3232,3402);
-        sixthObstacle.setPlane(3);
-        Area seventhObstacle = new Area(3236,3403,3240,3408);
-        seventhObstacle.setPlane(3);
-        Area eighthOstable = new Area(3236,3410,3240,3415);
-        eighthOstable.setPlane(3);
-
-        if (allofVarrock.contains(myPosition()))
+        if (AllVarrock.contains(myPosition()))
         {
-            walking.webWalk(startofVarrock);
+            walking.webWalk(StartVarrock);
             sleep(random(600,1200));
         }
-        if (startofVarrock.contains(myPosition()))
+        if (StartVarrock.contains(myPosition()))
         {
-            obstacleSolver("Rough wall","Climb",startofVarrock,firstObstacle);
+            obstacleSolver("Rough wall","Climb",StartVarrock,VarrockFirstObstacle);
         }
-        if (firstObstacle.contains(myPosition()))
+        if (VarrockFirstObstacle.contains(myPosition()))
         {
-            obstacleSolver("Clothes line","Cross",firstObstacle,secondObstacle);
+            obstacleSolver("Clothes line","Cross",VarrockFirstObstacle,VarrockSecondObstacle);
         }
-        if (secondObstacle.contains(myPosition()))
+        if (VarrockSecondObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",secondObstacle,thirdObstacle);
+            obstacleSolver("Gap","Leap",VarrockSecondObstacle,VarrockThirdObstacle);
         }
-        if (thirdObstacle.contains(myPosition()))
+        if (VarrockThirdObstacle.contains(myPosition()))
         {
-            obstacleSolver("Wall","Balance",thirdObstacle,fourthObstacle);
+            obstacleSolver("Wall","Balance",VarrockThirdObstacle,VarrockFourthObstacle);
         }
-        if (fourthObstacle.contains(myPosition()))
+        if (VarrockFourthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",fourthObstacle,fifthObstacle);
+            obstacleSolver("Gap","Leap",VarrockFourthObstacle,VarrockFifthObstacle);
         }
-        if (fifthObstacle.contains(myPosition()))
+        if (VarrockFifthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",fifthObstacle,sixthObstacle);
+            obstacleSolver("Gap","Leap",VarrockFifthObstacle,VarrockSixthObstacle);
         }
-        if (sixthObstacle.contains(myPosition()))
+        if (VarrockSixthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",sixthObstacle,seventhObstacle);
+            obstacleSolver("Gap","Leap",VarrockSixthObstacle,VarrockSeventhObstacle);
         }
-        if (seventhObstacle.contains(myPosition()))
+        if (VarrockSeventhObstacle.contains(myPosition()))
         {
-            obstacleSolver("Ledge","Hurdle",seventhObstacle,eighthOstable);
+            obstacleSolver("Ledge","Hurdle",VarrockSeventhObstacle,VarrockEighthObstacle);
         }
-        if (eighthOstable.contains(myPosition()))
+        if (VarrockEighthObstacle.contains(myPosition()))
         {
-            obstacleSolver("Edge","Jump-off",eighthOstable,startofVarrock);
+            obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,StartVarrock);
         }
 
     }
@@ -268,24 +297,7 @@ public class AgilityTrainer extends  Script {
     public void Draynor() throws InterruptedException
     {
         log("In draynor method");
-        Area allOfDraynor = new Area(3066, 3238, 3111, 3290);
-        Area startDraynor = new Area(3103, 3274, 3111, 3284);
-        Area firstObstacle = new Area(3097, 3277, 3102, 3281);
-        firstObstacle.setPlane(3);
-        Area secondObstacle = new Area(3088, 3273, 3091, 3276);
-        secondObstacle.setPlane(3);
-        Area thirdObstacle = new Area(3089, 3265, 3094, 3267);
-        thirdObstacle.setPlane(3);
-        Area fourthObstacle = new Area(3088, 3257, 3088, 3261);
-        fourthObstacle.setPlane(3);
-        Area fifthObstacle = new Area(3088, 3255, 3094, 3255);
-        fifthObstacle.setPlane(3);
-        Area sixthObstacle = new Area(3096, 3256, 3101, 3261);
-        sixthObstacle.setPlane(3);
-        Area endOfDraynor = new Area(3102, 3259, 3105, 3263);
-        Area draynorFall = new Area(3089, 3256, 3095, 3264);
-
-        if (allOfDraynor.contains(myPosition()))
+        if (allOfDraynorFloor.contains(myPosition()))
         {
             log("walking to draynor");
             walking.webWalk(startDraynor);
