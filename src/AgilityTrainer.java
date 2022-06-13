@@ -54,6 +54,7 @@ public class AgilityTrainer extends  Script {
     boolean PriestInPerilDone = false;
     boolean nearCourse = false;
     int currentCourse;
+    int nextLevel;
     private long startTime;
     GroundItem groundItem;
     Position itemPosition;
@@ -103,11 +104,14 @@ public class AgilityTrainer extends  Script {
         g.drawString("Agility xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.AGILITY)), 10, 270);
         g.drawString("Agility xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.AGILITY)), 10, 290);
         g.drawString("Current Level: " + skills.getStatic(Skill.AGILITY), 10, 310);
-        int xpTillDone = (skills.getExperienceForLevel(30) - skills.getExperience(Skill.AGILITY));
+        log(nextLevel);
+        log(skills.getExperienceForLevel(nextLevel));
+        int xpTillDone = (skills.getExperienceForLevel(nextLevel) - skills.getExperience(Skill.AGILITY));
         int xpPerSecond = (experienceTracker.getGainedXPPerHour(Skill.AGILITY)) / 3600;
         long timeTillDone = (xpTillDone / xpPerSecond);
         String S = FormattingForPaint.formatTimeSeconds(timeTillDone);
-        g.drawString("Time until level 30: " + S, 10, 330);
+        //g.drawString("Time until level 30: " + S, 10, 330);
+        g.drawString("Time until level " + 40 + ":" + S, 10, 330);
     }
 
     @Override
@@ -130,6 +134,7 @@ public class AgilityTrainer extends  Script {
                 currentCourse = i;
             }
         }
+        int nextLevel = courseReqs[currentCourse+1];
         log("Current course is " + courses[currentCourse]);
         switch (currentCourse)
         {
