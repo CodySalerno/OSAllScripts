@@ -54,6 +54,11 @@ public class AgilityTrainer extends  Script{
         g.drawString("Agility xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.AGILITY)),10,270);
         g.drawString("Agility xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.AGILITY)),10,290);
         g.drawString("Current Level: " + skills.getStatic(Skill.AGILITY),10,310 );
+        int xpTillDone = (skills.getExperienceForLevel(30)-skills.getExperience(Skill.AGILITY));
+        int xpPerSecond = (experienceTracker.getGainedXPPerHour(Skill.AGILITY))/3600;
+        long timeTillDone = (xpTillDone/xpPerSecond);
+        String S = FormattingForPaint.formatTimeSeconds(timeTillDone);
+        g.drawString("Time until level 30: " + S ,10,330 );
     }
 
     @Override
@@ -235,6 +240,7 @@ public class AgilityTrainer extends  Script{
             log("walking to rough wall");
             objects.closest("Rough wall").interact("Climb");
             Sleep.sleepUntil(() -> firstObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (firstObstacle.contains(myPosition()))
         {
@@ -242,6 +248,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Tightrope");
             objects.closest("Tightrope").interact("Cross");
             Sleep.sleepUntil(() -> secondObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (secondObstacle.contains(myPosition()))
         {
@@ -249,6 +256,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Tightrope");
             objects.closest("Tightrope").interact("Cross");
             Sleep.sleepUntil(() -> thirdObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (thirdObstacle.contains(myPosition()))
         {
@@ -256,6 +264,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Narrow wall");
             objects.closest("Narrow wall").interact("Balance");
             Sleep.sleepUntil(() -> fourthObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (fourthObstacle.contains(myPosition()))
         {
@@ -263,6 +272,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Wall");
             objects.closest("Wall").interact("Jump-up");
             Sleep.sleepUntil(() -> fifthObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (fifthObstacle.contains(myPosition()))
         {
@@ -270,6 +280,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Gap");
             objects.closest("Gap").interact("Jump");
             Sleep.sleepUntil(() -> sixthObstacle.contains(myPosition()), 10000);
+            sleep(random(1200,1800));
         }
         if (sixthObstacle.contains(myPosition()))
         {
@@ -277,6 +288,7 @@ public class AgilityTrainer extends  Script{
             log("walking to Crate");
             objects.closest("Crate").interact("Climb-down");
             Sleep.sleepUntil(() -> endOfDraynor.contains(myPosition()), 10000);
+            sleep(random(1800,2400));
         }
         if (endOfDraynor.contains(myPosition()))
         {
@@ -290,14 +302,14 @@ public class AgilityTrainer extends  Script{
         }
 
     }
-    public void pickUpMark(Area currentArea)
-    {
+    public void pickUpMark(Area currentArea) throws InterruptedException {
         groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
         if(groundItem != null) {
             itemPosition = groundItem.getPosition();
             if (currentArea.contains(itemPosition))
             {
                 groundItem.interact("Take");
+                sleep(random(2400,3000));
             }
         }
     }
@@ -305,4 +317,3 @@ public class AgilityTrainer extends  Script{
 
     }
 }
-

@@ -1,16 +1,21 @@
+import Util.Sleep;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-import org.osbot.rs07.utility.ConditionalSleep;
-import java.sql.*;
 
-import java.util.function.BooleanSupplier;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @ScriptManifest(name = "CannonBalls", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
 public final class CannonballScript extends Script
 {
+
     /*TO DO LIST
     CREATE A SECOND BOT TO ACCEPT TRADES FROM MULE
     USE TELEPORTATION JEWELERY
@@ -19,11 +24,23 @@ public final class CannonballScript extends Script
     IF ITEMS DON'T BUY OR SELL.
     NEXT BOT IDEA: QUESTS. FOR DS2/REGICIDE, NMZ BOT, CHINNING/BURSTING BOT
      */
+
+
+
     private final Area GeArea = new Area(3159,3482,3168,3492);
     private final Area BankArea = new Area(3095,3495,3097,3497);
     private final Position FurnacePosition = new Position(3109,3499,0);
     private final Position BankPosition = new Position(3096,3494,0);
     private int currentCoins;
+
+    @Override
+    public final void onStart() throws InterruptedException
+    {
+        //HashMap<String, String> usernames = new HashMap<String, String>();
+        //usernames.put("upmysleeve12", "Fierceskunk+2@yahoo.com");
+
+    }
+
     @Override
     public final int onLoop() throws InterruptedException
     {
@@ -80,7 +97,6 @@ public final class CannonballScript extends Script
             bank.withdrawAll("Coins");
             sleep(random(1200,1800));
             AreaWalker(GeArea);
-
             Resupply();
             AreaWalker(BankArea);
         }
@@ -137,16 +153,17 @@ public final class CannonballScript extends Script
                 {
                     getGrandExchange().collect();
                     log("Collecting GE");
-                    SqlUpdater((int)inventory.getAmount("Coins"));
                     sleep(random(1200, 1800));
                     if (getInventory().contains("Coins"))
                     {
                         cannonBallsSold = true;
                         int totalCoins = (int)getInventory().getAmount("Coins");
-                        if (totalCoins > 6000000)
-                        {
-                            TradeMule(totalCoins);
-                        }
+                        try {
+                            String s = myPlayer().getName() + "\n" + String.valueOf(totalCoins) + "\n";
+                            Files.write(Paths.get("C:\\Users\\zjmnk\\OSBot\\Data\\Bot1CurrentGold.txt"), s.getBytes(), StandardOpenOption.APPEND);
+                            log("updating file");
+                        }catch (IOException e) {}
+                        if (totalCoins > 6000000) TradeMule(totalCoins);
                     }
                 }
 
@@ -162,8 +179,8 @@ public final class CannonballScript extends Script
             }
             else
             {
-                int steelBarAmount = ((int) getInventory().getAmount("Coins"))/450;
-                getGrandExchange().buyItem(2353,"Steel Bar", 450, steelBarAmount);
+                int steelBarAmount = ((int) getInventory().getAmount("Coins"))/475;
+                getGrandExchange().buyItem(2353,"Steel Bar", 475, steelBarAmount);
                 log("Buying Steel Bars");
                 sleep(random(1200, 1800));
                 if (!getInventory().contains("Steel Bar"))
@@ -195,88 +212,75 @@ public final class CannonballScript extends Script
             }
         }
     }
-    private void SqlUpdater(int coins)
-    {
-        Connection conn = null;
-        try {
-
-            String update = "UPDATE dbo.SmithingMules SET currentMoney = " + coins + " WHERE accountName = " + myPlayer().getName();
-            String url = "jdbc:sqlserver://scriptingsqlautomation.database.windows.net;" +
-                    "database=Scripting;" +
-                    "user=AutomationScripters@scriptingsqlautomation;" +
-                    "password=B4R86vsKM4hkdHw;" +
-                    "encrypt=true;trustServerCertificate=false;" +
-                    "hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-            conn = DriverManager.getConnection(url); //connects to the database
-            Statement statement = conn.createStatement(); //creates what database needs to do
-            statement.executeUpdate(update); //actually does what database needs to do
-
-        } catch (Exception e) {
-            System.out.println("test-1" + e);
-        }
-    }
     private void TradeMule (int totalCoins) throws InterruptedException {
-        String muleName = "aceuptheslee";
-        boolean tradeComplete = false;
-        if(getPlayers().closest(muleName) != null)
+        while (totalCoins > 6000000)
         {
-            while (!tradeComplete)
+            File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
+            FileWriter myWriter = null;
+            try {
+                myWriter = new FileWriter(file);
+                myWriter.write("T");
+                myWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            log("looking to trade mule.");
+            String muleName = "aceuptheslee";
+            boolean tradeComplete = false;
+            if(getPlayers().closest(muleName) != null)
             {
-                getPlayers().closest(muleName).interact("Trade with");
-                log("Sending Trade");
-                sleep(random(2000, 2200));
-                if (trade.isCurrentlyTrading())
+                while (!tradeComplete)
                 {
-                    if (trade.isFirstInterfaceOpen())
+                    log("while trade is not complete");
+                    getPlayers().closest(muleName).interact("Trade with");
+                    log("Sending Trade");
+                    sleep(random(8000,12000));
+                    if (trade.isCurrentlyTrading())
                     {
-                        trade.offer("Coins", totalCoins-1000000);
-                        log("Trading Gold");
-                        sleep(random(2000, 2200));
-                        trade.acceptTrade();
-                        sleep(random(2000, 2200));
-                    }
-                    if (trade.isSecondInterfaceOpen())
-                    {
-                        if (inventory.getAmount("Coins") == 1000000 && trade.getOurOffers().contains("Coins") && trade.getOtherPlayer().equals(muleName))
+                        if (trade.isFirstInterfaceOpen())
                         {
+                            trade.offer("Coins", totalCoins-1000000);
+                            log("Trading Gold First Screen");
+                            sleep(random(8000,12000));
                             trade.acceptTrade();
-                            sleep(random(2000, 2200));
-                            tradeComplete = true;
+                            sleep(random(8000,12000));
                         }
-                        else
+                        if (trade.isSecondInterfaceOpen())
                         {
-                            trade.declineTrade();
+                            if (inventory.getAmount("Coins") == 1000000 && trade.getOurOffers().contains("Coins") && trade.getOtherPlayer().equals(muleName))
+                            {
+                                log("Accept second trade");
+                                trade.acceptTrade();
+                                totalCoins = (int)getInventory().getAmount("Coins");
+                                tradeComplete = true;
+                                log("Trade complete = true break while loop");
+                                sleep(random(8000,12000));
+
+                            }
+                            else
+                            {
+                                trade.declineTrade();
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                sleep(8000);
+            }
         }
+        File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
+        FileWriter myWriter = null;
+        try {
+            log("Gold is less then 6M changing file to F");
+            myWriter = new FileWriter(file);
+            myWriter.write("F");
+            myWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
-
-
 
 }
-
-
-class Sleep extends ConditionalSleep
-{
-
-    private final BooleanSupplier condition;
-
-    public Sleep(final BooleanSupplier condition, final int timeout) {
-        super(timeout);
-        this.condition = condition;
-    }
-
-    @Override
-    public final boolean condition() throws InterruptedException {
-        return condition.getAsBoolean();
-    }
-
-    public static boolean sleepUntil(final BooleanSupplier condition, final int timeout) {
-        return new Sleep(condition, timeout).sleep();
-    }
-}
-
-
-

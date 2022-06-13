@@ -1,3 +1,4 @@
+import Util.Sleep;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.EquipmentSlot;
@@ -89,7 +90,7 @@ public class QuestPlagueCity extends Script
                 {
                     TalkandWait("Edmond");
                 }
-                Sleep3.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
+                Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
                 dialogues.completeDialogue();
                 break;
             case 3:
@@ -233,7 +234,7 @@ public class QuestPlagueCity extends Script
                 objects.closest("Door").interact("Open");
                 sleep(random(1800,2400));
                 TalkandWait("Bravek");
-                Sleep3.sleepUntil(() -> dialogues.isPendingContinuation(),6000);
+                Sleep.sleepUntil(() -> dialogues.isPendingContinuation(),6000);
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("This is really important though!", "Do you know what's in the cure?");
                 break;
@@ -353,28 +354,9 @@ public class QuestPlagueCity extends Script
     public boolean TalkandWait(String npc) throws InterruptedException
     {
         npcs.closest(npc).interact("Talk-to");
-        Sleep3.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
+        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
 
         return dialogues.isPendingContinuation();
     }
 
-}
-class Sleep3 extends ConditionalSleep
-{
-
-    private final BooleanSupplier condition;
-
-    public Sleep3(final BooleanSupplier condition, final int timeout) {
-        super(timeout);
-        this.condition = condition;
-    }
-
-    @Override
-    public final boolean condition() throws InterruptedException {
-        return condition.getAsBoolean();
-    }
-
-    public static boolean sleepUntil(final BooleanSupplier condition, final int timeout) {
-        return new Sleep3(condition, timeout).sleep();
-    }
 }
