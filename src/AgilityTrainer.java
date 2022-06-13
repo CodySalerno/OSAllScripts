@@ -44,7 +44,8 @@ public class AgilityTrainer extends  Script {
     final Area VarrockSecondObstacle = new Area(3201,3413,3208,3417);
     final Area VarrockThirdObstacle = new Area(3193,3416,3197,3416);
     final Area VarrockFourthObstacle = new Area(3192,3402,3198,3406);
-    final Area VarrockFifthObstacle = new Area(3183,3383,3208,3403);
+    final Area VarrockFifthObstacle = new Area(3183,3383,3202,3398);
+    final Area VarrockFifthObstacle2 = new Area(3202,3395,3208,3403);
     final Area VarrockFifthHelper = new Area(3205,3398,3208,3403);
     final Area VarrockSixthObstacle = new Area(3218,3393,3232,3402);
     final Area VarrockSixthHelper = new Area(3227,3402,3232,3402);
@@ -152,7 +153,6 @@ public class AgilityTrainer extends  Script {
                         npcs.closest("Banker").interact("Bank");
                         log("Moving to Bank");
                         Sleep.sleepUntil(() -> getBank().isOpen(), 30000);
-                        sleep(random(1200, 1800));
                         log("Waiting for bank to open");
                         getBank().withdraw("Ardougne teleport", 2);
                         sleep(random(1200, 1800));
@@ -296,7 +296,11 @@ public class AgilityTrainer extends  Script {
         if (VarrockFifthObstacle.contains(myPosition()))
         {
             pickUpMark(VarrockFifthObstacle);
-            obstacleSolver("Gap","Leap",VarrockFifthObstacle,VarrockSixthObstacle,VarrockFifthHelper);
+            walking.webWalk(VarrockFifthObstacle2);
+        }
+        if (VarrockFifthObstacle2.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Leap",VarrockFifthObstacle2,VarrockSixthObstacle,VarrockFifthHelper);
         }
         if (VarrockSixthObstacle.contains(myPosition()))
         {
@@ -364,17 +368,22 @@ public class AgilityTrainer extends  Script {
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd) throws InterruptedException
     {
         pickUpMark(areaStart);
+        log("No help1");
         objects.closest(obstacle).interact(interaction);
+        log("No help2");
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
-        sleep(random(1200,1800));
+        log("No help3");
     }
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle) throws InterruptedException
     {//use this version if you need to webwalk first
         pickUpMark(areaStart);
+        log("yes help0");
         walking.webWalk(nearObstacle);
+        log("yes help1");
         objects.closest(obstacle).interact(interaction);
+        log("yes help2");
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
-        sleep(random(1200,1800));
+        log("yes help3");
     }
 
     public void pickUpMark(Area currentArea) throws InterruptedException
@@ -387,7 +396,7 @@ public class AgilityTrainer extends  Script {
             if (currentArea.contains(itemPosition))
             {
                 groundItem.interact("Take");
-                sleep(random(2400,3000));
+                Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null,1000);
             }
         }
     }
