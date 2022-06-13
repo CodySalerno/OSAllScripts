@@ -156,11 +156,13 @@ public final class CannonballScript extends Script
                     {
                         cannonBallsSold = true;
                         int totalCoins = (int)getInventory().getAmount("Coins");
-                        try {
+                        try
+                        {
                             String s = myPlayer().getName() + "\n" + String.valueOf(totalCoins) + "\n";
                             Files.write(Paths.get("C:\\Users\\zjmnk\\OSBot\\Data\\Bot1CurrentGold.txt"), s.getBytes(), StandardOpenOption.APPEND);
                             log("updating file");
-                        }catch (IOException e) {
+                        }
+                        catch (IOException e) {
                             log(e.toString());
                         }
                         if (totalCoins > 6000000) TradeMule(totalCoins);
@@ -217,11 +219,13 @@ public final class CannonballScript extends Script
         {
             File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
             FileWriter myWriter;
-            try {
+            try
+            {
                 myWriter = new FileWriter(file);
                 myWriter.write("T");
                 myWriter.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new RuntimeException(e);
             }
             log("looking to trade mule.");
@@ -277,7 +281,8 @@ public final class CannonballScript extends Script
             myWriter = new FileWriter(file);
             myWriter.write("F");
             myWriter.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
 

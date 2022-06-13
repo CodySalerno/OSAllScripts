@@ -93,6 +93,10 @@ public class AgilityTrainer extends  Script{
                         getBank().withdraw("Ardougne teleport", 2);
                         sleep(random(1200, 1800));
                     }
+                    catch (InterruptedException e) {
+                        log("HOLY SHIT IT THREW THE EXCEPTION ZACK LOOK AT THIS");
+                        throw e;
+                    }
                     catch (Exception e) {
                         log(e.toString());
                     }

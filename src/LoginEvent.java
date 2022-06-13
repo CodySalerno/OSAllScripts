@@ -3,6 +3,7 @@ import org.osbot.rs07.event.Event;
 import org.osbot.rs07.input.mouse.RectangleDestination;
 import org.osbot.rs07.listener.LoginResponseCodeListener;
 import org.osbot.rs07.utility.ConditionalSleep;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         MALFORMED_LOGIN_PACKET(22, "Malformed login packet. Please try again"),
         NO_REPLY_FROM_LOGIN_SERVER(23, "No reply from login server. Please wait 1 minute and try again."),
         ERROR_LOADING_PROFILE(24, "Error loading your profile. please contact customer support."),
-        UNEXPECTED_LOGIN_SERVER_RESPONSE(25, "Unexpected login server response"),
+        UNEXPECTED_LOGIN_SERVER_RESPONSE(25, "Unexpected log in server response"),
         COMPUTER_ADDRESS_BANNED(26, "This computers address has been blocked as it was used to break our rules."),
         SERVICE_UNAVAILABLE(27, "Service unavailable.");
 
@@ -79,7 +80,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     }
 
     @Override
-    public int execute() throws InterruptedException {
+    public  int execute() throws InterruptedException {
         if (loginEventResult != null) {
             handleLoginResponse();
         }
@@ -131,11 +132,6 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
             case SERVICE_UNAVAILABLE:
             case TOO_MANY_INCORRECT_LOGINS:
             case ERROR_LOADING_PROFILE:
-            case WORLD_IS_FULL:
-            case TRY_DIFFERENT_WORLD:
-            case CLOSED_BETA:
-            case INVALID_LOGIN_SERVER:
-            case MEMBERS_ACCOUNT_REQUIRED:
             case STANDING_IN_MEMBERS_ONLY_AREA:
                 // Should hop to a different world here
                 setFailed();
@@ -152,6 +148,12 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
                 sleep(random((int)TimeUnit.SECONDS.toMillis(5),(int)TimeUnit.SECONDS.toMillis(10)));
                 retryNumber++;
                 break;
+            case WORLD_IS_FULL:
+            case TRY_DIFFERENT_WORLD:
+            case CLOSED_BETA:
+            case INVALID_LOGIN_SERVER:
+            case MEMBERS_ACCOUNT_REQUIRED:
+
         }
     }
 

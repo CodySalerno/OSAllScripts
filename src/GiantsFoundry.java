@@ -11,6 +11,7 @@ import java.awt.*;
 THIS SCRIPT WILL ONLY USE THE BASE MOULDS AND IS MOSTLY ONLY
 USED FOR GETTING THE CANNONBALL MOULD ASAP.
  */
+//TODO: THREAD1 CREATION NEEDS TO THROW E IF ITS THE INTERRUPTED EXCEPTION BUT IDK WHERE TO PUT "throws InterruptedException"
 @ScriptManifest(name = "Giants Foundry New", author = "Iownreality1", info = "Does Giants Foundry", version = 1.0, logo = "")
 public final class GiantsFoundry extends Script{
     RS2Widget heatArrow = null;
@@ -60,13 +61,18 @@ public final class GiantsFoundry extends Script{
     private int repGained;
     private int repStart;
 
-    Thread thread1 = new Thread(() -> {
+    Thread thread1 = new Thread(() ->  {
         while (getBot().getScriptExecutor().isRunning() && !getBot().getScriptExecutor().isPaused() && !getBot().getScriptExecutor().isSuspended()) {
             try
             {
                 findHeat();
             }
             catch (InterruptedException e)
+            {
+                log(e.toString());
+                //should say throw e;
+            }
+            catch (Exception e)
             {
                 log(e.toString());
             }
@@ -77,6 +83,7 @@ public final class GiantsFoundry extends Script{
             catch (InterruptedException e)
             {
                 log(e.toString());
+                //should say throw e
             }
             runningTime = FormattingForPaint.formatTime(System.currentTimeMillis()-startTime);
             repGained = configs.get(3436)-repStart;
@@ -86,6 +93,7 @@ public final class GiantsFoundry extends Script{
             catch (InterruptedException e)
             {
                 log(e.toString());
+                //should say throw e
             }
         }
     });
@@ -771,7 +779,8 @@ public final class GiantsFoundry extends Script{
                 currentlyMakingSword = false;
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             log("hit exception");
             currentlyMakingSword = false;
         }
@@ -815,7 +824,7 @@ public final class GiantsFoundry extends Script{
                 progress = 0;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log(e.toString());
         }

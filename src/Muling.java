@@ -7,7 +7,6 @@ import java.io.*;
 @ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs Mule as needed", version = 0.1, logo = "")
 public final class Muling extends Script
 {
-    private LoginEvent loginEvent;
     boolean loggingIn = false;
     static boolean needToTrade = false;
 
@@ -28,7 +27,10 @@ public final class Muling extends Script
             CheckGoldAmounts();
             TradeMain();
         }
-        if (needToTrade = false && client.getLoginUIState() == 2);
+        if (!needToTrade && client.getLoginUIState() == 2)
+        {
+
+        }
         {
             logoutTab.open();
             sleep(random(10000,12000));
@@ -38,9 +40,9 @@ public final class Muling extends Script
         return(random(20000,30000));
     }
 
-    private void loginToAccount(String username, String password) {
+    private void loginToAccount(String username, String password)  {
 
-        loginEvent = new LoginEvent(username, password);
+        LoginEvent loginEvent = new LoginEvent(username, password);
         getBot().addLoginListener(loginEvent);
         execute(loginEvent);
     }
@@ -49,10 +51,10 @@ public final class Muling extends Script
         loggingIn = true;
         log("still working?");
         File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
-        try (FileReader fr = new FileReader(file))
+        try (FileReader fr = new FileReader(file))//TODO: Convince zack to remove
         {
             char[] chars = new char[(int) file.length()];
-            fr.read(chars);
+            fr.read(chars); //TODO: Convince zack to remove
             String fileContent = new String(chars);
             needToTrade = fileContent.equals("T");
             log("need to trade" + needToTrade);
@@ -60,6 +62,7 @@ public final class Muling extends Script
         catch (IOException e) {
             e.printStackTrace();
         }
+
         while (needToTrade && client.getLoginUIState() ==0)
         {
             log("going to log in now");

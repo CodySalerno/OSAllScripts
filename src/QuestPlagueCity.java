@@ -5,6 +5,7 @@ import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import util.TalkCareful;
 
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
 public class QuestPlagueCity extends Script
@@ -27,6 +28,8 @@ public class QuestPlagueCity extends Script
     final Position mayorHouse = new Position(2526,3311,0);
     final Position BravekDoor = new Position(2529,3314,0);
     final Position mudPile = new Position(2518,9759,0);
+    TalkCareful talker;
+
     public int onLoop() throws InterruptedException {
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
@@ -47,7 +50,7 @@ public class QuestPlagueCity extends Script
                 log("Case 0");
                 getWalking().webWalk(edmondArea);
                 sleep(random(1800,2400));
-                TalkandWait("Edmond");
+                talker.TalkandWait("Edmond");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("What's happened to her?", "Yes.");
                 break;
@@ -72,7 +75,7 @@ public class QuestPlagueCity extends Script
                 objects.closest("Door").interact("Open");
                 sleep(random(1800,2400));
                 log("talk to alrena");
-                TalkandWait("Alrena");
+                talker.TalkandWait("Alrena");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue();
                 break;
@@ -86,7 +89,7 @@ public class QuestPlagueCity extends Script
                 }
                 if (!dialogues.isPendingContinuation())
                 {
-                    TalkandWait("Edmond");
+                    talker.TalkandWait("Edmond");
                 }
                 Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
                 dialogues.completeDialogue();
@@ -144,7 +147,7 @@ public class QuestPlagueCity extends Script
                 log("Case 9");
                 walking.webWalk(EdmondUnder);
                 sleep(random(1800,2400));
-                TalkandWait("Edmond");
+                talker.TalkandWait("Edmond");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue();
                 break;
@@ -171,7 +174,7 @@ public class QuestPlagueCity extends Script
                 {
                     if (!dialogues.isPendingContinuation())
                     {
-                        TalkandWait("Jethick");
+                        talker.TalkandWait("Jethick");
                     }
                     else
                     {
@@ -189,7 +192,7 @@ public class QuestPlagueCity extends Script
                 break;
             case 21:
                 log("Case 21");
-                TalkandWait("Martha Rehnison");
+                talker.TalkandWait("Martha Rehnison");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue();
                 break;
@@ -197,7 +200,7 @@ public class QuestPlagueCity extends Script
                 log("Case 22");
                 objects.closest("Stairs").interact();
                 sleep(random(1800,2400));
-                TalkandWait("Milli Rehnison");
+                talker.TalkandWait("Milli Rehnison");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue();
                 break;
@@ -220,7 +223,7 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 objects.closest("Door").interact("Open");
                 sleep(random(1800,2400));
-                npcs.closest(4255).interact("Talk-to");
+                talker.TalkandWait(4255);
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("I need permission to enter a plague house.", "This is urgent though! Someone's been kidnapped!");
                 break;
@@ -231,7 +234,7 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 objects.closest("Door").interact("Open");
                 sleep(random(1800,2400));
-                TalkandWait("Bravek");
+                talker.TalkandWait("Bravek");
                 Sleep.sleepUntil(() -> dialogues.isPendingContinuation(),6000);
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("This is really important though!", "Do you know what's in the cure?");
@@ -243,7 +246,7 @@ public class QuestPlagueCity extends Script
                 {
                     inventory.getItem("Hangover cure").interact();
                     sleep(random(1800,2400));
-                    npcs.closest("Bravek").interact();
+                    npcs.closest("Bravek").interact();//using the hangover cure on him
                     sleep(random(1800,2400));
                     dialogues.completeDialogue("They won't listen to me!");
                 }
@@ -278,7 +281,7 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 objects.closest("Door").interact("Open");
                 sleep(random(1800,2400));
-                npcs.closest("Elena").interact();
+                talker.TalkandWait("Elena");
                 sleep(random(1800,2400));
                 dialogues.completeDialogue();
                 sleep(random(1800,2400));
@@ -314,7 +317,7 @@ public class QuestPlagueCity extends Script
                 }
                 else
                 {
-                    npcs.closest("Edmond").interact();
+                    talker.TalkandWait("Edmond");
                     sleep(random(1800,2400));
                     dialogues.completeDialogue();
                     sleep(random(1800,2400));
@@ -332,7 +335,7 @@ public class QuestPlagueCity extends Script
     public void Supply() throws InterruptedException {
         walking.webWalk(GeArea);
         sleep(random(1800,2400));
-        npcs.closest("Banker").interact("Bank");
+        talker.TalkandWait("Banker", "Bank");
         sleep(random(1800,2400));
         bank.withdrawAll("Coins");
         sleep(random(1800,2400));
@@ -349,12 +352,4 @@ public class QuestPlagueCity extends Script
 
 
     }
-    public boolean TalkandWait(String npc)
-    {
-        npcs.closest(npc).interact("Talk-to");
-        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
-
-        return dialogues.isPendingContinuation();
-    }
-
 }
