@@ -1,3 +1,4 @@
+import util.EnergyCheck;
 import util.FormattingForPaint;
 import util.Sleep;
 
@@ -12,6 +13,7 @@ import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script {
+    EnergyCheck StaminaChecker;
     final Position GnomeStrongholdStart = new Position(2474, 3436, 0);
     final Area GnomeAreaGround = new Area(2467, 3413, 2492, 3441);
     final Area GnomeAreaMiddle = new Area(2467, 3413, 2492, 3441);
@@ -64,6 +66,7 @@ public class AgilityTrainer extends  Script {
     final String[] courses = {"Gnome Stronghold", "Draynor Village", "Varrock", "Canifis"};
     final int[] courseReqs = {1, 10, 30, 40};
 
+
     @Override
     public final void onStart()
     {
@@ -87,6 +90,7 @@ public class AgilityTrainer extends  Script {
         VarrockThirdObstacle.setPlane(1);
         VarrockFourthObstacle.setPlane(3);
         VarrockFifthObstacle.setPlane(3);
+        VarrockFifthObstacle2.setPlane(3);
         VarrockFifthHelper.setPlane(3);
         VarrockSixthObstacle.setPlane(3);
         VarrockSixthHelper.setPlane(3);
@@ -125,15 +129,12 @@ public class AgilityTrainer extends  Script {
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
-
-        if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
-        {
-
-            inventory.getItem("Stamina potion(4)").interact();
-        }
+        StaminaChecker.Stamina();
+        StaminaChecker.Stamina();
         for (int i = 0; i < courseReqs.length; i++)
         {
-            if (courseReqs[i] <= level) {
+            if (courseReqs[i] <= level)
+            {
                 currentCourse = i;
             }
         }
@@ -300,7 +301,7 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockFifthObstacle2.contains(myPosition()))
         {
-            obstacleSolver("Gap","Leap",VarrockFifthObstacle2,VarrockSixthObstacle,VarrockFifthHelper);
+            obstacleSolver("Gap","Leap",VarrockFifthObstacle2,VarrockSixthObstacle);
         }
         if (VarrockSixthObstacle.contains(myPosition()))
         {
@@ -308,10 +309,13 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockSeventhObstacle.contains(myPosition()))
         {
+            log("in 7");
             obstacleSolver("Ledge","Hurdle",VarrockSeventhObstacle,VarrockEighthObstacle);
+            sleep(random(400,600));//coordinate gets updated too early without
         }
         if (VarrockEighthObstacle.contains(myPosition()))
         {
+            log("in 8");
             obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,AllVarrockGround);
         }
     }
@@ -368,22 +372,30 @@ public class AgilityTrainer extends  Script {
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd) throws InterruptedException
     {
         pickUpMark(areaStart);
-        log("No help1");
-        objects.closest(obstacle).interact(interaction);
-        log("No help2");
+        try
+        {
+            objects.closest(obstacle).interact(interaction);
+        }
+        catch (NullPointerException e)
+        {
+            log("Null exception caught again");
+        }
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
-        log("No help3");
     }
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle) throws InterruptedException
     {//use this version if you need to webwalk first
         pickUpMark(areaStart);
-        log("yes help0");
-        walking.webWalk(nearObstacle);
-        log("yes help1");
-        objects.closest(obstacle).interact(interaction);
-        log("yes help2");
+        try
+        {
+            walking.webWalk(nearObstacle);
+            objects.closest(obstacle).interact(interaction);
+
+        }
+        catch (NullPointerException e)
+        {
+            log("Null exception caught");
+        }
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
-        log("yes help3");
     }
 
     public void pickUpMark(Area currentArea) throws InterruptedException
@@ -396,10 +408,15 @@ public class AgilityTrainer extends  Script {
             if (currentArea.contains(itemPosition))
             {
                 groundItem.interact("Take");
-                Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null,1000);
+                Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null,10000);
             }
         }
     }
+
+    /*public void Stamina()
+    {
+        log("Can get here");
+    }*/
 
     public void PriestQuest()
     {
