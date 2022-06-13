@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public final class LoginEvent extends Event implements LoginResponseCodeListener {
-    public enum LoginEventResult {
+public final class LoginEvent extends Event implements LoginResponseCodeListener
+{
+    public enum LoginEventResult
+    {
         UNEXPECTED_SERVER_ERROR(1, "Unexpected server error"),
         LOG_IN(2, "Log in"),
         INVALID_CREDENTIALS(3, "Invalid username or password"),
@@ -42,15 +44,18 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         final int code;
         final String message;
 
-        LoginEventResult(int code, String message) {
+        LoginEventResult(int code, String message)
+        {
             this.code = code;
             this.message = message;
         }
     }
 
     private static final Map<Integer, LoginEventResult> responseCodeLoginResultMap = new HashMap<>();
-    static {
-        for (LoginEventResult result : LoginEventResult.values()) {
+    static
+    {
+        for (LoginEventResult result : LoginEventResult.values())
+        {
             responseCodeLoginResultMap.put(result.code, result);
         }
     }
@@ -67,57 +72,71 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     private LoginEventResult loginEventResult;
     private int retryNumber = 0;
 
-    public LoginEvent(final String username, final String password) {
+    public LoginEvent(final String username, final String password)
+    {
         this.username = username;
         this.password = password;
 
         setAsync();
     }
 
-    public LoginEvent(final String username, final String password, final int maxRetries) {
+    public LoginEvent(final String username, final String password, final int maxRetries)
+    {
         this(username, password);
         this.maxRetries = maxRetries;
     }
 
     @Override
-    public  int execute() throws InterruptedException {
-        if (loginEventResult != null) {
+    public  int execute() throws InterruptedException
+    {
+        if (loginEventResult != null)
+        {
             handleLoginResponse();
         }
 
-        if (retryNumber >= maxRetries) {
+        if (retryNumber >= maxRetries)
+        {
             setFailed();
         }
 
-        if (hasFailed()) {
+        if (hasFailed())
+        {
             return 0;
         }
 
-        if (!getBot().isLoaded()) {
+        if (!getBot().isLoaded())
+        {
             return 1000;
         } else if (getClient().isLoggedIn() && getLobbyButton() == null) {
             setFinished();
             return 0;
         }
 
-        if (getLobbyButton() != null) {
+        if (getLobbyButton() != null)
+        {
             clickLobbyButton();
-        } else if (isOnWorldSelectorScreen()) {
+        } else if (isOnWorldSelectorScreen())
+        {
             cancelWorldSelection();
-        } else if (!isPasswordEmpty()) {
+        } else if (!isPasswordEmpty())
+        {
             clickButton(CANCEL_LOGIN_BUTTON);
-        } else {
+        } else
+        {
             login();
         }
         return random(100, 150);
     }
 
-    public LoginEventResult getLoginEventResult() {
+    public LoginEventResult getLoginEventResult()
+    {
         return loginEventResult;
     }
 
-    private void handleLoginResponse() throws InterruptedException {
-        switch (loginEventResult) {
+    private void handleLoginResponse() throws InterruptedException
+    {
+        switch (loginEventResult)
+        {
             case BANNED:
             case PASSWORD_CHANGE_REQUIRED:
             case ACCOUNT_LOCKED:
@@ -157,27 +176,35 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         }
     }
 
-    private boolean isOnWorldSelectorScreen() {
+    private boolean isOnWorldSelectorScreen()
+    {
         return getColorPicker().isColorAt(50, 50, Color.BLACK);
     }
 
-    private void cancelWorldSelection() {
-        if (clickButton(CANCEL_WORLD_SELECTOR_BUTTON)) {
-            new ConditionalSleep(3000) {
+    private void cancelWorldSelection()
+    {
+        if (clickButton(CANCEL_WORLD_SELECTOR_BUTTON))
+        {
+            new ConditionalSleep(3000)
+            {
                 @Override
-                public boolean condition() {
+                public boolean condition()
+                {
                     return !isOnWorldSelectorScreen();
                 }
             }.sleep();
         }
     }
 
-    private boolean isPasswordEmpty() {
+    private boolean isPasswordEmpty()
+    {
         return !getColorPicker().isColorAt(350, 260, Color.WHITE);
     }
 
-    private void login() {
-        switch (getClient().getLoginUIState()) {
+    private void login()
+    {
+        switch (getClient().getLoginUIState())
+        {
             case 0:
                 clickButton(EXISTING_USER_BUTTON);
                 break;
@@ -193,18 +220,23 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         }
     }
 
-    private void enterUserDetails() {
-        if (!getKeyboard().typeString(username)) {
+    private void enterUserDetails()
+    {
+        if (!getKeyboard().typeString(username))
+        {
             return;
         }
 
-        if (!getKeyboard().typeString(password)) {
+        if (!getKeyboard().typeString(password))
+        {
             return;
         }
 
-        new ConditionalSleep(30_000) {
+        new ConditionalSleep(30_000)
+        {
             @Override
-            public boolean condition() {
+            public boolean condition()
+            {
                 return getLobbyButton() != null ||
                         getClient().isLoggedIn() ||
                         getClient().getLoginUIState() == 3 ||
@@ -214,32 +246,43 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         }.sleep();
     }
 
-    private void clickLobbyButton() {
-        if (getLobbyButton() != null && getLobbyButton().interact()) {
-            new ConditionalSleep(10_000) {
+    private void clickLobbyButton()
+    {
+        if (getLobbyButton() != null && getLobbyButton().interact())
+        {
+            new ConditionalSleep(10_000)
+            {
                 @Override
-                public boolean condition() {
+                public boolean condition()
+                {
                     return getLobbyButton() == null;
                 }
             }.sleep();
         }
     }
 
-    private RS2Widget getLobbyButton() {
-        try {
+    private RS2Widget getLobbyButton()
+    {
+        try
+        {
             return getWidgets().getWidgetContainingText("CLICK HERE TO PLAY");
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e)
+        {
             return null;
         }
     }
 
-    private boolean clickButton(final Rectangle rectangle) {
+    private boolean clickButton(final Rectangle rectangle)
+    {
         return getMouse().click(new RectangleDestination(getBot(), rectangle));
     }
 
     @Override
-    public void onResponseCode(final int responseCode) {
-        if (!responseCodeLoginResultMap.containsKey(responseCode)) {
+    public void onResponseCode(final int responseCode)
+    {
+        if (!responseCodeLoginResultMap.containsKey(responseCode))
+        {
             log("Got unknown login response code " + responseCode);
             setFailed();
             return;

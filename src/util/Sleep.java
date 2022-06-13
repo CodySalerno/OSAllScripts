@@ -8,17 +8,20 @@ public class Sleep extends ConditionalSleep
 {
     private final BooleanSupplier condition;
 
-    public Sleep(final BooleanSupplier condition, final int timeout) {
+    public Sleep(final BooleanSupplier condition, final int timeout)
+    {
         super(timeout);
         this.condition = condition;
     }
 
     @Override
-    public final boolean condition() {
+    public final boolean condition()
+    {
         return condition.getAsBoolean();
     }
 
-    public static void sleepUntil(final BooleanSupplier condition, final int timeout) {
+    public static void sleepUntil(final BooleanSupplier condition, final int timeout)
+    {
         new Sleep(condition, timeout).sleep();
     }
 }

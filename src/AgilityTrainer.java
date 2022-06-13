@@ -10,7 +10,8 @@ import java.awt.*;
 
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
-public class AgilityTrainer extends  Script{
+public class AgilityTrainer extends  Script
+{
     final Position GnomeStrongholdStart = new Position(2474,3436,0);
     final Area GnomeAreaGround = new Area(2467,3413,2492,3441);
     final Area GnomeAreaMiddle = new Area(2467,3413,2492,3441);
@@ -29,12 +30,14 @@ public class AgilityTrainer extends  Script{
 
 
     @Override
-    public final void onStart() {
+    public final void onStart()
+    {
         GnomeAreaGround.setPlane(0);
         GnomeAreaMiddle.setPlane(1);
         GnomeAreaTop.setPlane(2);
         PriestInPerilDone = (configs.get(302) == 61);
-        if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
+        if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40)
+        {
             PriestQuest();
         }
         startTime = System.currentTimeMillis();
@@ -60,8 +63,8 @@ public class AgilityTrainer extends  Script{
     @Override
     public final int onLoop()  throws InterruptedException
     {
-        //TODO: everything after gnome
-        //TODO: fix gnome sleep timers
+        //TODO:everything after gnome
+        //TODO:fix gnome sleep timers
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
 
@@ -70,21 +73,27 @@ public class AgilityTrainer extends  Script{
         int level = skills.getDynamic(Skill.AGILITY);
         String[] courses =  {"Gnome Stronghold", "Draynor Village", "Varrock","Canifis"};
         int[] courseReqs = {1,10,30,40};
-        for (int i= 0; i < courseReqs.length; i++) {
-            if (courseReqs[i] <= level) {
+        for (int i= 0; i < courseReqs.length; i++)
+        {
+            if (courseReqs[i] <= level)
+            {
                 currentCourse = i;
             }
         }
         log("Current course is " + courses[currentCourse]);
-        switch (currentCourse) {
+        switch (currentCourse)
+        {
             case 0:
                 nearCourse = (GnomeAreaGround.contains(myPosition()) || GnomeAreaMiddle.contains(myPosition()) || GnomeAreaTop.contains(myPosition()));
-                if (nearCourse) {
+                if (nearCourse)
+                {
                     Gnome();
                 }
-                else if (!inventory.contains("Ardougne teleport")) {
+                else if (!inventory.contains("Ardougne teleport"))
+                {
                     log("not in course");
-                    try {
+                    try
+                    {
                         npcs.closest("Banker").interact("Bank");
                         log("Moving to Bank");
                         Sleep.sleepUntil(() -> getBank().isOpen(), 30000);
@@ -93,15 +102,18 @@ public class AgilityTrainer extends  Script{
                         getBank().withdraw("Ardougne teleport", 2);
                         sleep(random(1200, 1800));
                     }
-                    catch (InterruptedException e) {
+                    catch (InterruptedException e)
+                    {
                         log("HOLY SHIT IT THREW THE EXCEPTION ZACK LOOK AT THIS");
                         throw e;
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         log(e.toString());
                     }
                 }
-                else {
+                else
+                {
                     log("not in course can tp");
                     inventory.getItem("Ardougne teleport").interact();
                     sleep(random(1200,1800));
@@ -120,7 +132,8 @@ public class AgilityTrainer extends  Script{
 
         return random(1200, 1800);
     }
-    public void Gnome() throws InterruptedException {
+    public void Gnome() throws InterruptedException
+    {
         Area GnomeEnd = new Area(2471,3435,2489,3440);//0
         Area firstObstacle = new Area(2470,3430,2477,3425);//0
         Area secondObstacle = new Area(2471,3422,2476,3424);//1
@@ -133,72 +146,83 @@ public class AgilityTrainer extends  Script{
         Area sixthObstacle = new Area(2480,3426,2490,3432);//0
 
 
-        if (GnomeEnd.contains(myPosition())) {
+        if (GnomeEnd.contains(myPosition()))
+        {
             log("log balance");
             walking.walk(objects.closest("Log balance"));
             sleep(random(200,400));
             objects.closest("Log balance").interact("Walk-across");
             sleep(random(6000,6600));
         }
-        else if (firstObstacle.contains(myPosition())) {
+        else if (firstObstacle.contains(myPosition()))
+        {
             log("obstacle net");
             walking.walk(objects.closest("Obstacle net"));
             sleep(random(200,400));
             objects.closest("Obstacle net").interact("Climb-over");
             sleep(random(6000,6600));
         }
-        else if (secondObstacle.contains(myPosition())) {
+        else if (secondObstacle.contains(myPosition()))
+        {
             log("tree branch");
             walking.walk(objects.closest("Tree branch"));
             sleep(random(200,400));
             objects.closest("Tree branch").interact("Climb");
             sleep(random(6000,6600));
         }
-        else if (thirdObstacle.contains(myPosition())) {
+        else if (thirdObstacle.contains(myPosition()))
+        {
             log("balancing rope");
             walking.walk(objects.closest("Balancing rope"));
             sleep(random(200,400));
             objects.closest("Balancing rope").interact("Walk-on");
             sleep(random(6000,6600));
         }
-        else if (fourthObstacle.contains(myPosition()) && (myPosition().getZ() > 0)) {
+        else if (fourthObstacle.contains(myPosition()) && (myPosition().getZ() > 0))
+        {
             log("tree branch down");
             walking.walk(objects.closest("Tree branch"));
             sleep(random(200,400));
             objects.closest("Tree branch").interact("Climb-down");
             sleep(random(6000,6600));
         }
-        else if (fifthObstacle.contains(myPosition()) && (myPosition().getZ() == 0)) {
+        else if (fifthObstacle.contains(myPosition()) && (myPosition().getZ() == 0))
+        {
             log("obstacle net 2");
             walking.walk(objects.closest("Obstacle net"));
             sleep(random(200,400));
             objects.closest("Obstacle net").interact("Climb-over");
             sleep(random(6000,6600));
         }
-        else if (sixthObstacle.contains(myPosition())) {
+        else if (sixthObstacle.contains(myPosition()))
+        {
             log("last pipe");
             walking.walk(objects.closest("Obstacle pipe"));
             sleep(random(200,400));
             objects.closest("Obstacle pipe").interact("Squeeze-through");
             sleep(random(6000,6600));
         }
-        else {
+        else
+        {
             sleep(random(3000,3600));
             if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
                     || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 0) {
+                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 0)
+            {
                 log("fucked up");
                 walking.webWalk(GnomeStrongholdStart);
             }
             else if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
                     || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1) {
+                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
+            {
                 log("fucked up upstairs");
 
             }
             else if ((!(GnomeEnd.contains(myPosition()) || firstObstacle.contains(myPosition()) || secondObstacle.contains(myPosition())
                     || thirdObstacle.contains(myPosition()) || fourthObstacle.contains(myPosition()) || fifthObstacle.contains(myPosition())
-                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1) {
+                    || sixthObstacle.contains(myPosition()))) && myPosition().getZ() == 1)
+            {
                 log("fucked up upstairs x2");
 
             }
@@ -302,9 +326,11 @@ public class AgilityTrainer extends  Script{
         }
 
     }
-    public void pickUpMark(Area currentArea) throws InterruptedException {
+    public void pickUpMark(Area currentArea) throws InterruptedException
+    {
         groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
-        if(groundItem != null) {
+        if(groundItem != null)
+        {
             itemPosition = groundItem.getPosition();
             if (currentArea.contains(itemPosition))
             {
@@ -313,7 +339,8 @@ public class AgilityTrainer extends  Script{
             }
         }
     }
-    public void PriestQuest() {
+    public void PriestQuest()
+    {
 
     }
 }

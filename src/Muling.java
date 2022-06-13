@@ -40,14 +40,16 @@ public final class Muling extends Script
         return(random(20000,30000));
     }
 
-    private void loginToAccount(String username, String password)  {
+    private void loginToAccount(String username, String password)
+    {
 
         LoginEvent loginEvent = new LoginEvent(username, password);
         getBot().addLoginListener(loginEvent);
         execute(loginEvent);
     }
 
-    private void CheckGoldAmounts() throws InterruptedException {
+    private void CheckGoldAmounts() throws InterruptedException
+    {
         loggingIn = true;
         log("still working?");
         File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
@@ -59,7 +61,8 @@ public final class Muling extends Script
             needToTrade = fileContent.equals("T");
             log("need to trade" + needToTrade);
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 

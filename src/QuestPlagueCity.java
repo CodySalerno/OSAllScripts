@@ -30,7 +30,8 @@ public class QuestPlagueCity extends Script
     final Position mudPile = new Position(2518,9759,0);
     TalkCareful talker;
 
-    public int onLoop() throws InterruptedException {
+    public int onLoop() throws InterruptedException
+    {
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
 
@@ -38,7 +39,8 @@ public class QuestPlagueCity extends Script
         }
         int plagueCityProg = configs.get(165);
 
-        switch (plagueCityProg) {
+        switch (plagueCityProg)
+        {
             case 0:
                 if ((!inventory.contains("Dwellberries")) || (!inventory.contains("Rope"))
                     || (!inventory.contains("Spade")) || (!inventory.contains("Bucket of milk"))
@@ -332,7 +334,8 @@ public class QuestPlagueCity extends Script
         return random(1200, 1800);
 
     }
-    public void Supply() throws InterruptedException {
+    public void Supply() throws InterruptedException
+    {
         walking.webWalk(GeArea);
         sleep(random(1800,2400));
         talker.TalkandWait("Banker", "Bank");
@@ -343,7 +346,8 @@ public class QuestPlagueCity extends Script
         sleep(random(1800,2400));
         getObjects().closest("Grand Exchange Booth").interact("Exchange");
         sleep(random(1800,2400));
-        for (int i = 0; i < supplyID.length; i++) {
+        for (int i = 0; i < supplyID.length; i++)
+        {
             grandExchange.buyItem(supplyID[i],supplyName[i],1000,supplyQuantity[i]);
             sleep(random(1800,2400));
         }

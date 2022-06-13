@@ -55,7 +55,8 @@ public final class CannonballScript extends Script
         return random(1200, 1800);
     }
 
-    public void smith() throws InterruptedException {
+    public void smith() throws InterruptedException
+    {
         boolean isFinished = false;
         while (!isFinished)
         {
@@ -81,7 +82,8 @@ public final class CannonballScript extends Script
 
     }
 
-    public void bank(String item) throws InterruptedException {
+    public void bank(String item) throws InterruptedException
+    {
         getWalking().webWalk(BankPosition);
         log("Moving to Bank");
         sleep(random(1200,1800));
@@ -130,7 +132,8 @@ public final class CannonballScript extends Script
         }
     }
 
-    private void Resupply() throws InterruptedException {
+    private void Resupply() throws InterruptedException
+    {
         boolean cannonBallsSold = false;
         boolean steelBarsBought = false;
         while (!cannonBallsSold)
@@ -158,11 +161,12 @@ public final class CannonballScript extends Script
                         int totalCoins = (int)getInventory().getAmount("Coins");
                         try
                         {
-                            String s = myPlayer().getName() + "\n" + String.valueOf(totalCoins) + "\n";
+                            String s = myPlayer().getName() + "\n" + totalCoins + "\n";
                             Files.write(Paths.get("C:\\Users\\zjmnk\\OSBot\\Data\\Bot1CurrentGold.txt"), s.getBytes(), StandardOpenOption.APPEND);
                             log("updating file");
                         }
-                        catch (IOException e) {
+                        catch (IOException e)
+                        {
                             log(e.toString());
                         }
                         if (totalCoins > 6000000) TradeMule(totalCoins);
@@ -214,7 +218,8 @@ public final class CannonballScript extends Script
             }
         }
     }
-    private void TradeMule (int totalCoins) throws InterruptedException {
+    private void TradeMule (int totalCoins) throws InterruptedException
+    {
         while (totalCoins > 6000000)
         {
             File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
@@ -225,7 +230,8 @@ public final class CannonballScript extends Script
                 myWriter.write("T");
                 myWriter.close();
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 throw new RuntimeException(e);
             }
             log("looking to trade mule.");
@@ -282,7 +288,8 @@ public final class CannonballScript extends Script
             myWriter.write("F");
             myWriter.close();
         }
-        catch (IOException e) {
+        catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
 
