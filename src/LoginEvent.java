@@ -29,17 +29,17 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         STANDING_IN_MEMBERS_ONLY_AREA(17, "You are standing in a members-only area. To play on this world move to a free area first."),
         ACCOUNT_LOCKED(18, "Account locked as we suspect it has been stolen. Press 'recover a locked account' on front page."),
         CLOSED_BETA(19, "This world is running a closed beta. sorry invited players only. please use a different world."),
-        INVALID_LOGIN_SERVER(20, "Invalid loginserver requested please try using a different world."),
+        INVALID_LOGIN_SERVER(20, "Invalid login server requested please try using a different world."),
         PROFILE_WILL_BE_TRANSFERRED(21, "You have only just left another world. your profile will be transferred in 4seconds."),
         MALFORMED_LOGIN_PACKET(22, "Malformed login packet. Please try again"),
-        NO_REPLY_FROM_LOGIN_SERVER(23, "No reply from loginserver. Please wait 1 minute and try again."),
+        NO_REPLY_FROM_LOGIN_SERVER(23, "No reply from login server. Please wait 1 minute and try again."),
         ERROR_LOADING_PROFILE(24, "Error loading your profile. please contact customer support."),
-        UNEXPECTED_LOGIN_SERVER_RESPONSE(25, "Unexepected loginserver response"),
+        UNEXPECTED_LOGIN_SERVER_RESPONSE(25, "Unexpected login server response"),
         COMPUTER_ADDRESS_BANNED(26, "This computers address has been blocked as it was used to break our rules."),
         SERVICE_UNAVAILABLE(27, "Service unavailable.");
 
-        int code;
-        String message;
+        final int code;
+        final String message;
 
         LoginEventResult(int code, String message) {
             this.code = code;
@@ -131,6 +131,13 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
             case SERVICE_UNAVAILABLE:
             case TOO_MANY_INCORRECT_LOGINS:
             case ERROR_LOADING_PROFILE:
+            case WORLD_IS_FULL:
+            case TRY_DIFFERENT_WORLD:
+            case CLOSED_BETA:
+            case INVALID_LOGIN_SERVER:
+            case MEMBERS_ACCOUNT_REQUIRED:
+            case STANDING_IN_MEMBERS_ONLY_AREA:
+                // Should hop to a different world here
                 setFailed();
                 break;
             case ACCOUNT_ALREADY_LOGGED_IN:
@@ -145,15 +152,6 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
                 sleep(random((int)TimeUnit.SECONDS.toMillis(5),(int)TimeUnit.SECONDS.toMillis(10)));
                 retryNumber++;
                 break;
-            case WORLD_IS_FULL:
-            case TRY_DIFFERENT_WORLD:
-            case CLOSED_BETA:
-            case INVALID_LOGIN_SERVER:
-            case MEMBERS_ACCOUNT_REQUIRED:
-            case STANDING_IN_MEMBERS_ONLY_AREA:
-                // Should hop to a different world here
-                setFailed();
-                break;
         }
     }
 
@@ -165,7 +163,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         if (clickButton(CANCEL_WORLD_SELECTOR_BUTTON)) {
             new ConditionalSleep(3000) {
                 @Override
-                public boolean condition() throws InterruptedException {
+                public boolean condition() {
                     return !isOnWorldSelectorScreen();
                 }
             }.sleep();
@@ -204,7 +202,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
 
         new ConditionalSleep(30_000) {
             @Override
-            public boolean condition() throws InterruptedException {
+            public boolean condition() {
                 return getLobbyButton() != null ||
                         getClient().isLoggedIn() ||
                         getClient().getLoginUIState() == 3 ||
@@ -218,7 +216,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         if (getLobbyButton() != null && getLobbyButton().interact()) {
             new ConditionalSleep(10_000) {
                 @Override
-                public boolean condition() throws InterruptedException {
+                public boolean condition() {
                     return getLobbyButton() == null;
                 }
             }.sleep();
@@ -238,7 +236,7 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
     }
 
     @Override
-    public final void onResponseCode(final int responseCode) {
+    public void onResponseCode(final int responseCode) {
         if (!responseCodeLoginResultMap.containsKey(responseCode)) {
             log("Got unknown login response code " + responseCode);
             setFailed();

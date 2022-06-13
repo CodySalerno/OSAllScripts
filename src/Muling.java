@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.*;
 
-@ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs muler as needed", version = 0.1, logo = "")
+@ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs Mule as needed", version = 0.1, logo = "")
 public final class Muling extends Script
 {
     private LoginEvent loginEvent;
@@ -14,7 +14,7 @@ public final class Muling extends Script
     @Override
     public final int onLoop() throws InterruptedException
     {
-        log("Starting onLoop: loginstate = " + client.getLoginUIState());
+        log("Starting onLoop: Login State = " + client.getLoginUIState());
         if (!loggingIn && client.getLoginUIState() == 0)
         {
             CheckGoldAmounts();
@@ -54,14 +54,7 @@ public final class Muling extends Script
             char[] chars = new char[(int) file.length()];
             fr.read(chars);
             String fileContent = new String(chars);
-            if (fileContent.equals("T"))
-            {
-                needToTrade = true;
-            }
-            else
-            {
-                needToTrade = false;
-            }
+            needToTrade = fileContent.equals("T");
             log("need to trade" + needToTrade);
         }
         catch (IOException e) {
@@ -83,7 +76,7 @@ public final class Muling extends Script
         log("in trading main method");
         boolean tradeComplete = false;
         boolean tradeCancelled = false;
-        log("entering not currnetly trading while loop");
+        log("entering not currently trading while loop");
         if (trade.getLastRequestingPlayer() != null)
         {
             String trader = trade.getLastRequestingPlayer().getName();
@@ -118,7 +111,7 @@ public final class Muling extends Script
                     }
                     if (!tradeCancelled)
                     {
-                        log("Other Played accepted im accpeting.");
+                        log("Other Played accepted im accepting.");
                         trade.acceptTrade();
                         tradeComplete = true;
                         sleep(random(8000,12000));

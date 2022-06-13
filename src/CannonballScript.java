@@ -30,10 +30,9 @@ public final class CannonballScript extends Script
     private final Area BankArea = new Area(3095,3495,3097,3497);
     private final Position FurnacePosition = new Position(3109,3499,0);
     private final Position BankPosition = new Position(3096,3494,0);
-    private int currentCoins;
 
     @Override
-    public final void onStart() throws InterruptedException
+    public void onStart()
     {
         //HashMap<String, String> usernames = new HashMap<String, String>();
         //usernames.put("upmysleeve12", "Fierceskunk+2@yahoo.com");
@@ -41,7 +40,7 @@ public final class CannonballScript extends Script
     }
 
     @Override
-    public final int onLoop() throws InterruptedException
+    public int onLoop() throws InterruptedException
     {
         if (getSettings().getRunEnergy() > 20 && !getSettings().isRunning()) getSettings().setRunning(true);
         if (getInventory().contains("Steel Bar"))
@@ -56,7 +55,7 @@ public final class CannonballScript extends Script
         return random(1200, 1800);
     }
 
-    public final void smith() throws InterruptedException {
+    public void smith() throws InterruptedException {
         boolean isFinished = false;
         while (!isFinished)
         {
@@ -82,7 +81,7 @@ public final class CannonballScript extends Script
 
     }
 
-    public final void bank(String item) throws InterruptedException {
+    public void bank(String item) throws InterruptedException {
         getWalking().webWalk(BankPosition);
         log("Moving to Bank");
         sleep(random(1200,1800));
@@ -91,7 +90,7 @@ public final class CannonballScript extends Script
         Sleep.sleepUntil(() -> getBank().isOpen(), 30000);
         sleep(random(1200,1800));
         log("Waiting for bank to open");
-        if (getBank().isOpen() && !getBank().contains(item) && item != "Coins")
+        if (getBank().isOpen() && !getBank().contains(item) && !item.equals("Coins"))
         {
             bank.withdrawAll("Coins");
             sleep(random(1200,1800));
@@ -119,7 +118,7 @@ public final class CannonballScript extends Script
         }
 
     }
-    public final void AreaWalker(Area myArea) throws InterruptedException
+    public void AreaWalker(Area myArea) throws InterruptedException
     {
         if (myArea == BankArea) log("Moving to Edge");
         else log("Moving to GE");
@@ -131,7 +130,7 @@ public final class CannonballScript extends Script
         }
     }
 
-    private final void Resupply() throws InterruptedException {
+    private void Resupply() throws InterruptedException {
         boolean cannonBallsSold = false;
         boolean steelBarsBought = false;
         while (!cannonBallsSold)
@@ -161,7 +160,9 @@ public final class CannonballScript extends Script
                             String s = myPlayer().getName() + "\n" + String.valueOf(totalCoins) + "\n";
                             Files.write(Paths.get("C:\\Users\\zjmnk\\OSBot\\Data\\Bot1CurrentGold.txt"), s.getBytes(), StandardOpenOption.APPEND);
                             log("updating file");
-                        }catch (IOException e) {}
+                        }catch (IOException e) {
+                            log(e.toString());
+                        }
                         if (totalCoins > 6000000) TradeMule(totalCoins);
                     }
                 }
@@ -215,7 +216,7 @@ public final class CannonballScript extends Script
         while (totalCoins > 6000000)
         {
             File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
-            FileWriter myWriter = null;
+            FileWriter myWriter;
             try {
                 myWriter = new FileWriter(file);
                 myWriter.write("T");
@@ -270,7 +271,7 @@ public final class CannonballScript extends Script
             }
         }
         File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
-        FileWriter myWriter = null;
+        FileWriter myWriter;
         try {
             log("Gold is less then 6M changing file to F");
             myWriter = new FileWriter(file);

@@ -19,23 +19,22 @@ public class AgilityTrainer extends  Script{
     Position DraynorVillageStart = new Position(3103,3279,0);
     Position VarrockStart = new Position(3221,3414,0);
     Position CanifisStart = new Position(3507,3488,0);
-    Position[] Startlist = {GnomeStrongholdStart,DraynorVillageStart,VarrockStart,CanifisStart};
-    boolean PriestinPerilDone = false;
+    Position[] StartList = {GnomeStrongholdStart,DraynorVillageStart,VarrockStart,CanifisStart};
+    boolean PriestInPerilDone = false;
     boolean nearCourse = false;
     int currentCourse;
     private long startTime;
-    private long runningTime;
     GroundItem groundItem;
     Position itemPosition;
 
 
     @Override
-    public final void onStart() throws InterruptedException {
+    public final void onStart() {
         GnomeAreaGround.setPlane(0);
         GnomeAreaMiddle.setPlane(1);
         GnomeAreaTop.setPlane(2);
-        PriestinPerilDone = (configs.get(302) == 61);
-        if (!PriestinPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
+        PriestInPerilDone = (configs.get(302) == 61);
+        if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
             PriestQuest();
         }
         startTime = System.currentTimeMillis();
@@ -44,7 +43,6 @@ public class AgilityTrainer extends  Script{
     @Override
     public void onPaint(final Graphics2D g)
     {
-        Graphics2D gr = g;
         Font font = new Font("Open Sans", Font.BOLD, 18);
         g.setFont(font);
         g.setColor(Color.green);
@@ -77,6 +75,7 @@ public class AgilityTrainer extends  Script{
                 currentCourse = i;
             }
         }
+        log("Current course is " + courses[currentCourse]);
         switch (currentCourse) {
             case 0:
                 nearCourse = (GnomeAreaGround.contains(myPosition()) || GnomeAreaMiddle.contains(myPosition()) || GnomeAreaTop.contains(myPosition()));
@@ -97,13 +96,12 @@ public class AgilityTrainer extends  Script{
                     catch (Exception e) {
                         log(e.toString());
                     }
-                    ;
                 }
                 else {
                     log("not in course can tp");
                     inventory.getItem("Ardougne teleport").interact();
                     sleep(random(1200,1800));
-                    walking.webWalk(Startlist[currentCourse]);
+                    walking.webWalk(StartList[currentCourse]);
                     nearCourse = true;
                 }
                 break;
@@ -112,7 +110,7 @@ public class AgilityTrainer extends  Script{
                 Draynor();
                 break;
 
-        };
+        }
 
 
 

@@ -14,7 +14,7 @@ public class Sleep extends ConditionalSleep
     }
 
     @Override
-    public final boolean condition() throws InterruptedException {
+    public final boolean condition() {
         return condition.getAsBoolean();
     }
 

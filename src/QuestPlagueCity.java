@@ -349,7 +349,7 @@ public class QuestPlagueCity extends Script
 
 
     }
-    public boolean TalkandWait(String npc) throws InterruptedException
+    public boolean TalkandWait(String npc)
     {
         npcs.closest(npc).interact("Talk-to");
         Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
