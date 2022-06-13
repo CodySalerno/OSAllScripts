@@ -115,7 +115,7 @@ public class AgilityTrainer extends  Script {
         int xpPerSecond = (experienceTracker.getGainedXPPerHour(Skill.AGILITY)) / 3600;
         long timeTillDone = (xpTillDone / xpPerSecond);
         String S = FormattingForPaint.formatTimeSeconds(timeTillDone);
-        g.drawString("Time until level " + nextLevel + ":" + S, 10, 330);
+        g.drawString("Time until level " + nextLevel + ": " + S, 10, 330);
     }
 
     @Override
