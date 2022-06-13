@@ -130,7 +130,6 @@ public class AgilityTrainer extends  Script {
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
         StaminaChecker.Stamina();
-        StaminaChecker.Stamina();
         for (int i = 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)
