@@ -1,13 +1,14 @@
 import util.FormattingForPaint;
 import util.Sleep;
+
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.GroundItem;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
-import java.awt.*;
 
+import java.awt.*;
 
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script
@@ -16,7 +17,6 @@ public class AgilityTrainer extends  Script
     final Area GnomeAreaGround = new Area(2467,3413,2492,3441);
     final Area GnomeAreaMiddle = new Area(2467,3413,2492,3441);
     final Area GnomeAreaTop = new Area(2467,3413,2492,3441);
-
     final Position DraynorVillageStart = new Position(3103,3279,0);
     final Position VarrockStart = new Position(3221,3414,0);
     final Position CanifisStart = new Position(3507,3488,0);
@@ -28,7 +28,6 @@ public class AgilityTrainer extends  Script
     GroundItem groundItem;
     Position itemPosition;
 
-
     @Override
     public final void onStart()
     {
@@ -36,6 +35,7 @@ public class AgilityTrainer extends  Script
         GnomeAreaMiddle.setPlane(1);
         GnomeAreaTop.setPlane(2);
         PriestInPerilDone = (configs.get(302) == 61);
+
         if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40)
         {
             PriestQuest();
@@ -43,6 +43,7 @@ public class AgilityTrainer extends  Script
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.AGILITY);
     }
+
     @Override
     public void onPaint(final Graphics2D g)
     {
@@ -65,14 +66,15 @@ public class AgilityTrainer extends  Script
     {
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
+        int level = skills.getDynamic(Skill.AGILITY);
+        String[] courses =  {"Gnome Stronghold", "Draynor Village", "Varrock","Canifis"};
+        int[] courseReqs = {1,10,30,40};
+
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
 
             inventory.getItem("Stamina potion(4)").interact();
         }
-        int level = skills.getDynamic(Skill.AGILITY);
-        String[] courses =  {"Gnome Stronghold", "Draynor Village", "Varrock","Canifis"};
-        int[] courseReqs = {1,10,30,40};
         for (int i= 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)
@@ -125,13 +127,10 @@ public class AgilityTrainer extends  Script
                 log("Go to draynor");
                 Draynor();
                 break;
-
         }
-
-
-
         return random(1200, 1800);
     }
+
     public void Gnome() throws InterruptedException
     {
         Area GnomeEnd = new Area(2471,3435,2489,3440);//0
@@ -144,7 +143,6 @@ public class AgilityTrainer extends  Script
         fourthObstacle.setPlane(2);
         Area fifthObstacle = new Area(2480,3425,2489,3417);//0
         Area sixthObstacle = new Area(2480,3426,2490,3432);//0
-
 
         if (GnomeEnd.contains(myPosition()))
         {
@@ -227,10 +225,6 @@ public class AgilityTrainer extends  Script
 
             }
         }
-
-
-        //find what obstacle im near
-        //interact with obstacle, wait till done with obstacle, repeat
     }
 
     public void Draynor() throws InterruptedException
@@ -324,11 +318,12 @@ public class AgilityTrainer extends  Script
             walking.webWalk(startDraynor);
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
         }
-
     }
+
     public void pickUpMark(Area currentArea) throws InterruptedException
     {
         groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
+
         if(groundItem != null)
         {
             itemPosition = groundItem.getPosition();
@@ -339,6 +334,7 @@ public class AgilityTrainer extends  Script
             }
         }
     }
+
     public void PriestQuest()
     {
 

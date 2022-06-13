@@ -1,5 +1,6 @@
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.*;
@@ -72,7 +73,6 @@ public final class Muling extends Script
             loginToAccount("Fierceskunk+1@yahoo.com","applepieislife1600");
             log("sleeping");
             sleep(25000);
-
         }
         loggingIn = false;
     }
@@ -106,7 +106,6 @@ public final class Muling extends Script
                 {
                     while(!trade.didOtherAcceptTrade())
                     {
-
                         sleep(random(1000,2000));
                         if(!trade.isCurrentlyTrading())
                         {
@@ -129,6 +128,5 @@ public final class Muling extends Script
                 break;
             }
         }
-
     }
 }

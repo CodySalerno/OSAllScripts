@@ -5,6 +5,7 @@ import org.osbot.rs07.listener.LoginResponseCodeListener;
 import org.osbot.rs07.utility.ConditionalSleep;
 
 import java.awt.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -40,10 +41,8 @@ public final class LoginEvent extends Event implements LoginResponseCodeListener
         UNEXPECTED_LOGIN_SERVER_RESPONSE(25, "Unexpected log in server response"),
         COMPUTER_ADDRESS_BANNED(26, "This computers address has been blocked as it was used to break our rules."),
         SERVICE_UNAVAILABLE(27, "Service unavailable.");
-
         final int code;
         final String message;
-
         LoginEventResult(int code, String message)
         {
             this.code = code;

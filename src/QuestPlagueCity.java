@@ -1,10 +1,12 @@
 import util.Sleep;
+
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.EquipmentSlot;
 import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
 import util.TalkCareful;
 
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
@@ -34,7 +36,6 @@ public class QuestPlagueCity extends Script
     {
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
-
             inventory.getItem("Stamina potion(4)").interact();
         }
         int plagueCityProg = configs.get(165);
@@ -70,7 +71,6 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 WalkingEvent myEvent = new WalkingEvent(new Position(alrenaDoor)); //making the event
                 myEvent.setMinDistanceThreshold(0);
-
                 execute(myEvent);
                 sleep(random(600, 1200));
                 log("open inside door");
@@ -154,7 +154,6 @@ public class QuestPlagueCity extends Script
                 dialogues.completeDialogue();
                 break;
             case 10:
-
                 log("Case 10");
                 if (!equipment.isWearingItem(EquipmentSlot.HAT,"Gas mask"))
                 {
@@ -218,7 +217,6 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("I fear not a mere plague.");
                 break;
-
             case 24:
                 log("Case 24");
                 walking.webWalk(mayorHouse);
@@ -229,7 +227,6 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("I need permission to enter a plague house.", "This is urgent though! Someone's been kidnapped!");
                 break;
-
             case 25:
                 log("Case 25");
                 walking.webWalk(BravekDoor);
@@ -241,7 +238,6 @@ public class QuestPlagueCity extends Script
                 sleep(random(1800,2400));
                 dialogues.completeDialogue("This is really important though!", "Do you know what's in the cure?");
                 break;
-
             case 26:
                 log("Case 26");
                 if (inventory.contains("Hangover cure"))
@@ -288,7 +284,6 @@ public class QuestPlagueCity extends Script
                 dialogues.completeDialogue();
                 sleep(random(1800,2400));
                 break;
-
             case 28:
                 log("Case 28");
                 if (Cellar.contains(myPosition()))
@@ -315,7 +310,6 @@ public class QuestPlagueCity extends Script
                     sleep(random(1800,2400));
                     objects.closest("Mud pile").interact("Climb");
                     sleep(random(1800,2400));
-
                 }
                 else
                 {
@@ -324,16 +318,12 @@ public class QuestPlagueCity extends Script
                     dialogues.completeDialogue();
                     sleep(random(1800,2400));
                 }
-
                 //quest complete
                 break;
-
-
         }
-
         return random(1200, 1800);
-
     }
+
     public void Supply() throws InterruptedException
     {
         walking.webWalk(GeArea);
@@ -353,7 +343,5 @@ public class QuestPlagueCity extends Script
         }
         grandExchange.collect();
         sleep(random(1800,2400));
-
-
     }
 }

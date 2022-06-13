@@ -1,17 +1,19 @@
 import util.FormattingForPaint;
 import util.Sleep;
+
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
 import java.awt.*;
 /* I NEED TO ADD THE ABILITY TO USE EXTRA MOLDS AS OF NOW
 THIS SCRIPT WILL ONLY USE THE BASE MOULDS AND IS MOSTLY ONLY
 USED FOR GETTING THE CANNONBALL MOULD ASAP.
  */
-//TODO: THREAD1 CREATION NEEDS TO THROW E IF ITS THE INTERRUPTED EXCEPTION BUT IDK WHERE TO PUT "throws InterruptedException"
+//TODO: THREAD1 CREATION NEEDS TO THROW E IF ITS THE INTERRUPTED EXCEPTION BUT IDK WHERE TO PUT "throws InterruptedException" maybe - Cody
 @ScriptManifest(name = "Giants Foundry New", author = "Iownreality1", info = "Does Giants Foundry", version = 1.0, logo = "")
 public final class GiantsFoundry extends Script
 {
@@ -102,7 +104,6 @@ public final class GiantsFoundry extends Script
         }
     });
 
-
     @Override
     public void onPaint(final Graphics2D g)
     {
@@ -115,7 +116,6 @@ public final class GiantsFoundry extends Script
         g.drawString("Reputation Gained: " + FormattingForPaint.formatValue(repGained),10,310);
         g.drawString("Current reputation: " + (repGained+repStart),10,330 );
     }
-
 
     @Override
     public void onStart()
@@ -227,7 +227,6 @@ public final class GiantsFoundry extends Script
                 }
                 dialogues.completeDialogueU("Yes");
                 sleep(random(700,900));
-
             }
         }
         else
@@ -770,7 +769,6 @@ public final class GiantsFoundry extends Script
                 bar=0;
             }
         }
-
         return random(600, 1200);
     }
 
@@ -784,7 +782,6 @@ public final class GiantsFoundry extends Script
     {
         try
         {
-
             heatProgressCold = getWidgets().get(754, 19);
             heatProgressWarm = getWidgets().get(754, 20);
             heatProgressHot = getWidgets().get(754, 21);
@@ -794,7 +791,6 @@ public final class GiantsFoundry extends Script
             progressTwo = getWidgets().get(754, 75, 11);
             progressThree = getWidgets().get(754, 75, 22);
             progressFour = getWidgets().get(754, 75, 33);
-
             //log("Finished Widgets");
 
             if (heatProgressWarm.isVisible())
@@ -807,7 +803,6 @@ public final class GiantsFoundry extends Script
                 log("making it false");
                 currentlyMakingSword = false;
             }
-
         }
         catch (Exception e)
         {
@@ -870,7 +865,6 @@ public final class GiantsFoundry extends Script
         {
             log(e.toString());
         }
-
     } //do not touch this code this is good
 
     public void findHeat() throws InterruptedException
@@ -886,7 +880,6 @@ public final class GiantsFoundry extends Script
             rectOne = heatProgressCold.getRectangleIgnoreIsHidden(false);
             rectTwo = heatProgressWarm.getRectangleIgnoreIsHidden(false);
             rectThree = heatProgressHot.getRectangleIgnoreIsHidden(false);
-
             arrowPosition = rectHeat.x + (rectHeat.width / 2);
 
             if (rectHeat.x + (rectHeat.width / 2) > 65 && rectHeat.x + (rectHeat.width / 2) <= rectOne.x + rectOne.width)
@@ -1038,7 +1031,6 @@ public final class GiantsFoundry extends Script
             sleep(random(100, 250));
         }
         interactingSecond = false;
-
     }
 
     public void smithYellow(int currentProgress) throws InterruptedException
@@ -1060,7 +1052,6 @@ public final class GiantsFoundry extends Script
             }
             sleep(random(100, 250));
         }
-
         while(arrowPosition < yellowBot)
         {
             while (!lavaPool.contains(myPosition()))
@@ -1098,7 +1089,5 @@ public final class GiantsFoundry extends Script
         }
         interactingSecond = false;
         walking.walk(waterFall2);
-
     }
-
 }

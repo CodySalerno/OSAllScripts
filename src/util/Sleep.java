@@ -1,8 +1,8 @@
 package util;
 
 import org.osbot.rs07.utility.ConditionalSleep;
-import java.util.function.BooleanSupplier;
 
+import java.util.function.BooleanSupplier;
 
 public class Sleep extends ConditionalSleep
 {
@@ -25,4 +25,3 @@ public class Sleep extends ConditionalSleep
         new Sleep(condition, timeout).sleep();
     }
 }
-

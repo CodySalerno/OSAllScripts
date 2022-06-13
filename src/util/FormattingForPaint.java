@@ -8,12 +8,14 @@ public class FormattingForPaint
                 : (l > 1000) ? String.format("%.1fk", ((double) l / 1000))
                 : l + "";
     }
+
     public static String formatValue(final int l)
     {
         return (l > 1_000_000) ? String.format("%.2fm", ((double) l / 1_000_000))
                 : (l > 1000) ? String.format("%.1fk", ((double) l / 1000))
                 : l + "";
     }
+
     public static String formatTime(final long ms)
     {
         long s = ms / 1000, m = s / 60, h = m / 60;

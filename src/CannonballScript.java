@@ -1,9 +1,11 @@
 import util.Sleep;
+
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +16,6 @@ import java.nio.file.StandardOpenOption;
 @ScriptManifest(name = "CannonBalls", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
 public final class CannonballScript extends Script
 {
-
     /*TO DO LIST
     CREATE A SECOND BOT TO ACCEPT TRADES FROM MULE
     USE TELEPORTATION JEWELERY
@@ -23,8 +24,6 @@ public final class CannonballScript extends Script
     IF ITEMS DON'T BUY OR SELL.
     NEXT BOT IDEA: QUESTS. FOR DS2/REGICIDE, NMZ BOT, CHINNING/BURSTING BOT
      */
-
-
 
     private final Area GeArea = new Area(3159,3482,3168,3492);
     private final Area BankArea = new Area(3095,3495,3097,3497);
@@ -36,13 +35,15 @@ public final class CannonballScript extends Script
     {
         //HashMap<String, String> usernames = new HashMap<String, String>();
         //usernames.put("upmysleeve12", "Fierceskunk+2@yahoo.com");
-
     }
 
     @Override
     public int onLoop() throws InterruptedException
     {
-        if (getSettings().getRunEnergy() > 20 && !getSettings().isRunning()) getSettings().setRunning(true);
+        if (getSettings().getRunEnergy() > 20 && !getSettings().isRunning())
+        {
+            getSettings().setRunning(true);
+        }
         if (getInventory().contains("Steel Bar"))
         {
             smith();
@@ -51,13 +52,13 @@ public final class CannonballScript extends Script
         {
             bank("Steel Bar");
         }
-
         return random(1200, 1800);
     }
 
     public void smith() throws InterruptedException
     {
         boolean isFinished = false;
+
         while (!isFinished)
         {
             getWalking().webWalk(FurnacePosition);
@@ -77,9 +78,11 @@ public final class CannonballScript extends Script
             {
                 sleep(random(1200,1800));
             }
-            if (!getInventory().contains("Steel Bar")) isFinished = true;
+            if (!getInventory().contains("Steel Bar"))
+            {
+                isFinished = true;
+            }
         }
-
     }
 
     public void bank(String item) throws InterruptedException
@@ -118,16 +121,21 @@ public final class CannonballScript extends Script
                 log("Closing Bank");
             }
         }
-
     }
+
     public void AreaWalker(Area myArea) throws InterruptedException
     {
-        if (myArea == BankArea) log("Moving to Edge");
-        else log("Moving to GE");
+        if (myArea == BankArea)
+        {
+            log("Moving to Edge");
+        }
+        else
+        {
+            log("Moving to GE");
+        }
         while(!myArea.contains(myPosition()))
         {
             getWalking().webWalk(myArea);
-
             sleep(random(1200,1800));
         }
     }
@@ -136,6 +144,7 @@ public final class CannonballScript extends Script
     {
         boolean cannonBallsSold = false;
         boolean steelBarsBought = false;
+
         while (!cannonBallsSold)
         {
             if (!getGrandExchange().isOpen())
@@ -172,7 +181,6 @@ public final class CannonballScript extends Script
                         if (totalCoins > 6000000) TradeMule(totalCoins);
                     }
                 }
-
             }
         }
         while (!steelBarsBought)
@@ -213,11 +221,11 @@ public final class CannonballScript extends Script
                         log("Closing Bank");
                         sleep(random(1200, 1800));
                     }
-
                 }
             }
         }
     }
+
     private void TradeMule (int totalCoins) throws InterruptedException
     {
         while (totalCoins > 6000000)
@@ -265,7 +273,6 @@ public final class CannonballScript extends Script
                                 tradeComplete = true;
                                 log("Trade complete = true break while loop");
                                 sleep(random(8000,12000));
-
                             }
                             else
                             {
@@ -282,7 +289,8 @@ public final class CannonballScript extends Script
         }
         File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
         FileWriter myWriter;
-        try {
+        try
+        {
             log("Gold is less then 6M changing file to F");
             myWriter = new FileWriter(file);
             myWriter.write("F");
@@ -292,7 +300,5 @@ public final class CannonballScript extends Script
         {
             throw new RuntimeException(e);
         }
-
     }
-
 }
