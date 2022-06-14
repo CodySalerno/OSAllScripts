@@ -43,9 +43,9 @@ public final class GiantsFoundry extends Script
     final Area waterFall2 = new Area(3360, 11489, 3361, 11489);
     final Position polishingWheel = new Position(3365, 11485, 0);
     final int greenDescending = 204;
-    final int greenBot = 90;
+    final int greenBot = 98;
     final int greenTop = 145;
-    final int greenAscending = 68;
+    final int greenAscending = 80;
     final int yellowDescending = 265;
     final int yellowTop = 322;
     final int yellowBot = 210;
@@ -932,7 +932,7 @@ public final class GiantsFoundry extends Script
     {
         if (progress != 5)
         {
-            while (arrowPosition > greenDescending) // if heat is too high lower it
+            while (arrowPosition > greenDescending && progress != 5) // if heat is too high lower it
             {
                 log("in arrow position > greendescending");
                 while (!waterFall2.contains(myPosition()))
@@ -951,9 +951,9 @@ public final class GiantsFoundry extends Script
             }
             log("End of arrowPosition > YellowDescending loop");
             interactingFirst = false;
-            if (greenAscending > arrowPosition)
+            if (greenAscending > arrowPosition )
             {
-                while (greenTop > arrowPosition) //heat back up until almost full of green
+                while (greenTop > arrowPosition && progress != 5) //heat back up until almost full of green
                 {
                     log("in greenTop > arrow position");
                     while (!lavaPool.contains(myPosition()))
@@ -996,7 +996,7 @@ public final class GiantsFoundry extends Script
 
     public void smithRed(int currentProgress) throws InterruptedException
     {
-        while (redAscending > arrowPosition) // if heat is low heat it up
+        while (redAscending > arrowPosition && progress != 5) // if heat is low heat it up
         {
             while (!lavaPool.contains(myPosition()))
             {
@@ -1020,7 +1020,7 @@ public final class GiantsFoundry extends Script
             log("Walking to Trip hammer");
             walking.walk(objects.closest("Trip hammer"));
         }
-        while (currentHeat == 7)
+        while (currentHeat == 7 && progress != 5)
         {
             log("Waiting for heat to lower");
             sleep(random(100, 250));
@@ -1043,7 +1043,7 @@ public final class GiantsFoundry extends Script
     {
         if (progress != 5)
         {
-            while (arrowPosition > yellowDescending) //heat is too high so we lower it
+            while (arrowPosition > yellowDescending && progress != 5) //heat is too high so we lower it
             {
                 log("In arrow pos > yellowDesc");
                 while (!waterFall2.contains(myPosition()))
@@ -1062,7 +1062,7 @@ public final class GiantsFoundry extends Script
                 sleep(random(100, 250));
             }
             log("leaving arrow pos > yellowDesc");
-            while(arrowPosition < yellowBot)
+            while(arrowPosition < yellowBot && progress != 5)
             {
                 log("In arrow pos < yellowBot");
                 while (!lavaPool.contains(myPosition()))
