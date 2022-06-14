@@ -43,8 +43,8 @@ public final class GiantsFoundry extends Script
     final Area waterFall2 = new Area(3360, 11489, 3361, 11489);
     final Position polishingWheel = new Position(3365, 11485, 0);
     final int greenDescending = 204;
-    final int greenBot = 75;
-    final int greenTop = 157;
+    final int greenBot = 82;
+    final int greenTop = 145;
     final int greenAscending = 68;
     final int yellowDescending = 265;
     final int yellowTop = 332;
