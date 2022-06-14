@@ -43,11 +43,11 @@ public final class GiantsFoundry extends Script
     final Area waterFall2 = new Area(3360, 11489, 3361, 11489);
     final Position polishingWheel = new Position(3365, 11485, 0);
     final int greenDescending = 204;
-    final int greenBot = 82;
+    final int greenBot = 90;
     final int greenTop = 145;
     final int greenAscending = 68;
     final int yellowDescending = 265;
-    final int yellowTop = 332;
+    final int yellowTop = 322;
     final int yellowBot = 210;
     final int redAscending = 430;
     final int redBot = 362;
@@ -934,6 +934,7 @@ public final class GiantsFoundry extends Script
         {
             while (arrowPosition > greenDescending) // if heat is too high lower it
             {
+                log("in arrow position > greendescending");
                 while (!waterFall2.contains(myPosition()))
                 {
                     log("Walking to waterfall");
@@ -954,6 +955,7 @@ public final class GiantsFoundry extends Script
             {
                 while (greenTop > arrowPosition) //heat back up until almost full of green
                 {
+                    log("in greenTop > arrow position");
                     while (!lavaPool.contains(myPosition()))
                     {
                         log("Walking to lava pool");
@@ -972,6 +974,7 @@ public final class GiantsFoundry extends Script
             interactingFirst = false;
             while (greenBot < arrowPosition && progress == currentProgress)
             {
+                log("Greenbot < arrowposition");
                 if (!polishingWheel.equals(myPosition()))
                 {
                     log("Walking to Polishing wheel");
@@ -986,6 +989,7 @@ public final class GiantsFoundry extends Script
                 }
                 sleep(random(100, 250));
             }
+            log("out of green bot < arrowposition");
             interactingSecond = false;
         }
     }
@@ -1041,6 +1045,7 @@ public final class GiantsFoundry extends Script
         {
             while (arrowPosition > yellowDescending) //heat is too high so we lower it
             {
+                log("In arrow pos > yellowDesc");
                 while (!waterFall2.contains(myPosition()))
                 {
                     log("Walking to water fall");
@@ -1056,8 +1061,10 @@ public final class GiantsFoundry extends Script
                 }
                 sleep(random(100, 250));
             }
+            log("leaving arrow pos > yellowDesc");
             while(arrowPosition < yellowBot)
             {
+                log("In arrow pos < yellowBot");
                 while (!lavaPool.contains(myPosition()))
                 {
                     log("Walking to lava pool");
