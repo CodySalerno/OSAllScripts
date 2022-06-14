@@ -14,7 +14,7 @@ THIS SCRIPT WILL ONLY USE THE BASE MOULDS AND IS MOSTLY ONLY
 USED FOR GETTING THE CANNONBALL MOULD ASAP.
  */
 //TODO: THREAD1 CREATION NEEDS TO THROW E IF ITS THE INTERRUPTED EXCEPTION BUT IDK WHERE TO PUT "throws InterruptedException" maybe - Cody
-@ScriptManifest(name = "Giants Foundry New", author = "Iownreality1", info = "Does Giants Foundry", version = 1.0, logo = "")
+@ScriptManifest(name = "Giants Foundry New2", author = "Iownreality1", info = "Does Giants Foundry", version = 1.0, logo = "")
 public final class GiantsFoundry extends Script
 {
     RS2Widget heatArrow = null;
@@ -43,13 +43,13 @@ public final class GiantsFoundry extends Script
     final Area waterFall2 = new Area(3360, 11489, 3361, 11489);
     final Position polishingWheel = new Position(3365, 11485, 0);
     final int greenDescending = 204;
-    final int greenBot = 70;
+    final int greenBot = 75;
     final int greenTop = 157;
     final int greenAscending = 68;
-    final int yellowDescending = 260;
+    final int yellowDescending = 265;
     final int yellowTop = 332;
     final int yellowBot = 210;
-    final int redAscending = 450;
+    final int redAscending = 430;
     final int redBot = 362;
     int arrowPosition;
     boolean Open = false;
@@ -166,7 +166,7 @@ public final class GiantsFoundry extends Script
                     smithGreen(progress);
                 }
             }
-            else if (progress == 2)
+            if (progress == 2)
             {
                 if (progTwoColor.equals(red))
                 {
@@ -181,7 +181,7 @@ public final class GiantsFoundry extends Script
                     smithGreen(progress);
                 }
             }
-            else if (progress == 3)
+            if (progress == 3)
             {
                 if (progThreeColor.equals(red)) //should be good
                 {
@@ -196,7 +196,7 @@ public final class GiantsFoundry extends Script
                     smithGreen(progress);
                 }
             }
-            else if (progress == 4)
+            if (progress == 4)
             {
 
                 if (progFourColor.equals(red))
@@ -212,7 +212,7 @@ public final class GiantsFoundry extends Script
                     smithGreen(progress);
                 }
             }
-            else if (progress == 5)
+            if (progress == 5)
             {
                 log("Turn in sword");
                 if(!polishingWheel.equals(myPosition()))
@@ -221,12 +221,12 @@ public final class GiantsFoundry extends Script
                     sleep(random(700,900));
                 }
                 npcs.closest("Kovac").interact("Hand-in");
-                while(!dialogues.isPendingContinuation())
+                Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 5000);
+                if (dialogues.isPendingContinuation())
                 {
-                    log("Zack had an empty while loop here for some reason");//TODO: Remove
+                    dialogues.completeDialogueU("Yes");
+                    sleep(random(700,900));
                 }
-                dialogues.completeDialogueU("Yes");
-                sleep(random(700,900));
             }
         }
         else
@@ -930,62 +930,64 @@ public final class GiantsFoundry extends Script
 
     public void smithGreen(int currentProgress) throws InterruptedException
     {
-        while (arrowPosition > greenDescending) // if heat is too high lower it
+        if (progress != 5)
         {
-            while (!waterFall2.contains(myPosition()))
+            while (arrowPosition > greenDescending) // if heat is too high lower it
             {
-                log("Walking to waterfall");
-                walking.walk(objects.closest("Waterfall"));
-                sleep(random(400, 600));
-            }
-            if (!interactingFirst)
-            {
-                log("Interacting with waterfall");
-                objects.closest("Waterfall").interact("Cool-preform");
-                interactingFirst = true;
-            }
-            sleep(random(100, 250));
-        }
-        log("End of arrowPosition > YellowDescending loop");
-        interactingFirst = false;
-        if (greenAscending > arrowPosition)
-        {
-            while (greenTop > arrowPosition) //heat back up until almost full of green
-            {
-                while (!lavaPool.contains(myPosition()))
+                while (!waterFall2.contains(myPosition()))
                 {
-                    log("Walking to lava pool");
-                    walking.walk(objects.closest("Lava pool"));
+                    log("Walking to waterfall");
+                    walking.walk(objects.closest("Waterfall"));
                     sleep(random(400, 600));
                 }
                 if (!interactingFirst)
                 {
-                    log("Interacting with lava pool");
-                    objects.closest("Lava pool").interact("Heat-preform");
+                    log("Interacting with waterfall");
+                    objects.closest("Waterfall").interact("Cool-preform");
                     interactingFirst = true;
                 }
                 sleep(random(100, 250));
             }
-        }
-        interactingFirst = false;
-        while (greenBot < arrowPosition && progress == currentProgress)
-        {
-            if (!polishingWheel.equals(myPosition()))
+            log("End of arrowPosition > YellowDescending loop");
+            interactingFirst = false;
+            if (greenAscending > arrowPosition)
             {
-                log("Walking to Polishing wheel");
-                walking.walk(objects.closest("Polishing wheel"));
+                while (greenTop > arrowPosition) //heat back up until almost full of green
+                {
+                    while (!lavaPool.contains(myPosition()))
+                    {
+                        log("Walking to lava pool");
+                        walking.walk(objects.closest("Lava pool"));
+                        sleep(random(400, 600));
+                    }
+                    if (!interactingFirst)
+                    {
+                        log("Interacting with lava pool");
+                        objects.closest("Lava pool").interact("Heat-preform");
+                        interactingFirst = true;
+                    }
+                    sleep(random(100, 250));
+                }
             }
-            //log("No longer waiting");
-            if (!interactingSecond)
+            interactingFirst = false;
+            while (greenBot < arrowPosition && progress == currentProgress)
             {
-                log("interact with Polishing wheel");
-                objects.closest("Polishing wheel").interact("Use");
-                interactingSecond = true;
+                if (!polishingWheel.equals(myPosition()))
+                {
+                    log("Walking to Polishing wheel");
+                    walking.walk(objects.closest("Polishing wheel"));
+                }
+                //log("No longer waiting");
+                if (!interactingSecond)
+                {
+                    log("interact with Polishing wheel");
+                    objects.closest("Polishing wheel").interact("Use");
+                    interactingSecond = true;
+                }
+                sleep(random(100, 250));
             }
-            sleep(random(100, 250));
+            interactingSecond = false;
         }
-        walking.walk(lavaPool);
-        interactingSecond = false;
     }
 
     public void smithRed(int currentProgress) throws InterruptedException
@@ -1035,59 +1037,63 @@ public final class GiantsFoundry extends Script
 
     public void smithYellow(int currentProgress) throws InterruptedException
     {
-        while (arrowPosition > yellowDescending) //heat is too high so we lower it
+        if (progress != 5)
         {
-            while (!waterFall2.contains(myPosition()))
+            while (arrowPosition > yellowDescending) //heat is too high so we lower it
             {
-                log("Walking to water fall");
-                walking.walk(objects.closest("Waterfall"));
-                sleep(random(400, 600));
+                while (!waterFall2.contains(myPosition()))
+                {
+                    log("Walking to water fall");
+                    walking.walk(objects.closest("Waterfall"));
+                    sleep(random(400, 600));
+                }
+                if (!interactingFirst)
+                {
+                    log("Interacting with Waterfall");
+                    sleep(600);
+                    objects.closest("Waterfall").interact("Cool-preform");
+                    interactingFirst = true;
+                }
+                sleep(random(100, 250));
             }
-            if (!interactingFirst)
+            while(arrowPosition < yellowBot)
             {
-                log("Interacting with Waterfall");
-                sleep(600);
-                objects.closest("Waterfall").interact("Cool-preform");
-                interactingFirst = true;
+                while (!lavaPool.contains(myPosition()))
+                {
+                    log("Walking to lava pool");
+                    walking.walk(objects.closest("Lava pool"));
+                    sleep(random(400, 600));
+                }
+                if (!interactingFirst)
+                {
+                    log("Interacting with lava pool");
+                    sleep(600);
+                    objects.closest("Lava pool").interact("Heat-preform");
+                    interactingFirst = true;
+                }
+                sleep(random(100, 250));
             }
-            sleep(random(100, 250));
+            log("Leaving arrowPosition < yellowBot");
+            interactingFirst = false;
+            log("Leaving arrowPosition > yellowDescending loop");
+            if (!tripHammer.equals(myPosition()))
+            {
+                log("Walking to Grindstone");
+                walking.walk(objects.closest("Grindstone"));
+            }
+            while (arrowPosition < yellowTop && progress == currentProgress && arrowPosition > yellowBot)
+            {
+                if (!interactingSecond)
+                {
+                    log("interact with grindstone");
+                    objects.closest("Grindstone").interact("Use");
+                    interactingSecond = true;
+                }
+                log("progrss == currentProgress  progress = " + progress + " currentProg = " + currentProgress);
+                sleep(random(100, 250));
+            }
+            interactingSecond = false;
         }
-        while(arrowPosition < yellowBot)
-        {
-            while (!lavaPool.contains(myPosition()))
-            {
-                log("Walking to lava pool");
-                walking.walk(objects.closest("Lava pool"));
-                sleep(random(400, 600));
-            }
-            if (!interactingFirst)
-            {
-                log("Interacting with lava pool");
-                sleep(600);
-                objects.closest("Lava pool").interact("Heat-preform");
-                interactingFirst = true;
-            }
-            sleep(random(100, 250));
-        }
-        log("Leaving arrowPosition < yellowBot");
-        interactingFirst = false;
-        log("Leaving arrowPosition > yellowDescending loop");
-        if (!tripHammer.equals(myPosition()))
-        {
-            log("Walking to Grindstone");
-            walking.walk(objects.closest("Grindstone"));
-        }
-        while (arrowPosition < yellowTop && progress == currentProgress)
-        {
-            if (!interactingSecond)
-            {
-                log("interact with grindstone");
-                objects.closest("Grindstone").interact("Use");
-                interactingSecond = true;
-            }
-            sleep(random(100, 250));
-        }
-        interactingSecond = false;
-        walking.walk(waterFall2);
+
     }
 }

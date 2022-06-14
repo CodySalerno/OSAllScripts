@@ -127,12 +127,12 @@ public class AgilityTrainer extends  Script {
     @Override
     public final int onLoop() throws InterruptedException
     {
-        EnergyCheck energyCheck = new EnergyCheck(this);
+        //EnergyCheck energyCheck = new EnergyCheck(this);
         //TODO:everything after gnome
         //TODO:fix gnome sleep timers
         int level = skills.getDynamic(Skill.AGILITY);
         log("Before Stamina");
-        energyCheck.Stamina();
+        //energyCheck.Stamina();
         for (int i = 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)
@@ -281,14 +281,17 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockFirstObstacle.contains(myPosition()))
         {
+            sleep(random(600,800));
             obstacleSolver("Clothes line","Cross",VarrockFirstObstacle,VarrockSecondObstacle);
         }
         if (VarrockSecondObstacle.contains(myPosition()))
         {
+            sleep(random(1200,1500));
             obstacleSolver("Gap","Leap",VarrockSecondObstacle,VarrockThirdObstacle);
         }
         if (VarrockThirdObstacle.contains(myPosition()))
         {
+            sleep(random(700,900));
             obstacleSolver("Wall","Balance",VarrockThirdObstacle,VarrockFourthObstacle);
         }
         if (VarrockFourthObstacle.contains(myPosition()))
@@ -317,6 +320,7 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockEighthObstacle.contains(myPosition()))
         {
+            sleep(random(400,500));
             log("in 8");
             obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,AllVarrockGround);
         }
@@ -370,6 +374,8 @@ public class AgilityTrainer extends  Script {
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
         }
     }
+
+
 
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd) throws InterruptedException
     {
