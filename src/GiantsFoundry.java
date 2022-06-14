@@ -987,6 +987,11 @@ public final class GiantsFoundry extends Script
                     objects.closest("Polishing wheel").interact("Use");
                     interactingSecond = true;
                 }
+                if (dialogues.isPendingContinuation())
+                {
+                    dialogues.completeDialogueU();
+                    interactingSecond = false;
+                }
                 sleep(random(100, 250));
             }
             log("out of green bot < arrowposition");
@@ -1033,6 +1038,11 @@ public final class GiantsFoundry extends Script
                 log("interact with hammer");
                 objects.closest("Trip hammer").interact("Use");
                 interactingSecond = true;
+            }
+            if (dialogues.isPendingContinuation())
+            {
+                dialogues.completeDialogueU();
+                interactingSecond = false;
             }
             sleep(random(100, 250));
         }
@@ -1095,6 +1105,11 @@ public final class GiantsFoundry extends Script
                     log("interact with grindstone");
                     objects.closest("Grindstone").interact("Use");
                     interactingSecond = true;
+                }
+                if (dialogues.isPendingContinuation())
+                {
+                    dialogues.completeDialogueU();
+                    interactingSecond = false;
                 }
                 log("progrss == currentProgress  progress = " + progress + " currentProg = " + currentProgress);
                 sleep(random(100, 250));
