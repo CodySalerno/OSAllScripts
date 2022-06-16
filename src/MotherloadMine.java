@@ -96,25 +96,26 @@ public class MotherloadMine extends Script
 
 		}
 
-        if (bankArea.contains(myPosition()) && !isBanking && !rock1.contains(myPosition())
+        if (bankArea.contains(myPosition()) && !isBanking && !nearRock1.contains(myPosition())
         {
                 log("Walking to rock1");
-
+				walking.webWalk(nearRock1);
+				sleep(random(800,1200));
         }
 
         if (nearRock1.contains(myPosition()))
         {
             rock1 = objects.closest(new Area(x, y, x, y),id);
-            if (rock1 == null)
-            {
-                log("running past rock 1");
-                walking.webWalk(nearRock2);
-                sleep(random(1200,1600);
-            }
             if (nearRock1.contains(myPosition()) && rock1 != null && !myPlayer().isAnimating())
             {
                 log("Mining rock1");
                 objects.closest(rock1).interact();
+                sleep(random(1200,1600);
+            }
+			if (rock1 == null)
+            {
+                log("running past rock 1");
+                walking.webWalk(nearRock2);
                 sleep(random(1200,1600);
             }
         }
@@ -122,20 +123,20 @@ public class MotherloadMine extends Script
         if (nearRock2.contains(myPosition()))
         {
             rock2 = objects.closest(new Area(x, y, x, y),id);
-            if (rock2 == null)
-            {
-                log("running past rock 2");
-                walking.webWalk(nearRock3);
-                sleep(random(1200,1600);
-            }
             if (nearRock2.contains(myPosition()) && rock2 != null && !myPlayer().isAnimating())
             {
                 log("Mining rock2");
                 objects.closest(rock2).interact();
                 sleep(random(1200,1600);
             }
+			if (rock2 == null)
+            {
+                log("running past rock 2");
+                walking.webWalk(northMiningArea);
+                sleep(random(1200,1600);
+            }
         }
-
+		/*
         if (nearRock3.contains(myPosition()))
         {
             rock3 = objects.closest(new Area(x, y, x, y),id);
@@ -151,7 +152,7 @@ public class MotherloadMine extends Script
                 objects.closest(rock3).interact();
                 sleep(random(1200,1600);
             }
-        }
+        }*/
 
         if (northMiningArea.contains(myPosition()) && !inventory.isFull())
         {
@@ -167,10 +168,10 @@ public class MotherloadMine extends Script
         if (northMiningArea.contains(myPosition()) && inventory.isFull())
         {
             isBanking = true;
-            walking.webWalk(returnNearRock3);
+            walking.webWalk(returnNearRock2);
             sleep(random(1200,1600));
         }
-
+		/*
         if (returnNearRock3.contains(myPosition()) && isBanking)
         {
             returnRock3 = objects.closest(new Area(x, y, x, y),id);
@@ -185,7 +186,7 @@ public class MotherloadMine extends Script
                 log("Mining returnRock3");
                 objects.closest(returnRock3).interact();
                 sleep(random(1200,1600);
-        }
+        }*/
 
         if (returnNearRock2.contains(myPosition()) && isBanking)
         {
