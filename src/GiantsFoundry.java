@@ -1,3 +1,4 @@
+import org.osbot.rs07.event.WalkingEvent;
 import util.FormattingForPaint;
 import util.Sleep;
 
@@ -1023,7 +1024,9 @@ public final class GiantsFoundry extends Script
         if (!tripHammer.equals(myPosition()))
         {
             log("Walking to Trip hammer");
-            walking.walk(objects.closest("Trip hammer"));
+            WalkingEvent myEvent = new WalkingEvent(new Position(3367,11497,0));
+            myEvent.setMinDistanceThreshold(0);
+            execute(myEvent);
         }
         while (currentHeat == 7 && progress != 5 && currentProgress == progress)
         {
