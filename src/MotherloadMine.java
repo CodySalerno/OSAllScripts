@@ -110,7 +110,8 @@ public class MotherloadMine extends Script
             {
                 log("Mining rock1");
                 objects.closest(rock1).interact();
-                sleep(random(1200,1600);
+				Sleep.sleepUntil(() -> (objects.closest(new Area(x, y, x, y), id) == null), 6000); //not sure if this will work looking for rock1 area if this works.
+                sleep(random(600,900);
             }
 			if (rock1 == null)
             {
@@ -191,33 +192,35 @@ public class MotherloadMine extends Script
         if (returnNearRock2.contains(myPosition()) && isBanking)
         {
             returnRock2 = objects.closest(new Area(x, y, x, y),id);
-            if (returnRock2 == null)
-            {
-                log("running past rock 2");
-                walking.webWalk(returnNearRock1);
-                sleep(random(1200,1600);
-            }
             if (nearRock2.contains(myPosition()) && returnRock2 != null && !myPlayer().isAnimating())
             {
                 log("Mining returnRock2");
                 objects.closest(returnRock2).interact();
                 sleep(random(1200,1600);
+			}
+			if (returnRock2 == null)
+            {
+                log("running past rock 2");
+                walking.webWalk(returnNearRock1);
+                sleep(random(1200,1600);
+            }
         }
 
         if (returnNearRock1.contains(myPosition()) && isBanking)
         {
             returnRock1 = objects.closest(new Area(x, y, x, y),id);
-            if (returnRock1 == null)
-            {
-                log("running past rock 1");
-                walking.webWalk(bankArea);
-                sleep(random(1200,1600);
-            }
             if (nearRock1.contains(myPosition()) && returnRock1 != null && !myPlayer().isAnimating())
             {
                 log("Mining returnRock1");
                 objects.closest(returnRock1).interact();
                 sleep(random(1200,1600);
+			}
+			if (returnRock1 == null)
+            {
+                log("running past rock 1");
+                walking.webWalk(bankArea);
+                sleep(random(1200,1600);
+            }
         }
         return 0;
     }
