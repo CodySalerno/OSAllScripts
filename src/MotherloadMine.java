@@ -34,62 +34,67 @@ public class MotherloadMine extends Script
     @Override
     public int onLoop() throws InterruptedException
     {
+		if (inventory.contains("Uncut sapphire") || inventory.contains("Uncut emerald") || inventory.contains("Uncut ruby") || inventory.contains("Uncut diamond"))
+		{
+			dropGems();
+			sleep(random(1200,1600);
+		}
         //Handles banking once inside banking area
         if (bankArea.contains(myPosition()) && isBanking)
-            {
-                if (inventory.contains("Pay-dirt"));
-                {
-                    log("walkinging to hopperArea area");
-                    walking.webWalk(hopperArea);
-                    if (hopperArea.contains(myPosition()) && inventory.contains("Pay-dirt"))
-                    {
-                        objects.closest("Hopper").interact();
-                        sleep(random(2400,3000));
-                    }
-                }
-                else if (inventory.contains("Coal")
-                {
-                    log("walkinging to bank")
-                    walking.webWalk(bankPosition);
-                    sleep(random(1200,1800);
-                    if (bankPosition.equals(myPosition()))
-                    {
-                        if (!bank.isOpen())
-                        {
-                            log("Open bank");
-                            bank.DepositAll();
-                            sleep(random(1800,2400)
-                            if (skills.getStatic(Skill.MINING) <= 40 && !inventory.contains("Adamant pickaxe"))
-                            {
-                                bank.withdraw("Adamant pickaxe", 1);
-                                sleep(random(1800,2400);
-                            }
-                            if (skills.getStatic(Skill.MINING) > 40 && !inventory.contains("Rune pickaxe"))
-                            {
-                                bank.withdraw("Rune pickaxe", 1);
-                                sleep(random(1800,2400);
-                            }
-                            isBanking = false;
-                        }
-                    }
-                }
-                else if (!inventory.contains("Coal") && !inventory.contains("Pay-dirt"))
-                {
-                    if (!sackArea.contains(myPosition()))
-                    {
-                        log("walkinging to sack to retrieve ore");
-                        walking.webWalk(sackArea);
-                        sleep(random(1200,1800);
-                    }
-                    if (sackArea.contains(myPosition())
-                    {
-                        log("get ore from sack");
-                        objects.closest("Sack").interact();
-                        sleep(random(1800,2400);
-                    }
-                }
+		{
+			if (inventory.contains("Pay-dirt"));
+			{
+				log("walkinging to hopperArea area");
+				walking.webWalk(hopperArea);
+				if (hopperArea.contains(myPosition()) && inventory.contains("Pay-dirt"))
+				{
+					objects.closest("Hopper").interact();
+					sleep(random(2400,3000));
+				}
+			}
+			else if (inventory.contains("Coal")
+			{
+				log("walkinging to bank")
+				walking.webWalk(bankPosition);
+				sleep(random(1200,1800);
+				if (bankPosition.equals(myPosition()))
+				{
+					if (!bank.isOpen())
+					{
+						log("Open bank");
+						bank.DepositAll();
+						sleep(random(1800,2400)
+						if (skills.getStatic(Skill.MINING) <= 40 && !inventory.contains("Adamant pickaxe"))
+						{
+							bank.withdraw("Adamant pickaxe", 1);
+							sleep(random(1800,2400);
+						}
+						if (skills.getStatic(Skill.MINING) > 40 && !inventory.contains("Rune pickaxe"))
+						{
+							bank.withdraw("Rune pickaxe", 1);
+							sleep(random(1800,2400);
+						}
+						isBanking = false;
+					}
+				}
+			}
+			else if (!inventory.contains("Coal") && !inventory.contains("Pay-dirt"))
+			{
+				if (!sackArea.contains(myPosition()))
+				{
+					log("walkinging to sack to retrieve ore");
+					walking.webWalk(sackArea);
+					sleep(random(1200,1800);
+				}
+				if (sackArea.contains(myPosition())
+				{
+					log("get ore from sack");
+					objects.closest("Sack").interact();
+					sleep(random(1800,2400);
+				}
+			}
 
-            }
+		}
 
         if (bankArea.contains(myPosition()) && !isBanking && !rock1.contains(myPosition())
         {
@@ -215,4 +220,24 @@ public class MotherloadMine extends Script
         }
         return 0;
     }
+	
+	public void dropGems()
+	{
+		if(inventory.contains("Uncut sapphire"))
+		{
+			inventory.contains("Uncut sapphire").interact("Drop");
+		}
+		if(inventory.contains("Uncut emerald"))
+		{
+			inventory.contains("Uncut emerald").interact("Drop");
+		}
+		if(inventory.contains("Uncut ruby"))
+		{
+			inventory.contains("Uncut ruby").interact("Drop");
+		}
+		if(inventory.contains("Uncut diamond"))
+		{
+			inventory.contains("Uncut diamond").interact("Drop");
+		}
+	}
 }
