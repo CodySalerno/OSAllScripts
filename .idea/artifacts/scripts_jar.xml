@@ -3,7 +3,6 @@
     <output-path>$USER_HOME$/OSBot/Scripts</output-path>
     <root id="archive" name="scripts_jar.jar">
       <element id="module-output" name="Testproject" />
-      <element id="file-copy" path="$USER_HOME$/Downloads/OSBot 2.6.46.jar" />
     </root>
   </artifact>
 </component>

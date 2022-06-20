@@ -26,7 +26,7 @@ public class MotherloadMine extends Script
     //Entity returnRock3;
     Entity miningRocks;
     Area MotherloadMine = new Area(3728, 5654, 3760, 5692);
-    Area bankArea = new Area(3739,5654, 3760, 5675);
+    Area bankArea = new Area(3733,5654, 3760, 5679);
     Area hopperArea = new Area(3746, 5671, 3750, 5674);
     Area sackArea = new Area(3746, 5657, 3750,5662);
     Area nearRock1 = new Area(3733,5678,3736,5680);
@@ -208,23 +208,6 @@ public class MotherloadMine extends Script
                 sleep(random(1200,1600));
             }
         }
-		/*
-        if (nearRock3.contains(myPosition()))
-        {
-            rock3 = objects.closest(new Area(x, y, x, y),id);
-            if (rock3 == null)
-            {
-                log("running past rock 3");
-                walking.webWalk(northMiningArea);
-                sleep(random(1200,1600);
-            }
-            if (nearRock3.contains(myPosition()) && rock3 != null && !myPlayer().isAnimating())
-            {
-                log("Mining rock3");
-                objects.closest(rock3).interact();
-                sleep(random(1200,1600);
-            }
-        }*/
 
         if (northMiningArea.contains(myPosition()) && inventory.isFull())
         {
@@ -235,22 +218,6 @@ public class MotherloadMine extends Script
             walking.webWalk(returnNearRock2);
             sleep(random(1200,1600));
         }
-		/*
-        if (returnNearRock3.contains(myPosition()) && isBanking)
-        {
-            returnRock3 = objects.closest(new Area(x, y, x, y),id);
-            if (returnRock3 == null)
-            {
-                log("running past rock 3");
-                walking.webWalk(returnNearRock2);
-                sleep(random(1200,1600);
-            }
-            if (nearRock3.contains(myPosition()) && returnRock3 != null && !myPlayer().isAnimating())
-            {
-                log("Mining returnRock3");
-                objects.closest(returnRock3).interact();
-                sleep(random(1200,1600);
-        }*/
 
         if (returnNearRock2.contains(myPosition()) && inventory.isFull())
         {
