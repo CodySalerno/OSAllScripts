@@ -1,3 +1,4 @@
+import org.osbot.rs07.api.filter.AreaFilter;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.RS2Object;
 import util.FormattingForPaint;
@@ -45,6 +46,7 @@ public class MotherloadMine extends Script
     private String runningTime;
     int oreMined;
     long startTime;
+    int goldNuggets;
 
 
     Thread thread1 = new Thread(() ->
@@ -81,7 +83,7 @@ public class MotherloadMine extends Script
         g.drawString("Mining xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.MINING)),10,270);
         g.drawString("Mining xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.MINING)),10,290);
         g.drawString("Current Mining level: " + skills.getStatic(Skill.MINING), 10,310);
-        g.drawString("Gold Nuggets  " + oreMined, 10,330);
+        g.drawString("Gold Nuggets  " + goldNuggets, 10,330);
 
 
     }
@@ -133,6 +135,10 @@ public class MotherloadMine extends Script
                 if (bank.isOpen())
                 {
                     log("deposit all");
+                    if (inventory.contains("Golden nugget"))
+                    {
+                        goldNuggets = (int) inventory.getAmount("Golden nugget");
+                    }
                     bank.depositAll();
                     sleep(random(1800,2400));
                     isBanking = false;
@@ -187,6 +193,7 @@ public class MotherloadMine extends Script
 
         if (nearRock2.contains(myPosition()) && !inventory.isFull())
         {
+
             rock2 = objects.closest(new Area(3731,5683,3731,5683),26680);
             if (nearRock2.contains(myPosition()) && rock2 != null && !myPlayer().isAnimating())
             {
@@ -221,6 +228,7 @@ public class MotherloadMine extends Script
 
         if (northMiningArea.contains(myPosition()) && inventory.isFull())
         {
+
             isBanking = true;
             log("is banking: " + isBanking);
             log("Walking to rock2");
@@ -279,24 +287,31 @@ public class MotherloadMine extends Script
         }
         if (northMiningArea.contains(myPosition()) && !inventory.isFull())
         {
+            //logs out if players are in my mining area.
+            if (getPlayers().closest(p -> p != null && !p.equals(myPlayer()) && northMiningArea.contains(p)) != null)
+            {
+
+                log("player in my area hopping worlds.");
+                worlds.hopToP2PWorld();
+                sleep(10000);
+
+            }
+
             miningRocks = objects.closest(northMiningArea, "Ore vein"); //this should be all the area i want to mine in.
             if (miningRocks != null)
             {
                 rockPosition = miningRocks.getPosition();
                 rockArea = new Area(rockPosition.getX(), rockPosition.getY(), rockPosition.getX(), rockPosition.getY());
             }
-            if (miningRocks != null && !myPlayer().isAnimating())
+            if (miningRocks != null && !myPlayer().isAnimating() && timeSinceLastAnimation > 1500)
             {
                 log("mining pay dirt");
                 miningRocks.interact();
                 sleep(5000);
                 log("Waiting for rock to disappear");
-                while (timeSinceLastAnimation < 1500)
+                if (dialogues.isPendingContinuation())
                 {
-                    if (dialogues.isPendingContinuation())
-                    {
-                        dialogues.completeDialogue();
-                    }
+                    dialogues.completeDialogue();
                 }
                 log("rock disappeared.");
                 sleep(random(1200,1800));
