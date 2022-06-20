@@ -137,7 +137,7 @@ public class MotherloadMine extends Script
                     log("deposit all");
                     if (inventory.contains("Golden nugget"))
                     {
-                        goldNuggets = (int) inventory.getAmount("Golden nugget");
+                        goldNuggets += (int) inventory.getAmount("Golden nugget");
                     }
                     bank.depositAll();
                     sleep(random(1800,2400));
