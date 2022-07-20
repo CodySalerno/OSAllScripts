@@ -23,6 +23,12 @@ public class Zulrah extends Script
     NPC zulrah;
     boolean startAgain = false;
     boolean t1Suspended = false;
+    Position pos1;
+    Position pos2;
+    Position pos3;
+    Position pos4;
+    Position pos5;
+    Position pos6;
 
 
     Thread thread1 = new Thread(() ->
@@ -88,9 +94,22 @@ public class Zulrah extends Script
         {
 
         }
-        else if (getWidgets().getWidgetContainingText("The priestess rows you to Zulrah") != null || rotationPosition == 1)
+        else if (getWidgets().getWidgetContainingText("The priestess rows you to Zulrah") != null)
         {
             currentPosition = myPosition();
+            pos1 = new Position(currentPosition.getX()+4, currentPosition.getY()+10, 0); //
+            pos2 = new Position(currentPosition.getX()+6, currentPosition.getY()+9, 0); //
+            pos3 = new Position(currentPosition.getX()+4, currentPosition.getY()+4, 0); //
+            pos4 = new Position(currentPosition.getX()-4, currentPosition.getY()+4, 0); //
+            pos5 = new Position(currentPosition.getX()-5, currentPosition.getY()+7, 0); //
+            pos6 = new Position(currentPosition.getX()-4, currentPosition.getY()+10, 0); //
+
+            myWalkingEvents(currentPosition.getX()+4, currentPosition.getY()+10);
+            rotationPosition = 1;
+            putMageGearOn();
+        }
+        else if (rotationPosition == 1)
+        {
             myWalkingEvents(currentPosition.getX()+4, currentPosition.getY()+10);
             rotationPosition = 1;
             putMageGearOn();
@@ -103,21 +122,17 @@ public class Zulrah extends Script
         else if (rotationPosition == 3 && rotationNumber == 1)
         {
             prayer.deactivateAll();
-            int x = currentPosition.getX()-5;
-            int y = currentPosition.getY()+7;
-            int x2 = currentPosition.getX()-4;
-            int y2 = currentPosition.getY()+10;
-            if (!myPosition().equals(new Position(x,y,0)) && zulrah.getRotation() != 511)
+            if (!myPosition().equals(pos5) && zulrah.getRotation() != 511 && zulrah.getRotation() != 804)
             {
-                myWalkingEvents(x, y);
+                myWalkingEvents(pos5.getX(), pos5.getY());
             }
-            if (myPosition().equals((new Position(x,y,0))) && zulrah.getRotation() == 511)
+            if (myPosition().equals(pos5) && zulrah.getRotation() == 511)
             {
-                myWalkingEvents(x2,y2);
+                myWalkingEvents(pos6.getX(), pos6.getY());
             }
-            if (myPosition().equals(new Position(x2,y2,0)) && zulrah.getRotation() == 804)
+            if (myPosition().equals(pos6) && zulrah.getRotation() == 804)
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos5.getX(), pos5.getY());
             }
         }
 
@@ -125,33 +140,27 @@ public class Zulrah extends Script
         {
             putRangeGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
-            int x = currentPosition.getX()-4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos4))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos4.getX(),pos4.getY());
             }
         }
         else if (rotationPosition == 5 && rotationNumber == 1)
         {
             putMageGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MISSILES, true);
-            int x = currentPosition.getX()+4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos3))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos3.getX(),pos3.getY());
             }
         }
         else if (rotationNumber == 6 && rotationNumber == 1)
         {
             putRangeGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
-            int x = currentPosition.getX()+4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos3))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos3.getX(),pos3.getY());
             }
         }
 
@@ -159,11 +168,9 @@ public class Zulrah extends Script
         {
             putMageGearOn();
             prayer.deactivateAll();
-            int x = currentPosition.getX()-4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos4))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos4.getX(),pos4.getY());
             }
         }
 
@@ -171,11 +178,9 @@ public class Zulrah extends Script
         {
             putMageGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MISSILES, true);
-            int x = currentPosition.getX()-4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos4))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos4.getX(),pos4.getY());
             }
         }
 
@@ -183,11 +188,9 @@ public class Zulrah extends Script
         {
             putRangeGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
-            int x = currentPosition.getX()+4;
-            int y = currentPosition.getY()+4;
-            if (!myPosition().equals(new Position(x,y,0)))
+            if (!myPosition().equals(pos3))
             {
-                myWalkingEvents(x,y);
+                myWalkingEvents(pos3.getX(),pos3.getY());
             }
         }
 
@@ -195,12 +198,15 @@ public class Zulrah extends Script
         {
             putMageGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
-            myWalkingEvents(currentPosition.getX()+4, currentPosition.getY()+10);
-            if (projectiles.getAll().contains(1046) && !prayer.isActivated(PrayerButton.PROTECT_FROM_MAGIC))
+            if (!myPosition().equals(pos1))
+            {
+                myWalkingEvents(pos1.getX(),pos1.getY());
+            }
+            if (projectiles.getAll().contains(1046) && !prayer.isActivated(PrayerButton.PROTECT_FROM_MISSILES))
             {
                 prayer.set(PrayerButton.PROTECT_FROM_MISSILES, true);
             }
-            if (projectiles.getAll().contains(1044) && !prayer.isActivated(PrayerButton.PROTECT_FROM_MISSILES))
+            if (projectiles.getAll().contains(1044) && !prayer.isActivated(PrayerButton.PROTECT_FROM_MAGIC))
             {
                 prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
             }
@@ -211,9 +217,9 @@ public class Zulrah extends Script
             startAgain = true;
             putRangeGearOn();
             prayer.set(PrayerButton.PROTECT_FROM_MAGIC, true);
-            if (!myPosition().equals(new Position(currentPosition.getX()+4, currentPosition.getY()+10,0)))
+            if (!myPosition().equals(pos1))
             {
-                myWalkingEvents(currentPosition.getX()+4, currentPosition.getY()+10);
+                myWalkingEvents(pos1.getX(),pos1.getY());
             }
         }
         return random(200,500);
