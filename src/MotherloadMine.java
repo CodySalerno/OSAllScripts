@@ -1,3 +1,4 @@
+import org.osbot.P;
 import org.osbot.rs07.api.filter.AreaFilter;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.RS2Object;
@@ -32,7 +33,8 @@ public class MotherloadMine extends Script
     Area nearRock1 = new Area(3733,5678,3736,5680);
     Area nearRock2 = new Area(3730, 5680,3734,5682);
     //Area nearRock3 = new Area(x, y, x, y);
-    Area northMiningArea = new Area(3732, 5687, 3744,5692);
+    Area northMiningArea = new Area(3732, 5688, 3744,5692);
+    Area northMiningRocks = new Area(3732, 5687, 3744,5692);
     Position bankPosition = new Position(3760,5666,0);
     Area returnNearRock1 = new Area(3730, 5680,3734,5682);
     Area returnNearRock2 = new Area(3728,5683, 3731, 5687);
@@ -47,7 +49,7 @@ public class MotherloadMine extends Script
     int oreMined;
     long startTime;
     int goldNuggets;
-
+    int totalNuggets;
 
     Thread thread1 = new Thread(() ->
     {
@@ -84,6 +86,7 @@ public class MotherloadMine extends Script
         g.drawString("Mining xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.MINING)),10,290);
         g.drawString("Current Mining level: " + skills.getStatic(Skill.MINING), 10,310);
         g.drawString("Gold Nuggets  " + goldNuggets, 10,330);
+        g.drawString("Total Nuggets  " + totalNuggets, 10,350);
 
 
     }
@@ -112,7 +115,7 @@ public class MotherloadMine extends Script
         if (bankArea.contains(myPosition()) && inventory.isFull() && !inventory.contains("Coal"))
         {
             if (inventory.contains("Pay-dirt")) {
-                log("walkinging to hopperArea area");
+                log("walking to hopperArea area");
                 walking.webWalk(hopperArea);
                 if (hopperArea.contains(myPosition()) && inventory.contains("Pay-dirt")) {
                     log("deposit hopper");
@@ -138,14 +141,34 @@ public class MotherloadMine extends Script
                     if (inventory.contains("Golden nugget"))
                     {
                         goldNuggets += (int) inventory.getAmount("Golden nugget");
+                        bank.depositAll("Golden nugget");
+                        sleep(random(1200,1600));
                     }
-                    bank.depositAll();
+                    if (inventory.contains("Coal"))
+                    {
+                        bank.depositAll("Coal");
+                        sleep(random(1200,1600));
+                    }
+                    if (inventory.contains("Gold ore"))
+                    {
+                        bank.depositAll("Gold ore");
+                        sleep(random(1200,1600));
+                    }
+                    if (inventory.contains("Mithril ore"))
+                    {
+                        bank.depositAll("Mithril ore");
+                        sleep(random(1200,1600));
+                    }
+                    if (bank.contains("Golden nugget"))
+                    {
+                        totalNuggets = (int)bank.getAmount("Golden nugget");
+                    }
                     sleep(random(1800,2400));
                     isBanking = false;
                 }
         }
 
-        if (bankArea.contains(myPosition()) && configs.get(375) != 0)
+        if (bankArea.contains(myPosition()) && configs.get(375) != 0 && !nearRock1.contains(myPosition()))
         {
             if (!sackArea.contains(myPosition()))
             {
@@ -173,6 +196,12 @@ public class MotherloadMine extends Script
 				sleep(random(800,1200));
         }
 
+        if (nearRock1.contains(myPosition()) && !inventory.contains("Coal"))
+        {
+            walking.webWalk(northMiningArea);
+            sleep(random(800,1200));
+        }
+        /*
         if (nearRock1.contains(myPosition()) && !inventory.isFull())
         {
             rock1 = objects.closest(new Area(3733,5680,3733,5680), 26679);
@@ -208,17 +237,15 @@ public class MotherloadMine extends Script
                 sleep(random(1200,1600));
             }
         }
-
+        */
         if (northMiningArea.contains(myPosition()) && inventory.isFull())
         {
-
-            isBanking = true;
-            log("is banking: " + isBanking);
             log("Walking to rock2");
-            walking.webWalk(returnNearRock2);
+            walking.webWalk(bankArea);
             sleep(random(1200,1600));
         }
 
+        /*
         if (returnNearRock2.contains(myPosition()) && inventory.isFull())
         {
             returnRock2 = objects.closest(new Area(3731,5683,3731,5683),26680);
@@ -252,6 +279,8 @@ public class MotherloadMine extends Script
                 sleep(random(1200,1600));
             }
         }
+        */
+
         if (northMiningArea.contains(myPosition()) && !inventory.isFull())
         {
             //logs out if players are in my mining area.
@@ -264,16 +293,26 @@ public class MotherloadMine extends Script
 
             }
 
-            miningRocks = objects.closest(northMiningArea, "Ore vein"); //this should be all the area i want to mine in.
+            miningRocks = objects.closest(northMiningRocks, "Ore vein"); //this should be all the area i want to mine in.
+            if (camera.getPitchAngle() != 67)
+            {
+                log("move pitch");
+                camera.movePitch(67);
+            }
+            if (!(camera.getYawAngle() > 124 && camera.getYawAngle() < 235))
+            {
+                log("move camera");
+                camera.moveYaw(random(124,235));
+            }
             if (miningRocks != null)
             {
                 rockPosition = miningRocks.getPosition();
                 rockArea = new Area(rockPosition.getX(), rockPosition.getY(), rockPosition.getX(), rockPosition.getY());
             }
-            if (miningRocks != null && !myPlayer().isAnimating() && timeSinceLastAnimation > 1500)
+            if (miningRocks != null && !myPlayer().isAnimating() && timeSinceLastAnimation > 2500)
             {
                 log("mining pay dirt");
-                miningRocks.interact();
+                miningRocks.interact("Mine");
                 sleep(5000);
                 log("Waiting for rock to disappear");
                 if (dialogues.isPendingContinuation())
@@ -283,6 +322,12 @@ public class MotherloadMine extends Script
                 log("rock disappeared.");
                 sleep(random(1200,1800));
             }
+        }
+        if (!northMiningArea.contains(myPosition()) && !bankArea.contains(myPosition()) && !sackArea.contains(myPosition()) && !hopperArea.contains(myPosition()) && !nearRock1.contains(myPosition())
+        && !nearRock2.contains(myPosition()) && !returnNearRock2.contains(myPosition()) && !returnNearRock1.contains(myPosition()))
+        {
+            log("out of all spots walk to known area (bank)");
+            walking.webWalk(bankArea);
         }
         return random(800,1600);
     }
