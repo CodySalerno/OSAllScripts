@@ -10,7 +10,7 @@ import org.osbot.rs07.script.ScriptManifest;
 
 
 import java.awt.*;
-
+//TODO: QA old courses to see if new changes broke anything.
 @ScriptManifest(name = "AgilityTrainer", author = "Iownreality1", info = "Train agility", version = 0.1, logo = "")
 public class AgilityTrainer extends  Script {
     final Position GnomeStrongholdStart = new Position(2474, 3436, 0);
@@ -57,10 +57,10 @@ public class AgilityTrainer extends  Script {
     final Area AllCanifisMiddle = new Area(3474,3476,3520,3513);
     final Area AllCanifisRoof = new Area(3474,3476,3520,3513);
     final Area StartCanifis = new Area(3503,3481,3511,3491);
-    final Area CanifisFirstObstacle = new Area(3505,3492,3509,3497);
-    final Area CanifisSecondObstacle = new Area(3497,3504,3503,3506);
-    final Area CanifisThirdObstacle = new Area(3487,3498,3492,3504);
-    final Area CanifisFourthObstacle = new Area(3475,3492,3479,3499);
+    final Area CanifisFirstObstacle = new Area(3505,3492,3509,3498);
+    final Area CanifisSecondObstacle = new Area(3496,3504,3503,3506);
+    final Area CanifisThirdObstacle = new Area(3485,3498,3492,3504);
+    final Area CanifisFourthObstacle = new Area(3475,3491,3479,3499);
     final Area CanifisFifthObstacle = new Area(3477, 3481,3484, 3487);
     final Area CanifisSixthObstacle = new Area(3489,3469,3503,3478);
     final Area CanifisSeventhObstacle = new Area(3508,3475,3516, 3483);
@@ -72,8 +72,7 @@ public class AgilityTrainer extends  Script {
     private long startTime;
     GroundItem groundItem;
     Position itemPosition;
-    final String[] courses = {"Gnome Stronghold", "Draynor Village", "Varrock", "Canifis"};
-    final int[] courseReqs = {1, 10, 30, 40};
+    final int[] courseReqs = {1, 10, 30, 40, 60};
 
 
     @Override
@@ -124,14 +123,14 @@ public class AgilityTrainer extends  Script {
         }
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.AGILITY);
-        //
+
     }
 
     @Override
     public void onPaint(final Graphics2D g)
     {
         Font font = new Font("Open Sans", Font.BOLD, 18);
-        nextLevel = courseReqs[currentCourse + 1];
+        nextLevel = courseReqs[currentCourse+1];
         g.setFont(font);
         g.setColor(Color.green);
         g.drawString("Running Time: " + (FormattingForPaint.formatTime(System.currentTimeMillis() - startTime)), 10, 250);
@@ -278,7 +277,7 @@ public class AgilityTrainer extends  Script {
                     || GnomeSixthObstacle.contains(myPosition()))) && myPosition().getZ() == 0)
             {
                 log("fucked up");
-                walking.webWalk(GnomeStrongholdStart);
+                walking.walk(GnomeStrongholdStart);
             }
             else if ((!(GnomeEnd.contains(myPosition()) || GnomeFirstObstacle.contains(myPosition()) || GnomeSecondObstacle.contains(myPosition())
                     || GnomeThirdObstacle.contains(myPosition()) || GnomeFourthObstacle.contains(myPosition()) || GnomeFifthObstacle.contains(myPosition())
@@ -300,7 +299,7 @@ public class AgilityTrainer extends  Script {
     {
         if (AllVarrockGround.contains(myPosition()))
         {
-            walking.webWalk(StartVarrock);
+            walking.walk(StartVarrock);
             sleep(random(600,1200));
         }
         if (StartVarrock.contains(myPosition()))
@@ -329,7 +328,7 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockFifthObstacle.contains(myPosition()))
         {
-            walking.webWalk(VarrockFifthObstacle2);
+            walking.walk(VarrockFifthObstacle2);
         }
         if (VarrockFifthObstacle2.contains(myPosition()))
         {
@@ -357,35 +356,42 @@ public class AgilityTrainer extends  Script {
     {
         if (AllCanifisGround.contains(myPosition()))
         {
-            walking.webWalk(StartCanifis);
+
+            walking.walk(StartCanifis);
             sleep(random(600,1200));
         }
         if (StartCanifis.contains(myPosition()))
         {
+
             obstacleSolver("Tall tree","Climb",StartCanifis,CanifisFirstObstacle);
         }
         if (CanifisFirstObstacle.contains(myPosition()))
         {
+
             sleep(random(600,800));
             obstacleSolver("Gap","Jump",CanifisFirstObstacle,CanifisSecondObstacle);
         }
         if (CanifisSecondObstacle.contains(myPosition()))
         {
+
             sleep(random(1200,1500));
             obstacleSolver("Gap","Jump",CanifisSecondObstacle,CanifisThirdObstacle);
         }
         if (CanifisThirdObstacle.contains(myPosition()))
         {
+
             sleep(random(700,900));
             obstacleSolver("Gap","Jump",CanifisThirdObstacle,CanifisFourthObstacle);
         }
         if (CanifisFourthObstacle.contains(myPosition()))
         {
+
             obstacleSolver("Gap","Jump",CanifisFourthObstacle,CanifisFifthObstacle);
             sleep(random(1200,1800));
         }
         if (CanifisFifthObstacle.contains(myPosition()))
         {
+
             obstacleSolver("Pole-vault","Vault",CanifisFifthObstacle,CanifisSixthObstacle);
             sleep(random(1200,1800));
         }
@@ -395,9 +401,7 @@ public class AgilityTrainer extends  Script {
         }
         if (CanifisSeventhObstacle.contains(myPosition()))
         {
-            log("in 7");
             obstacleSolver("Gap","Jump",CanifisSeventhObstacle,AllCanifisGround);
-            sleep(random(400,600));//coordinate gets updated too early without
         }
     }
 
@@ -408,7 +412,7 @@ public class AgilityTrainer extends  Script {
         if (allOfDraynorFloor.contains(myPosition()))
         {
             log("walking to draynor");
-            walking.webWalk(startDraynor);
+            walking.walk(startDraynor);
             sleep(random(600, 850));
         }
         if (startDraynor.contains(myPosition()))
@@ -441,12 +445,12 @@ public class AgilityTrainer extends  Script {
         }
         if (endOfDraynor.contains(myPosition()))
         {
-            walking.webWalk(startDraynor);
+            walking.walk(startDraynor);
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
         }
         if (draynorFall.contains(myPosition()))
         {
-            walking.webWalk(startDraynor);
+            walking.walk(startDraynor);
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
         }
     }
@@ -458,20 +462,33 @@ public class AgilityTrainer extends  Script {
         pickUpMark(areaStart);
         try
         {
-            objects.closest(obstacle).interact(interaction);
+            getObjects().closest(areaStart, obstacle).interact(interaction);
+            objects.closest(areaStart, obstacle).interact(interaction);
         }
         catch (NullPointerException e)
         {
             log("Null exception caught again");
         }
-        Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
+        if (myPosition().getZ() == 0){
+            Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
+        }
+        // The above if condition is ran so that we don't check against ground positions but since we can't fail those.
+        // If we don't do this the sleep will end immediately.
+        else
+        {
+            Sleep.sleepUntil(() -> areaEnd.contains(myPosition()) ||
+                    allOfDraynorFloor.contains(myPosition()) ||
+                    AllVarrockGround.contains(myPosition()) ||
+                    AllCanifisGround.contains(myPosition()), 10000);
+            //TODO: add variable for what course ground you're on
+        }
     }
     public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle) throws InterruptedException
     {//use this version if you need to webwalk first
         pickUpMark(areaStart);
         try
         {
-            walking.webWalk(nearObstacle);
+            walking.walk(nearObstacle);
             objects.closest(obstacle).interact(interaction);
 
         }
@@ -482,21 +499,25 @@ public class AgilityTrainer extends  Script {
         Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
     }
 
-    public void pickUpMark(Area currentArea) throws InterruptedException
+    public void pickUpMark(Area currentArea)
     {
-        groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
-
-        if(groundItem != null)
+        try
         {
-            itemPosition = groundItem.getPosition();
-            if (currentArea.contains(itemPosition))
-            {
-                groundItem.interact("Take");
-                Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null,10000);
+            groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
+
+            if (groundItem != null) {
+                itemPosition = groundItem.getPosition();
+                if (currentArea.contains(itemPosition)) {
+                    groundItem.interact("Take");
+                    Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null, 10000);
+                }
             }
         }
+        catch (NullPointerException e)
+        {
+            log("Null pointer caught");
+        }
     }
-
     /*public void Stamina()
     {
         log("Can get here");
