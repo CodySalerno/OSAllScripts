@@ -1,4 +1,3 @@
-import util.EnergyCheck;
 import util.FormattingForPaint;
 import util.Sleep;
 
@@ -53,8 +52,18 @@ public class AgilityTrainer extends  Script {
     final Area VarrockSixthHelper = new Area(3227,3402,3232,3402);
     final Area VarrockSeventhObstacle = new Area(3236,3403,3240,3408);
     final Area VarrockEighthObstacle = new Area(3236,3410,3240,3415);
-
-    final Position CanifisStart = new Position(3507, 3488, 0);
+    final Position CanifisStart = new Position(3505, 3488, 0);
+    final Area AllCanifisGround = new Area(3474,3476,3520,3513);
+    final Area AllCanifisMiddle = new Area(3474,3476,3520,3513);
+    final Area AllCanifisRoof = new Area(3474,3476,3520,3513);
+    final Area StartCanifis = new Area(3503,3481,3511,3491);
+    final Area CanifisFirstObstacle = new Area(3505,3492,3509,3497);
+    final Area CanifisSecondObstacle = new Area(3497,3504,3503,3506);
+    final Area CanifisThirdObstacle = new Area(3487,3498,3492,3504);
+    final Area CanifisFourthObstacle = new Area(3475,3492,3479,3499);
+    final Area CanifisFifthObstacle = new Area(3477, 3481,3484, 3487);
+    final Area CanifisSixthObstacle = new Area(3489,3469,3503,3478);
+    final Area CanifisSeventhObstacle = new Area(3508,3475,3516, 3483);
     final Position[] StartList = {GnomeStrongholdStart, DraynorVillageStart, VarrockStart, CanifisStart};
     boolean PriestInPerilDone = false;
     boolean nearCourse = false;
@@ -70,6 +79,7 @@ public class AgilityTrainer extends  Script {
     @Override
     public final void onStart()
     {
+        log("New Start");
         GnomeAreaGround.setPlane(0);
         GnomeAreaMiddle.setPlane(1);
         GnomeAreaTop.setPlane(2);
@@ -96,6 +106,17 @@ public class AgilityTrainer extends  Script {
         VarrockSixthHelper.setPlane(3);
         VarrockSeventhObstacle.setPlane(3);
         VarrockEighthObstacle.setPlane(3);
+        AllCanifisGround.setPlane(0);
+        AllCanifisMiddle.setPlane(2);
+        AllCanifisRoof.setPlane(3);
+        StartCanifis.setPlane(0);
+        CanifisFirstObstacle.setPlane(2);
+        CanifisSecondObstacle.setPlane(2);
+        CanifisThirdObstacle.setPlane(2);
+        CanifisFourthObstacle.setPlane(3);
+        CanifisFifthObstacle.setPlane(2);
+        CanifisSixthObstacle.setPlane(3);
+        CanifisSeventhObstacle.setPlane(2);
         PriestInPerilDone = (configs.get(302) == 61);
 
         if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
@@ -127,12 +148,8 @@ public class AgilityTrainer extends  Script {
     @Override
     public final int onLoop() throws InterruptedException
     {
-        //EnergyCheck energyCheck = new EnergyCheck(this);
-        //TODO:everything after gnome
-        //TODO:fix gnome sleep timers
+        log("New Loop");
         int level = skills.getDynamic(Skill.AGILITY);
-        log("Before Stamina");
-        //energyCheck.Stamina();
         for (int i = 0; i < courseReqs.length; i++)
         {
             if (courseReqs[i] <= level)
@@ -200,6 +217,17 @@ public class AgilityTrainer extends  Script {
                 else
                 {
                     log("Not in varrock");
+                    walking.webWalk(StartList[currentCourse]);
+                    nearCourse = true;
+                }
+            case 3:
+                nearCourse = (AllCanifisGround.contains(myPosition()) || AllCanifisMiddle.contains(myPosition()) || AllCanifisRoof.contains(myPosition()));
+                if (nearCourse) {
+                    Canifis();
+                }
+                else
+                {
+                    log("Not in Canifis");
                     walking.webWalk(StartList[currentCourse]);
                     nearCourse = true;
                 }
@@ -301,7 +329,6 @@ public class AgilityTrainer extends  Script {
         }
         if (VarrockFifthObstacle.contains(myPosition()))
         {
-            pickUpMark(VarrockFifthObstacle);
             walking.webWalk(VarrockFifthObstacle2);
         }
         if (VarrockFifthObstacle2.contains(myPosition()))
@@ -325,6 +352,55 @@ public class AgilityTrainer extends  Script {
             obstacleSolver("Edge","Jump-off",VarrockEighthObstacle,AllVarrockGround);
         }
     }
+
+    public void Canifis() throws InterruptedException
+    {
+        if (AllCanifisGround.contains(myPosition()))
+        {
+            walking.webWalk(StartCanifis);
+            sleep(random(600,1200));
+        }
+        if (StartCanifis.contains(myPosition()))
+        {
+            obstacleSolver("Tall tree","Climb",StartCanifis,CanifisFirstObstacle);
+        }
+        if (CanifisFirstObstacle.contains(myPosition()))
+        {
+            sleep(random(600,800));
+            obstacleSolver("Gap","Jump",CanifisFirstObstacle,CanifisSecondObstacle);
+        }
+        if (CanifisSecondObstacle.contains(myPosition()))
+        {
+            sleep(random(1200,1500));
+            obstacleSolver("Gap","Jump",CanifisSecondObstacle,CanifisThirdObstacle);
+        }
+        if (CanifisThirdObstacle.contains(myPosition()))
+        {
+            sleep(random(700,900));
+            obstacleSolver("Gap","Jump",CanifisThirdObstacle,CanifisFourthObstacle);
+        }
+        if (CanifisFourthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Jump",CanifisFourthObstacle,CanifisFifthObstacle);
+            sleep(random(1200,1800));
+        }
+        if (CanifisFifthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Pole-vault","Vault",CanifisFifthObstacle,CanifisSixthObstacle);
+            sleep(random(1200,1800));
+        }
+        if (CanifisSixthObstacle.contains(myPosition()))
+        {
+            obstacleSolver("Gap","Jump",CanifisSixthObstacle,CanifisSeventhObstacle);
+        }
+        if (CanifisSeventhObstacle.contains(myPosition()))
+        {
+            log("in 7");
+            obstacleSolver("Gap","Jump",CanifisSeventhObstacle,AllCanifisGround);
+            sleep(random(400,600));//coordinate gets updated too early without
+        }
+    }
+
 
     public void Draynor() throws InterruptedException
     {
