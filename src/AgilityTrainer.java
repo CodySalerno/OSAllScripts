@@ -76,7 +76,7 @@ public class AgilityTrainer extends  Script {
 
 
     @Override
-    public final void onStart()
+    public final void onStart() throws InterruptedException
     {
         log("New Start");
         GnomeAreaGround.setPlane(0);
@@ -118,7 +118,8 @@ public class AgilityTrainer extends  Script {
         CanifisSeventhObstacle.setPlane(2);
         PriestInPerilDone = (configs.get(302) == 61);
 
-        if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40) {
+        if (!PriestInPerilDone && skills.getDynamic(Skill.AGILITY) >= 40)
+        {
             PriestQuest();
         }
         startTime = System.currentTimeMillis();
@@ -210,7 +211,8 @@ public class AgilityTrainer extends  Script {
                 break;
             case 2:
                 nearCourse = (AllVarrockGround.contains(myPosition()) || AllVarrockMiddle.contains(myPosition()) || AllVarrockRoof.contains(myPosition()));
-                if (nearCourse) {
+                if (nearCourse)
+                {
                     Varrock();
                 }
                 else
@@ -221,7 +223,8 @@ public class AgilityTrainer extends  Script {
                 }
             case 3:
                 nearCourse = (AllCanifisGround.contains(myPosition()) || AllCanifisMiddle.contains(myPosition()) || AllCanifisRoof.contains(myPosition()));
-                if (nearCourse) {
+                if (nearCourse)
+                {
                     Canifis();
                 }
                 else
@@ -457,7 +460,7 @@ public class AgilityTrainer extends  Script {
 
 
 
-    public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd) throws InterruptedException
+    public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd)
     {
         pickUpMark(areaStart);
         try
@@ -469,7 +472,8 @@ public class AgilityTrainer extends  Script {
         {
             log("Null exception caught again");
         }
-        if (myPosition().getZ() == 0){
+        if (myPosition().getZ() == 0)
+        {
             Sleep.sleepUntil(() -> areaEnd.contains(myPosition()), 10000);
         }
         // The above if condition is ran so that we don't check against ground positions but since we can't fail those.
@@ -483,7 +487,7 @@ public class AgilityTrainer extends  Script {
             //TODO: add variable for what course ground you're on
         }
     }
-    public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle) throws InterruptedException
+    public void obstacleSolver(String obstacle, String interaction, Area areaStart, Area areaEnd, Area nearObstacle)
     {//use this version if you need to webwalk first
         pickUpMark(areaStart);
         try
@@ -505,9 +509,11 @@ public class AgilityTrainer extends  Script {
         {
             groundItem = getGroundItems().closest(e -> e != null && e.getName().contains("Mark of grace"));
 
-            if (groundItem != null) {
+            if (groundItem != null)
+            {
                 itemPosition = groundItem.getPosition();
-                if (currentArea.contains(itemPosition)) {
+                if (currentArea.contains(itemPosition))
+                {
                     groundItem.interact("Take");
                     Sleep.sleepUntil(() -> groundItems.closest("Mark of grace") == null, 10000);
                 }
@@ -523,8 +529,10 @@ public class AgilityTrainer extends  Script {
         log("Can get here");
     }*/
 
-    public void PriestQuest()
+    public void PriestQuest() throws InterruptedException
     {
-
+        Script PriestBot = new QuestPriestInPeril();
+        PriestBot.exchangeContext(getBot());
+        PriestBot.onStart();
     }
 }

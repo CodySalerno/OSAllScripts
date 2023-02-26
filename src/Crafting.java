@@ -38,8 +38,9 @@ public class Crafting extends Script
                 RS2Widget root = widgets.get(270, 14, 38);
                 root.interact("Make");
                 Sleep.sleepUntil(() ->
-                                (!inventory.contains("Leather") || getWidgets().getWidgetContainingText("Congr") != null)
-                        , 48000);
+                                (!inventory.contains("Leather") ||
+                                getWidgets().getWidgetContainingText("Congratulations") != null),
+                         48000);
             }
             else if (!inventory.contains("Leather"))
             {
