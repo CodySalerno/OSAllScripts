@@ -1,9 +1,6 @@
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
-import org.osbot.rs07.api.map.constants.Banks;
-import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.Skill;
-import org.osbot.rs07.input.mouse.BankSlotDestination;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
