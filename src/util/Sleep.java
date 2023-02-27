@@ -24,4 +24,8 @@ public class Sleep extends ConditionalSleep
     {
         new Sleep(condition, timeout).sleep();
     }
+    public static void sleepUntil(final boolean condition, final int timeout)
+    {
+        sleepUntil(() -> condition, timeout);
+    }
 }
