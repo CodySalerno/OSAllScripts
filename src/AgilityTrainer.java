@@ -1,3 +1,4 @@
+import util.EnergyCheck;
 import util.FormattingForPaint;
 import util.Sleep;
 
@@ -73,6 +74,7 @@ public class AgilityTrainer extends  Script {
     GroundItem groundItem;
     Position itemPosition;
     final int[] courseReqs = {1, 10, 30, 40, 60};
+    EnergyCheck stamina = new EnergyCheck(this);
 
 
     @Override
@@ -149,6 +151,7 @@ public class AgilityTrainer extends  Script {
     public final int onLoop() throws InterruptedException
     {
         log("New Loop");
+        stamina.Stamina();
         int level = skills.getDynamic(Skill.AGILITY);
         for (int i = 0; i < courseReqs.length; i++)
         {
@@ -524,10 +527,6 @@ public class AgilityTrainer extends  Script {
             log("Null pointer caught");
         }
     }
-    /*public void Stamina()
-    {
-        log("Can get here");
-    }*/
 
     public void PriestQuest() throws InterruptedException
     {
