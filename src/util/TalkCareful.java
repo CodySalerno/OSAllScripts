@@ -1,45 +1,63 @@
 package util;
 
+import org.osbot.rs07.script.MethodProvider;
 import org.osbot.rs07.script.Script;
 
-public class TalkCareful extends Script
+import java.lang.reflect.Array;
+
+public class TalkCareful
 {
-    @Override
-    public int onLoop()
+    private final MethodProvider methods;
+    public TalkCareful(final MethodProvider methods)
     {
-        return random(1200, 1800);
-    }
-    public void Stamina()
-    {
-        log("Can get here");
+        this.methods = methods;
     }
 
-    public boolean TalkandWait(String npc, String option)
+    public boolean TalkandWait(String npc, String ... option) throws InterruptedException
     {
-        npcs.closest(npc).interact(option);
-        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
-        return dialogues.isPendingContinuation();
+        methods.log("trying to talk 0");
+        methods.npcs.closest(npc).interact();
+        Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || methods.dialogues.isPendingOption(), 6000);
+        if (methods.dialogues.isPendingContinuation() || methods.dialogues.isPendingOption())
+        {
+            methods.dialogues.completeDialogue(option);
+        }
+        return methods.dialogues.isPendingContinuation();
     }
 
-    public  boolean TalkandWait(String npc)
+    public boolean TalkandWait(String npc) throws InterruptedException
     {
-
-        npcs.closest(npc).interact("Talk-to");
-        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
-        return dialogues.isPendingContinuation();
+        methods.log("trying to talk 1");
+        methods.npcs.closest(npc).interact("Talk-to");
+        Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation(), 6000);
+        if (methods.dialogues.isPendingContinuation())
+        {
+            methods.dialogues.completeDialogue();
+        }
+        return methods.dialogues.isPendingOption() || methods.dialogues.isPendingContinuation();
     }
 
-    public boolean TalkandWait(int id)
+    public boolean TalkandWait(int id) throws InterruptedException
     {
-        npcs.closest(id).interact("Talk-to");
-        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
-        return dialogues.isPendingContinuation();
+        methods.log("trying to talk 2 ");
+        methods.npcs.closest(id).interact("Talk-to");
+        Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation(), 6000);
+        if (methods.dialogues.isPendingContinuation())
+        {
+            methods.dialogues.completeDialogue();
+        }
+        return methods.dialogues.isPendingOption() || methods.dialogues.isPendingContinuation();
     }
 
-    public boolean TalkandWait(int id, String option)
+    public boolean TalkandWait(int id, String option) throws InterruptedException
     {
-        npcs.closest(id).interact(option);
-        Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 6000);
-        return dialogues.isPendingContinuation();
+        methods.log("trying to talk 3");
+        methods.npcs.closest(id).interact();
+        Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || methods.dialogues.isPendingOption(), 6000);
+        if (methods.dialogues.isPendingContinuation() || methods.dialogues.isPendingOption())
+        {
+            methods.dialogues.completeDialogue(option);
+        }
+        return methods.dialogues.isPendingContinuation();
     }
 }

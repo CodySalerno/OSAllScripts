@@ -21,7 +21,7 @@ varrock tabs (8007)
 400 mind runes, 1200 fire runes air of staff
 lobster 20+
  */
-@ScriptManifest(name = "PriestInPerild", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
+@ScriptManifest(name = "PriestInPerild", author = "Iownreality1", info = "Priest in Peril", version = 0.1, logo = "")
 public class QuestPriestInPeril extends Script
 {
     boolean bronzeDartp = true;

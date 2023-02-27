@@ -14,13 +14,22 @@ public class EnergyCheck //extends MethodProvider
 
     public void Stamina()
     {
-        methods.log("in stamina checker.");
-        for (String potion : Potions) {
-            if (methods.inventory.contains(potion)) {
-                methods.log("this works");
-                methods.inventory.getItem(potion).interact();
-                break;
+        if (methods.settings.getRunEnergy() <= 20)
+        {
+            methods.log("Replenishing stamina.");
+            for (String potion : Potions) // uses the lowest dose potion first
+            {
+                if (methods.inventory.contains(potion))
+                {
+                    methods.log("Drinking stamina");
+                    methods.inventory.getItem(potion).interact();
+                    break;
+                }
             }
+        }
+        if (!methods.settings.isRunning())
+        {
+            methods.settings.setRunning(true);
         }
     }
 }

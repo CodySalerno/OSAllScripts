@@ -9,7 +9,7 @@ import org.osbot.rs07.script.ScriptManifest;
 
 import util.TalkCareful;
 
-@ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Smelts Cannon Balls", version = 0.1, logo = "")
+@ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Plague city", version = 0.1, logo = "")
 public class QuestPlagueCity extends Script
 {
     final int[] supplyID = {2126,954,952,1929,1927,1975,231};
@@ -314,9 +314,15 @@ public class QuestPlagueCity extends Script
                 else
                 {
                     talker.TalkandWait("Edmond");
-                    sleep(random(1800,2400));
+                    sleep(random(1800, 2400));
                     dialogues.completeDialogue();
-                    sleep(random(1800,2400));
+                    sleep(random(1800, 2400));
+                    inventory.getItem("Ardougne teleport scroll").interact();
+                    Sleep.sleepUntil(() -> dialogues.isPendingContinuation(), 2400);
+                    if (dialogues.isPendingContinuation())
+                    {
+                        dialogues.completeDialogue();
+                    }
                 }
                 //quest complete
                 break;
@@ -328,11 +334,19 @@ public class QuestPlagueCity extends Script
     {
         walking.webWalk(GeArea);
         sleep(random(1800,2400));
-        talker.TalkandWait("Banker", "Bank");
-        sleep(random(1800,2400));
-        bank.withdrawAll("Coins");
-        sleep(random(1800,2400));
-        bank.close();
+        npcs.closest("Banker").interact("Bank");
+        Sleep.sleepUntil(() -> bank.isOpen(), 2400);
+        if (bank.isOpen())
+        {
+            sleep(random(600, 800));
+            bank.depositAll();
+            sleep(random(600, 800));
+            bank.depositWornItems();
+            sleep(random(600, 800));
+            bank.withdrawAll("Coins");
+            sleep(random(1800, 2400));
+            bank.close();
+        }
         sleep(random(1800,2400));
         getObjects().closest("Grand Exchange Booth").interact("Exchange");
         sleep(random(1800,2400));
