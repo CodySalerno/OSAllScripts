@@ -1,4 +1,5 @@
 import javafx.geometry.Pos;
+import org.osbot.Be;
 import org.osbot.P;
 import org.osbot.Sk;
 import org.osbot.rs07.api.map.Area;
@@ -17,16 +18,18 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 
-@ScriptManifest(name = "MultiSkilling", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
+@ScriptManifest(name = "MultiSkilling0.21", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
 public class MultiSkilling extends Script
 {
 
     String skill;
     Integer level;
     Supply supply = new Supply(this);
+    BetterSupply betterSupply = new BetterSupply(this);
     GEHelper geHelp = new GEHelper(this);
     TalkCareful talker = new TalkCareful(this);
     DaddysHome daddy = new DaddysHome(this);
+    CookingTrainer cookingTrainer = new CookingTrainer(this);
     EnergyCheck useStamina = new EnergyCheck(this);
     Area marloHouse = new Area(3238,3471,3242,3476);
     Area yarloHouse = new Area(3236,3391,3248,3399);
@@ -36,11 +39,14 @@ public class MultiSkilling extends Script
     boolean rimmingtonHouse = false;
     boolean daddysHomeSupplied = false;
     boolean constructionSupplied = false;
+    String runningTime;
+    long startTime;
+    Font font = new Font("Open Sans", Font.BOLD, 18);
 
 
     public void onStart() throws InterruptedException {
         log(inventory.getAmount("Oak plank"));
-        String[] skills = {"Construction", "Farming"};
+        String[] skills = {"Construction", "Farming", "Cooking"};
         JFrame frame = new JFrame("Select a skill");
         frame.setVisible(true);
         frame.setSize(250, 250);
@@ -98,8 +104,24 @@ public class MultiSkilling extends Script
         panel.add(btn);
 
         frame.setVisible(true); // added code
+        startTime = System.currentTimeMillis();
+        getExperienceTracker().start(Skill.COOKING);
     }
 
+    @Override
+    public void onPaint(final Graphics2D g)
+    {
+        runningTime = FormattingForPaint.formatTime(System.currentTimeMillis()-startTime);
+        if (skill == "Cooking")
+        {
+            g.setFont(font);
+            g.setColor(Color.green);
+            g.drawString("Running Time: " + runningTime,10,250);
+            g.drawString("Cooking xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.COOKING)),10,270);
+            g.drawString("Cooking xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.COOKING)),10,290);
+            g.drawString("Current Cooking level: " + skills.getStatic(Skill.COOKING), 10,310);
+        }
+    }
     @Override
     public int onLoop() throws InterruptedException {
         if (skill != null && level != null)
@@ -112,11 +134,26 @@ public class MultiSkilling extends Script
                 case "Construction":
                     Con();
                     break;
-
+                case "Cooking":
+                    Cook();
+                    break;
             }
-
         }
-        return random(1800,2400);
+        return random(400,800);
+    }
+
+    private void Cook() throws InterruptedException {
+        int currentLevel = skills.getStatic(Skill.COOKING);
+        log("in cooking");
+        if (currentLevel >= level)
+        {
+            stop();
+        }
+        else
+        {
+            log("going to cooking trainer.");
+            cookingTrainer.TrainCooking(geHelp,betterSupply,talker, level);
+        }
     }
 
     private void Con() throws InterruptedException
