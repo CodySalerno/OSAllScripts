@@ -121,6 +121,12 @@ public class MultiSkilling extends Script
 
     private void Con() throws InterruptedException
     {
+        if (myPosition().getZ()>0)
+        {
+            objects.closest("Ladder").interact();
+            Sleep.sleepUntil(() -> myPosition().getZ() == 0, 3000);
+            return;
+        }
         int currentLevel = skills.getStatic(Skill.CONSTRUCTION);
         if (currentLevel >= level)
         {
