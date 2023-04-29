@@ -7,7 +7,7 @@
 - [ ] Configs have comments explaining what the config represents
 - [ ] Widget containing text is used when possible
 - [ ] Widget IDs have comments explaining the widget 
-- [ ] Code has been ran successfuly on an account fully
+- [ ] Code has been run successfuly on an account fully
 ----------------------------------------------------------------------------------------------------------------------------
 - [ ] Reviewed by submitter
 - [ ] Reviewed by reviewer

@@ -935,7 +935,7 @@ public final class GiantsFoundry extends Script
         {
             while (arrowPosition > greenDescending && progress != 5 && currentProgress == progress) // if heat is too high lower it
             {
-                log("in arrow position > greendescending");
+                log("in arrow position > green descending");
                 while (!waterFall2.contains(myPosition()))
                 {
                     log("Walking to waterfall");
@@ -975,7 +975,7 @@ public final class GiantsFoundry extends Script
             interactingFirst = false;
             while (greenBot < arrowPosition && progress == currentProgress)
             {
-                log("Greenbot < arrowposition");
+                log("Green bot < arrow position");
                 if (!polishingWheel.equals(myPosition()))
                 {
                     log("Walking to Polishing wheel");
@@ -995,7 +995,7 @@ public final class GiantsFoundry extends Script
                 }
                 sleep(random(100, 250));
             }
-            log("out of green bot < arrowposition");
+            log("out of green bot < arrow position");
             interactingSecond = false;
         }
     }
@@ -1114,7 +1114,7 @@ public final class GiantsFoundry extends Script
                     dialogues.completeDialogueU();
                     interactingSecond = false;
                 }
-                log("progrss == currentProgress  progress = " + progress + " currentProg = " + currentProgress);
+                log("progress == currentProgress  progress = " + progress + " currentProg = " + currentProgress);
                 sleep(random(100, 250));
             }
             interactingSecond = false;

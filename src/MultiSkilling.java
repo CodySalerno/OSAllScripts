@@ -355,7 +355,7 @@ public class MultiSkilling extends Script
 
 
     private void buildKitchen() throws InterruptedException {
-        log("under 15 gl build me a ktichen pls.");
+        log("under 15 gl build me a kitchen pls.");
         int x = objects.closest(4525).getX();//9939   9936
         int y = objects.closest(4525).getY();//3723   3723
         Area door = new Area(x-4, y-1, x-2,y+1);

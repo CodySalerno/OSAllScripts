@@ -10,8 +10,8 @@ public class CookingTrainer
     boolean supplied = false;
     private final MethodProvider methods;
     Area camelot = new Area(2740,3420,2860,3482);
-    Area catherybyBank = new Area(2806,3438, 2812,3441);
-    Area catherybyRange = new Area(2815,3439, 2818,3443);
+    Area catherbyBank = new Area(2806,3438, 2812,3441);
+    Area catherbyRange = new Area(2815,3439, 2818,3443);
 
 
     public CookingTrainer(final MethodProvider methods)
@@ -57,7 +57,7 @@ public class CookingTrainer
 
     private void makeWines()
     {
-        if(catherybyBank.contains(methods.myPosition()))
+        if(catherbyBank.contains(methods.myPosition()))
         {
             if (methods.inventory.contains(1937) && methods.inventory.contains(1987))
             {
@@ -109,7 +109,7 @@ public class CookingTrainer
                             Sleep.sleepUntil(() -> methods.inventory.contains(1987), 5000);
                         }
                         if (methods.skills.getStatic(Skill.COOKING) < 68  //this will wait until fermenting jugs are done fermenting
-                                && methods.bank.getAmount(1995) > 130) //higher level means less fails good to do every 10 invens or so.
+                                && methods.bank.getAmount(1995) > 130) //higher level means less fails good to do every 10 inventories or so.
                         {
                             int xp = methods.skills.getExperience(Skill.COOKING);
                             methods.bank.close();
@@ -128,11 +128,11 @@ public class CookingTrainer
 
     private void cookFood(int food)
     {
-        methods.log("in shrim");
+        methods.log("in shrimp");
         if (methods.inventory.contains(food))
         {
             methods.log("Have shrimp in inventory");
-            if (catherybyRange.contains(methods.myPosition()))
+            if (catherbyRange.contains(methods.myPosition()))
             {
                 methods.log("start cooking");
                 methods.objects.closest("Range").interact();
@@ -143,24 +143,24 @@ public class CookingTrainer
                     methods.widgets.get(270,14,38).interact();
                     Sleep.sleepUntil(() -> amountOfFood !=(int)methods.inventory.getAmount(food), 7000 );
                     if (amountOfFood == (int)methods.inventory.getAmount(food)) return; //starting loop over b/c food is not cooking.
-                    else Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || !methods.inventory.contains(food), 80000); //long sleep waiting for inven to finish
+                    else Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || !methods.inventory.contains(food), 80000); //long sleep waiting for inventories to finish
                 }
             }
             else
             {
                 methods.log("walk to range");
-                methods.walking.webWalk(catherybyRange);
+                methods.walking.webWalk(catherbyRange);
             }
         }
         else
         {
             methods.log("No shrimp in inventory");
-            if (catherybyRange.contains(methods.myPosition()))
+            if (catherbyRange.contains(methods.myPosition()))
             {
                 methods.log("walking to bank");
-                methods.walking.webWalk(catherybyBank);
+                methods.walking.webWalk(catherbyBank);
             }
-            else if (catherybyBank.contains(methods.myPosition()))
+            else if (catherbyBank.contains(methods.myPosition()))
             {
                 methods.log("in bank getting shrimp");
                 methods.npcs.closest("Banker").interact("Bank");
@@ -181,7 +181,7 @@ public class CookingTrainer
             else
             {
                 methods.log("im lost go back to bank");
-                methods.walking.webWalk(catherybyBank);
+                methods.walking.webWalk(catherbyBank);
             }
         }
     }
@@ -277,7 +277,7 @@ public class CookingTrainer
 
         if (camelot.contains(methods.myPosition()))
         {
-            methods.walking.webWalk(catherybyBank);
+            methods.walking.webWalk(catherbyBank);
             if (methods.npcs.closest("Banker") != null)
             {
                 methods.npcs.closest("Banker").interact("Bank");

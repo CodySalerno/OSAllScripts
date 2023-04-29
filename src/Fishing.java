@@ -15,7 +15,7 @@ import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import java.awt.*;
 
-//currently logs out if out of tar/guams, should fix to go to bank.
+//currently logs out if out of tar/gaums, should fix to go to bank.
 @ScriptManifest(name = "Fishing", author = "Iownreality1", info = "3t fishing barb.", version = 1.0, logo = "")
 public final class Fishing extends Script
 {

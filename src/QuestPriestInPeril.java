@@ -1,5 +1,4 @@
-import javafx.geometry.Pos;
-import org.osbot.P;
+
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.event.WalkingEvent;
@@ -21,7 +20,7 @@ varrock tabs (8007)
 400 mind runes, 1200 fire runes air of staff
 lobster 20+
  */
-@ScriptManifest(name = "PriestInPerild", author = "Iownreality1", info = "Priest in Peril", version = 0.1, logo = "")
+@ScriptManifest(name = "PriestInPeril", author = "Iownreality1", info = "Priest in Peril", version = 0.1, logo = "")
 public class QuestPriestInPeril extends Script
 {
     boolean bronzeDartp = true;
@@ -250,7 +249,7 @@ public class QuestPriestInPeril extends Script
         {
             if (constantVariables.nearRoald.contains(myPosition()))
             {
-                log("walking to eastbank");
+                log("walking to east bank");
                 walking.webWalk(constantVariables.eastBank);
                 sleep(random(1800,2400));
             }
@@ -300,7 +299,7 @@ public class QuestPriestInPeril extends Script
             Attack   3846
             Sleep 2400
             move to 3413 3486 1 (ignore distance)
-            sleep(3000
+            sleep(3000)
             move to 3418, 3486, 1
             eat lobster
             sleep 3000
@@ -309,7 +308,7 @@ public class QuestPriestInPeril extends Script
             sleep 3000
             if npc 3486.position = 3417 3488 1
             attack 3486
-            complete dialogue (levling up)
+            complete dialogue (leveling up)
             pick up Golden key
             Climb-up Ladder
             talk to drezel "So, what now?" "Yes, of course."

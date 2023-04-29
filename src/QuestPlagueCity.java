@@ -8,7 +8,6 @@ import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-import util.Supply;
 import util.TalkCareful;
 
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Plague city", version = 0.1, logo = "")
@@ -22,10 +21,10 @@ public class QuestPlagueCity extends Script
     final Area undergroundTunnel = new Area(2509,9765,2519,9738);
     final Area Cellar = new Area(2536,9669,2542,9673);
     final Area southHouse = new Area(2532,3272,2541,3268);
-    final Position Outsidealrena = new Position(2570,3333,0);
+    final Position OutsideAlrena = new Position(2570,3333,0);
     final Position alrenaDoor = new Position(2573,3333,0);
     final Position dugHole = new Position (2566, 3332, 0);
-    final Position Grateunder = new Position(2514,9739,0);
+    final Position GrateUnder = new Position(2514,9739,0);
     final Position EdmondUnder = new Position(2517,9755,0);
     final Position northHouse = new Position(2531, 3328, 0);
     final Position SouthHouseDoor = new Position(2534,3272,0);
@@ -59,7 +58,7 @@ public class QuestPlagueCity extends Script
                 break;
             case 1:
                 log("Case 1");
-                walking.webWalk(Outsidealrena);
+                walking.webWalk(OutsideAlrena);
                 sleep(random(1800,2400));
                 if (doorHandler.canReachOrOpen(alrenaDoor))
                 {
@@ -137,7 +136,7 @@ public class QuestPlagueCity extends Script
                 break;
             case 8:
                 log("Case 8");
-                walking.webWalk(Grateunder);
+                walking.webWalk(GrateUnder);
                 sleep(random(1800,2400));
                 objects.closest("Grill").interact("Open");
                 sleep(random(1800,2400));
@@ -164,7 +163,7 @@ public class QuestPlagueCity extends Script
                 if (undergroundTunnel.contains(myPosition()))
                 {
                     log("underground");
-                    walking.webWalk(Grateunder);
+                    walking.webWalk(GrateUnder);
                     sleep(random(1800,2400));
                     objects.closest("Pipe").interact("Climb-up");
                     sleep(random(1800,2400));
