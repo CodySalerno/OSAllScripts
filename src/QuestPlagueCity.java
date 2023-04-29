@@ -30,7 +30,7 @@ public class QuestPlagueCity extends Script
     final Position mayorHouse = new Position(2526,3311,0);
     final Position BravekDoor = new Position(2529,3314,0);
     final Position mudPile = new Position(2518,9759,0);
-    TalkCareful talker;
+    TalkCareful talker = new TalkCareful(this);
 
     public int onLoop() throws InterruptedException
     {
@@ -185,11 +185,18 @@ public class QuestPlagueCity extends Script
                 break;
             case 20:
                 log("Case 20");
-                walking.webWalk(northHouse);
-                sleep(random(1800,2400));
-                objects.closest("Door").interact();
-                sleep(random(1800,2400));
-                dialogues.completeDialogue();
+                if (!inventory.contains("Book"))
+                {
+                    talker.TalkandWait("Jethick", "Yes");
+                }
+                else
+                {
+                    walking.webWalk(northHouse);
+                    sleep(random(1800,2400));
+                    objects.closest("Door").interact();
+                    sleep(random(1800,2400));
+                    dialogues.completeDialogue();
+                }
                 break;
             case 21:
                 log("Case 21");

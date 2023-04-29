@@ -1,5 +1,6 @@
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.RS2Object;
+import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
@@ -9,7 +10,7 @@ import util.Sleep;
 
 import java.awt.*;
 
-@ScriptManifest(name = "Blast Furnace", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
+@ScriptManifest(name = "Blast Furnace1.02", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
 public class BlastFurnace extends Script {
 
     Position bankPosition = new Position(1948,4957,0);
@@ -24,6 +25,11 @@ public class BlastFurnace extends Script {
     boolean needBars;
     String runningTime;
     Font font = new Font("Open Sans", Font.BOLD, 18);
+    RS2Widget staminaChecker = null;
+    Rectangle stamRect;
+    Color stammed = new Color(213,88,28);
+    Color notStammed = new Color(217,180,59);
+
 
     @Override
     public void onPaint(final Graphics2D g)
@@ -35,8 +41,8 @@ public class BlastFurnace extends Script {
         g.drawString("Smithing xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.SMITHING)),10,270);
         g.drawString("Smithing xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)),10,290);
         g.drawString("Current Smithing level: " + skills.getStatic(Skill.SMITHING), 10,310);
-        g.drawString("Bars Created  " + getExperienceTracker().getGainedXP(Skill.SMITHING)/17.5 , 10,330);
-        g.drawString("Bars per hour  " + getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)/17.5 , 10,350);
+        g.drawString("Bars Created  " + (int)(getExperienceTracker().getGainedXP(Skill.SMITHING)/17.5), 10,330);
+        g.drawString("Bars per hour  " + (int)(getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)/17.5), 10,350);
     }
 
     public void onStart()
@@ -56,6 +62,7 @@ public class BlastFurnace extends Script {
     @Override
     public int onLoop() throws InterruptedException
     {
+
         if (!settings.isRunning() && settings.getRunEnergy() > 15)
         {
             settings.setRunning(true);
@@ -72,20 +79,21 @@ public class BlastFurnace extends Script {
                     bank.depositAll("Steel bar");
                     Sleep.sleepUntil(() -> (!inventory.contains("Steel bar")), 10000);
                 }
-                bank.withdraw("Super energy(4)", 1);
-                Sleep.sleepUntil(() -> (inventory.contains("Super energy(4)")), 10000);
-                inventory.getItem("Super energy(4)").interact("Drink");
+                bank.withdraw(12631, 1);
+                Sleep.sleepUntil(() -> (inventory.contains(12631)), 10000);
+                bank.withdraw(3022, 1); //super energy 1
+                Sleep.sleepUntil(() -> (inventory.contains(3022)), 10000);
+                inventory.getItem(12631).interact("Drink");
                 sleep(random(2100,2400));
-                inventory.getItem("Super energy(3)").interact("Drink");
-                sleep(random(2100,2400));
-                inventory.getItem("Super energy(2)").interact("Drink");
-                sleep(random(2100,2400));
-                inventory.getItem("Super energy(1)").interact("Drink");
-                Sleep.sleepUntil(() -> (inventory.contains("Vial")), 10000);
+                inventory.getItem(3022).interact("Drink");
+                Sleep.sleepUntil(() -> !inventory.contains(3022), 2000);
                 bank.depositAll("Vial");
             }
             if (!inventory.isFull())
             {
+                staminaChecker = widgets.get(160,29);
+                stamRect = staminaChecker.getRectangleIgnoreIsHidden(false);
+                Color staminaColor = colorPicker.colorAt((stamRect.x + stamRect.width/2), (stamRect.y + stamRect.height/2));
                 if (configs.get(1575) == 0)
                 {
                     bank.withdraw("Stamina potion(1)", 1);
@@ -121,9 +129,8 @@ public class BlastFurnace extends Script {
                     npcs.closest("Blast Furnace Foreman").interact("Pay");
                     Sleep.sleepUntil(() -> (widgets.getWidgetContainingText("Pay 2,500 coins to use the Blast Furnace?") != null), 10000);
                     widgets.get(219,1,1).interact();
-                    sleep(700);
+                    Sleep.sleepUntil(() -> widgets.get(219,1,1) == null, 2000);
                     shouldPayForeman = false;
-
                 }
             }
         }
@@ -329,6 +336,7 @@ public class BlastFurnace extends Script {
             needBars = true;
         }
         else needBars = false;
+
 
         return random(500,700);
     }
