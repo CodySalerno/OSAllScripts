@@ -1,12 +1,9 @@
 package util;
 
 import org.osbot.rs07.api.Bank;
-import org.osbot.rs07.api.map.Position;
-import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.MethodProvider;
 
 import java.util.ArrayList;
-import org.osbot.rs07.script.MethodProvider;
 
 
 import static org.osbot.rs07.script.MethodProvider.*;

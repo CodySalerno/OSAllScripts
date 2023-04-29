@@ -1,13 +1,8 @@
-import com.thoughtworks.xstream.converters.SingleValueConverter;
-import javafx.geometry.Pos;
-import org.osbot.Sk;
 import org.osbot.rs07.api.map.Area;
-import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 import util.*;
 
-import java.awt.im.InputContext;
 
 public class CookingTrainer
 {
@@ -24,7 +19,7 @@ public class CookingTrainer
         this.methods = methods;
     }
 
-    public void TrainCooking(GEHelper geHelp, Supply supply, TalkCareful talker, int goalLevel) throws InterruptedException
+    public void TrainCooking(GEHelper geHelp, Supply supply, int goalLevel) throws InterruptedException
     {
         int currentLevel = methods.skills.getStatic(Skill.COOKING);
         if (!supplied)
@@ -229,18 +224,9 @@ public class CookingTrainer
                 }
             }
         }
-        if (camelot.contains(methods.myPosition()))
-        {
-            return false;
-        }
-        else return  true;
+        return !camelot.contains(methods.myPosition());
     }
     private boolean cookingSupplier(int goalLevel, GEHelper geHelp, Supply supply) throws InterruptedException {
-        int shrimXp;
-        int herringXp;
-        int troutXp;
-        int salmonXp;
-        int wineXp;
         int currentLevel = methods.skills.getStatic(Skill.COOKING);
         int[] levels = {1, 5,15,25,35,68,99};
         int[] fishNeeded = new int[6];
