@@ -75,6 +75,10 @@ public class ImprovedBlastFurnace extends Script {
     public int onLoop() throws InterruptedException
     {
         getBackToFurnace();
+        if (configs.get(547) == 0)
+        {
+            useCoal();
+        }
         if (mustPayForeman())
         {
             log("Must pay foreman");
@@ -290,7 +294,20 @@ public class ImprovedBlastFurnace extends Script {
     }
 
 
+    private void useCoal()
+    {
+        if (blastFurnace.contains(myPosition()))
+        {
+            if (bank.isOpen())
+            {
+                bank.depositAllExcept("Coal bag");
+                if (inventory.onlyContains("Coal bag"))
+                {
 
+                }
+            }
+        }
+    }
     private void staminaCheck()
     {
         if (bank.isOpen())

@@ -11,7 +11,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/OSBot/Scripts/osbot.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/osbot.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

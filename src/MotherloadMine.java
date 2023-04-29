@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.Collection;
 
 //config 375 = bag
-@ScriptManifest(name = "Motherload Mine", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
+@ScriptManifest(name = "Motherload Mine1.0", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
 public class MotherloadMine extends Script
 {
     Entity rock1;
@@ -124,7 +124,7 @@ public class MotherloadMine extends Script
                 }
             }
         }
-        if (inventory.contains("Coal"))
+        if (inventory.contains("Coal", "Mithril ore", "Iron ore", "Gold ore", "Adamantite ore", "Runite ore"))
         {
             log("walking to bank");
             walking.webWalk(bankPosition);
@@ -137,38 +137,20 @@ public class MotherloadMine extends Script
                 }
                 if (bank.isOpen())
                 {
-                    log("deposit all");
                     if (inventory.contains("Golden nugget"))
                     {
                         goldNuggets += (int) inventory.getAmount("Golden nugget");
-                        bank.depositAll("Golden nugget");
-                        sleep(random(1200,1600));
-                    }
-                    if (inventory.contains("Coal"))
-                    {
-                        bank.depositAll("Coal");
-                        sleep(random(1200,1600));
-                    }
-                    if (inventory.contains("Gold ore"))
-                    {
-                        bank.depositAll("Gold ore");
-                        sleep(random(1200,1600));
-                    }
-                    if (inventory.contains("Mithril ore"))
-                    {
-                        bank.depositAll("Mithril ore");
-                        sleep(random(1200,1600));
                     }
                     if (bank.contains("Golden nugget"))
                     {
                         totalNuggets = (int)bank.getAmount("Golden nugget");
                     }
-                    sleep(random(1800,2400));
+                    bank.depositAllExcept("Adamant pickaxe", "Rune pickaxe");
                     isBanking = false;
+
                 }
         }
-
-        if (bankArea.contains(myPosition()) && configs.get(375) != 0 && !nearRock1.contains(myPosition()))
+        if (bankArea.contains(myPosition()) && !widgets.get(382,3,2).getMessage().equals("0") && !nearRock1.contains(myPosition()))
         {
             if (!sackArea.contains(myPosition()))
             {
@@ -187,100 +169,20 @@ public class MotherloadMine extends Script
                 }
             }
         }
-
-
-        if (bankArea.contains(myPosition()) && !nearRock1.contains(myPosition()) && configs.get(375) ==0 && !inventory.contains("Coal"))
+        if (bankArea.contains(myPosition()) && !nearRock1.contains(myPosition()) && widgets.get(382,3,2).getMessage().equals("0") && !inventory.contains("Coal"))
         {
                 log("Walking to rock1");
 				walking.webWalk(nearRock1);
-				sleep(random(800,1200));
         }
-
         if (nearRock1.contains(myPosition()) && !inventory.contains("Coal"))
         {
             walking.webWalk(northMiningArea);
-            sleep(random(800,1200));
         }
-        /*
-        if (nearRock1.contains(myPosition()) && !inventory.isFull())
-        {
-            rock1 = objects.closest(new Area(3733,5680,3733,5680), 26679);
-            if (nearRock1.contains(myPosition()) && rock1 != null && !myPlayer().isAnimating())
-            {
-                log("Mining rock1");
-                rock1.interact();
-				Sleep.sleepUntil(() -> (objects.closest(new Area(3733,5680,3733,5680), 26679) == null), 6000); //not sure if this will work looking for rock1 area if this works.
-                sleep(random(600,900));
-            }
-			if (rock1 == null)
-            {
-                log("running past rock 1");
-                walking.webWalk(nearRock2);
-                sleep(random(1200,1600));
-            }
-        }
-
-        if (nearRock2.contains(myPosition()) && !inventory.isFull())
-        {
-
-            rock2 = objects.closest(new Area(3731,5683,3731,5683),26680);
-            if (nearRock2.contains(myPosition()) && rock2 != null && !myPlayer().isAnimating())
-            {
-                log("Mining rock2");
-                rock2.interact();
-                sleep(random(1200,1600));
-            }
-			if (rock2 == null)
-            {
-                log("running past rock 2");
-                walking.webWalk(northMiningArea);
-                sleep(random(1200,1600));
-            }
-        }
-        */
         if (northMiningArea.contains(myPosition()) && inventory.isFull())
         {
             log("Walking to rock2");
             walking.webWalk(bankArea);
-            sleep(random(1200,1600));
         }
-
-        /*
-        if (returnNearRock2.contains(myPosition()) && inventory.isFull())
-        {
-            returnRock2 = objects.closest(new Area(3731,5683,3731,5683),26680);
-            if (returnNearRock2.contains(myPosition()) && (returnRock2 != null) && (!myPlayer().isAnimating()))
-            {
-                log("Mining returnRock2");
-                returnRock2.interact();
-                sleep(random(1200,1600));
-			}
-			if (returnRock2 == null)
-            {
-                log("running past rock 2");
-                walking.webWalk(returnNearRock1);
-                sleep(random(1200,1600));
-            }
-        }
-
-        if (returnNearRock1.contains(myPosition()) && inventory.isFull())
-        {
-            returnRock1 = objects.closest(new Area(3733,5680,3733,5680), 26679);
-            if (returnNearRock1.contains(myPosition()) && returnRock1 != null && !myPlayer().isAnimating())
-            {
-                log("Mining returnRock1");
-               returnRock1.interact();
-                sleep(random(1200,1600));
-			}
-			if (returnRock1 == null)
-            {
-                log("running past rock 1");
-                walking.webWalk(bankArea);
-                sleep(random(1200,1600));
-            }
-        }
-        */
-
         if (northMiningArea.contains(myPosition()) && !inventory.isFull())
         {
             //logs out if players are in my mining area.
