@@ -1,3 +1,4 @@
+import util.EnergyCheck;
 import util.Sleep;
 
 import org.osbot.rs07.api.map.Area;
@@ -7,6 +8,7 @@ import org.osbot.rs07.event.WalkingEvent;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
+import util.Supply;
 import util.TalkCareful;
 
 @ScriptManifest(name = "PlagueCity", author = "Iownreality1", info = "Plague city", version = 0.1, logo = "")
@@ -31,13 +33,11 @@ public class QuestPlagueCity extends Script
     final Position BravekDoor = new Position(2529,3314,0);
     final Position mudPile = new Position(2518,9759,0);
     TalkCareful talker = new TalkCareful(this);
+    EnergyCheck Energy = new EnergyCheck(this);
 
     public int onLoop() throws InterruptedException
     {
-        if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
-        {
-            inventory.getItem("Stamina potion(4)").interact();
-        }
+        Energy.Stamina();
         int plagueCityProg = configs.get(165);
 
         switch (plagueCityProg)
