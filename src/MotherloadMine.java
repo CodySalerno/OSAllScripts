@@ -195,7 +195,7 @@ public class MotherloadMine extends Script
 
             }
 
-            miningRocks = objects.closest(northMiningRocks, "Ore vein"); //this should be all the area i want to mine in.
+            miningRocks = objects.closest(northMiningRocks, "Ore vein"); //this should be all the area I want to mine in.
             if (camera.getPitchAngle() != 67)
             {
                 log("move pitch");

@@ -256,14 +256,14 @@ public class BlastFurnace extends Script {
                     RS2Object belt = getBelt();
                     if (belt != null)
                     {
-                        log("if betl.interact(put-ore-on)");
+                        log("if belt.interact(put-ore-on)");
                         if (belt.interact("Put-ore-on"))
                         {
                             log("Sleeping on 1");
                             Sleep.sleepUntil(() -> (!inventory.getInventory().contains("Iron ore") || mustPayForeman()), 10000);
                             if (mustPayForeman())
                             {
-                                log(("inside should pay formane"));
+                                log(("inside should pay foreman"));
                                 shouldPayForeman = true;
                             }
                             else

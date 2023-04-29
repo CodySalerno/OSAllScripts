@@ -30,16 +30,18 @@ public class DaddysHome
             String[] supplyName = {"Plank", "Bolt of cloth", "Steel nails", "Hammer", "Saw", "Varrock teleport", "Stamina potion", "Lumberyard teleport"};
             int[] supplyPrice = {500, 1500, 50, 1000, 1000, 700, 10000, 10000};
             int[] supplyQuantity = {10, 5, 100, 1, 1, 20, 2, 2};
-            supplied = supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+            boolean withdraw = false;
+            boolean[] withdraw_noted = {};
+            supplied = supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
         }
         if (supplied && daddysHomeProg == 0)
         {
-            methods.log("walking to marllo");
+            methods.log("walking to marlo");
             methods.walking.webWalk(new Position(3240,3475, 0));
             MethodProvider.sleep(MethodProvider.random(2000,3000));
             if(marloHouse.contains(methods.myPosition()))
             {
-                methods.log("talking to marrlo in his home");
+                methods.log("talking to marlo in his home");
                 talker.TalkandWait("Marlo", "What kind of favour", "Tell me more about", "Tell me where he" );
                 methods.log("finished talking");
             }

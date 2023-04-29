@@ -1,13 +1,8 @@
-import com.thoughtworks.xstream.converters.SingleValueConverter;
-import javafx.geometry.Pos;
-import org.osbot.Sk;
 import org.osbot.rs07.api.map.Area;
-import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.MethodProvider;
 import util.*;
 
-import java.awt.im.InputContext;
 
 public class CookingTrainer
 {
@@ -15,8 +10,8 @@ public class CookingTrainer
     boolean supplied = false;
     private final MethodProvider methods;
     Area camelot = new Area(2740,3420,2860,3482);
-    Area catherybyBank = new Area(2806,3438, 2812,3441);
-    Area catherybyRange = new Area(2815,3439, 2818,3443);
+    Area catherbyBank = new Area(2806,3438, 2812,3441);
+    Area catherbyRange = new Area(2815,3439, 2818,3443);
 
 
     public CookingTrainer(final MethodProvider methods)
@@ -24,7 +19,7 @@ public class CookingTrainer
         this.methods = methods;
     }
 
-    public void TrainCooking(GEHelper geHelp, BetterSupply supply, TalkCareful talker, int goalLevel) throws InterruptedException
+    public void TrainCooking(GEHelper geHelp, Supply supply, int goalLevel) throws InterruptedException
     {
         int currentLevel = methods.skills.getStatic(Skill.COOKING);
         if (!supplied)
@@ -62,7 +57,7 @@ public class CookingTrainer
 
     private void makeWines()
     {
-        if(catherybyBank.contains(methods.myPosition()))
+        if(catherbyBank.contains(methods.myPosition()))
         {
             if (methods.inventory.contains(1937) && methods.inventory.contains(1987))
             {
@@ -114,7 +109,7 @@ public class CookingTrainer
                             Sleep.sleepUntil(() -> methods.inventory.contains(1987), 5000);
                         }
                         if (methods.skills.getStatic(Skill.COOKING) < 68  //this will wait until fermenting jugs are done fermenting
-                                && methods.bank.getAmount(1995) > 130) //higher level means less fails good to do every 10 invens or so.
+                                && methods.bank.getAmount(1995) > 130) //higher level means less fails good to do every 10 inventories or so.
                         {
                             int xp = methods.skills.getExperience(Skill.COOKING);
                             methods.bank.close();
@@ -133,11 +128,11 @@ public class CookingTrainer
 
     private void cookFood(int food)
     {
-        methods.log("in shrim");
+        methods.log("in shrimp");
         if (methods.inventory.contains(food))
         {
             methods.log("Have shrimp in inventory");
-            if (catherybyRange.contains(methods.myPosition()))
+            if (catherbyRange.contains(methods.myPosition()))
             {
                 methods.log("start cooking");
                 methods.objects.closest("Range").interact();
@@ -148,24 +143,24 @@ public class CookingTrainer
                     methods.widgets.get(270,14,38).interact();
                     Sleep.sleepUntil(() -> amountOfFood !=(int)methods.inventory.getAmount(food), 7000 );
                     if (amountOfFood == (int)methods.inventory.getAmount(food)) return; //starting loop over b/c food is not cooking.
-                    else Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || !methods.inventory.contains(food), 80000); //long sleep waiting for inven to finish
+                    else Sleep.sleepUntil(() -> methods.dialogues.isPendingContinuation() || !methods.inventory.contains(food), 80000); //long sleep waiting for inventories to finish
                 }
             }
             else
             {
                 methods.log("walk to range");
-                methods.walking.webWalk(catherybyRange);
+                methods.walking.webWalk(catherbyRange);
             }
         }
         else
         {
             methods.log("No shrimp in inventory");
-            if (catherybyRange.contains(methods.myPosition()))
+            if (catherbyRange.contains(methods.myPosition()))
             {
                 methods.log("walking to bank");
-                methods.walking.webWalk(catherybyBank);
+                methods.walking.webWalk(catherbyBank);
             }
-            else if (catherybyBank.contains(methods.myPosition()))
+            else if (catherbyBank.contains(methods.myPosition()))
             {
                 methods.log("in bank getting shrimp");
                 methods.npcs.closest("Banker").interact("Bank");
@@ -186,7 +181,7 @@ public class CookingTrainer
             else
             {
                 methods.log("im lost go back to bank");
-                methods.walking.webWalk(catherybyBank);
+                methods.walking.webWalk(catherbyBank);
             }
         }
     }
@@ -229,18 +224,9 @@ public class CookingTrainer
                 }
             }
         }
-        if (camelot.contains(methods.myPosition()))
-        {
-            return false;
-        }
-        else return  true;
+        return !camelot.contains(methods.myPosition());
     }
-    private boolean cookingSupplier(int goalLevel, GEHelper geHelp, BetterSupply supply) throws InterruptedException {
-        int shrimXp;
-        int herringXp;
-        int troutXp;
-        int salmonXp;
-        int wineXp;
+    private boolean cookingSupplier(int goalLevel, GEHelper geHelp, Supply supply) throws InterruptedException {
         int currentLevel = methods.skills.getStatic(Skill.COOKING);
         int[] levels = {1, 5,15,25,35,68,99};
         int[] fishNeeded = new int[6];
@@ -286,10 +272,12 @@ public class CookingTrainer
         String[] supplyName = {"Raw shrimps", "Raw herring", "Raw trout", "Raw salmon", "Jug of water", "Grapes", "Camelot teleport"};
         int[] supplyPrice = {200, 200, 100, 100, 50, 50, 2000};
         int[] supplyQuantity = {fishNeeded[0], fishNeeded[1], fishNeeded[2], fishNeeded[3], fishNeeded[4]+fishNeeded[5], fishNeeded[4]+fishNeeded[5], 1};
+        boolean withdraw = false;
+        boolean[] withdraw_noted = {};
 
         if (camelot.contains(methods.myPosition()))
         {
-            methods.walking.webWalk(catherybyBank);
+            methods.walking.webWalk(catherbyBank);
             if (methods.npcs.closest("Banker") != null)
             {
                 methods.npcs.closest("Banker").interact("Bank");
@@ -316,7 +304,7 @@ public class CookingTrainer
 
             }
         }
-        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
     }
 
 

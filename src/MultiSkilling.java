@@ -1,9 +1,4 @@
-import javafx.geometry.Pos;
-import org.osbot.Be;
-import org.osbot.P;
-import org.osbot.Sk;
 import org.osbot.rs07.api.map.Area;
-import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
@@ -13,9 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Objects;
 
 
 @ScriptManifest(name = "MultiSkilling0.21", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
@@ -25,19 +18,14 @@ public class MultiSkilling extends Script
     String skill;
     Integer level;
     Supply supply = new Supply(this);
-    BetterSupply betterSupply = new BetterSupply(this);
     GEHelper geHelp = new GEHelper(this);
     TalkCareful talker = new TalkCareful(this);
     DaddysHome daddy = new DaddysHome(this);
     CookingTrainer cookingTrainer = new CookingTrainer(this);
     EnergyCheck useStamina = new EnergyCheck(this);
     Area marloHouse = new Area(3238,3471,3242,3476);
-    Area yarloHouse = new Area(3236,3391,3248,3399);
-    Area sawMill = new Area(3294,3479,3310,3492);
     Area rimmingtonHouseArea = new Area(2953, 3221, 2957, 3226);
     Area phialsLocation = new Area(2946,3212, 2950, 3218);
-    boolean rimmingtonHouse = false;
-    boolean daddysHomeSupplied = false;
     boolean constructionSupplied = false;
     String runningTime;
     long startTime;
@@ -60,7 +48,7 @@ public class MultiSkilling extends Script
         lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lbl);
 
-        final JComboBox<String> cb = new JComboBox<String>(skills);
+        final JComboBox<String> cb = new JComboBox<>(skills);
         cb.setMaximumSize(cb.getPreferredSize()); // added code
         cb.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
         panel.add(cb);
@@ -152,7 +140,7 @@ public class MultiSkilling extends Script
         else
         {
             log("going to cooking trainer.");
-            cookingTrainer.TrainCooking(geHelp,betterSupply,talker, level);
+            cookingTrainer.TrainCooking(geHelp,supply, level);
         }
     }
 
@@ -364,13 +352,10 @@ public class MultiSkilling extends Script
 
     }
 
-    private void bank()
-    {
 
-    }
 
     private void buildKitchen() throws InterruptedException {
-        log("under 15 gl build me a ktichen pls.");
+        log("under 15 gl build me a kitchen pls.");
         int x = objects.closest(4525).getX();//9939   9936
         int y = objects.closest(4525).getY();//3723   3723
         Area door = new Area(x-4, y-1, x-2,y+1);
@@ -468,7 +453,9 @@ public class MultiSkilling extends Script
         String[] supplyName = {"Plank", "Steel nails", "Oak plank", "Teleport to house", "Hammer", "Saw", "Coins"};
         int[] supplyPrice = {300, 50, 500, 1000, 1000, 1000, 1};
         int[] supplyQuantity = {plankAmount, steelNailAmount, oakPlankAmount, 1, 1, 1, ((plankAmount+oakPlankAmount)*5)+20000};
-        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+        boolean withdraw = true;
+        boolean[] withdraw_noted = {true, false, true, false, false, false, false};
+        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
     }
 
     private void farm()

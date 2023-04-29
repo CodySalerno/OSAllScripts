@@ -36,7 +36,7 @@ public class AgilityTrainer extends  Script {
     final Area DraynorFifthObstacle = new Area(3088, 3255, 3094, 3255);
     final Area DraynorSixthObstacle = new Area(3096, 3256, 3101, 3261);
     final Area endOfDraynor = new Area(3102, 3259, 3105, 3263);
-    final Area draynorFall = new Area(3089, 3256, 3095, 3264);
+    final Area DraynorFall = new Area(3089, 3256, 3095, 3264);
     final Position VarrockStart = new Position(3221, 3414, 0);
     final Area AllVarrockGround = new Area(3190,3383,3240,3419);
     final Area AllVarrockMiddle = new Area(3190,3383,3240,3419);
@@ -220,7 +220,7 @@ public class AgilityTrainer extends  Script {
                 }
                 else
                 {
-                    log("Not in varrock");
+                    log("Not in Varrock");
                     walking.webWalk(StartList[currentCourse]);
                     nearCourse = true;
                 }
@@ -454,7 +454,7 @@ public class AgilityTrainer extends  Script {
             walking.walk(startDraynor);
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
         }
-        if (draynorFall.contains(myPosition()))
+        if (DraynorFall.contains(myPosition()))
         {
             walking.walk(startDraynor);
             Sleep.sleepUntil(() -> startDraynor.contains(myPosition()), 10000);
