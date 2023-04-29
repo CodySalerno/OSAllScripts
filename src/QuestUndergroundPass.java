@@ -24,11 +24,13 @@ public class QuestUndergroundPass extends Script
 
     public void onStart()
     {
+        log("Final Test");
         //set planes
     }
 
     public int onLoop() throws InterruptedException
     {
+        log("Please");
 
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {

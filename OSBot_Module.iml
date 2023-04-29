@@ -8,7 +8,14 @@
     <content url="file://$USER_HOME$/OSBot/Scripts" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="OSBot 2.6.63" level="project" />
-    <orderEntry type="library" name="osbot" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/OSBot/Scripts/osbot.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

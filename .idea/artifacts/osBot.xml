@@ -2,7 +2,7 @@
   <artifact type="jar" name="osBot">
     <output-path>$USER_HOME$/OSBot/Scripts</output-path>
     <root id="archive" name="osBot.jar">
-      <element id="module-output" name="Testproject" />
+      <element id="module-output" name="OSBot_Module" />
     </root>
   </artifact>
 </component>
