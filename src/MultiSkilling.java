@@ -22,6 +22,8 @@ public class MultiSkilling extends Script
     TalkCareful talker = new TalkCareful(this);
     DaddysHome daddy = new DaddysHome(this);
     CookingTrainer cookingTrainer = new CookingTrainer(this);
+    WoodcutTrainer woodcutTrainer = new WoodcutTrainer(this);
+
     EnergyCheck useStamina = new EnergyCheck(this);
     Area marloHouse = new Area(3238,3471,3242,3476);
     Area rimmingtonHouseArea = new Area(2953, 3221, 2957, 3226);
@@ -125,6 +127,9 @@ public class MultiSkilling extends Script
                 case "Cooking":
                     Cook();
                     break;
+                case "Woodcutting":
+                    Woodcut();
+                    break;
             }
         }
         return random(400,800);
@@ -141,6 +146,20 @@ public class MultiSkilling extends Script
         {
             log("going to cooking trainer.");
             cookingTrainer.TrainCooking(geHelp,supply, level);
+        }
+    }
+    private void Woodcut() throws InterruptedException {
+        int currentLevel = skills.getStatic(Skill.WOODCUTTING);
+        log("in woodcutting");
+        if (currentLevel >= level)
+        {
+            stop();
+        }
+        else
+        {
+            log("going to woodcut trainer.");
+            woodcutTrainer.TrainWoodcutting(geHelp ,supply, level);
+
         }
     }
 
