@@ -1,0 +1,10 @@
+- [ ] inventory.contains(any) are in the same line (not inventory.contains(x) || inventory.contains(y) )
+- [ ] Item names are used when possible
+- [ ] Item IDs have comment explaining why name can't be used and what item is represented
+- [ ] Widget containing text is used when possible
+- [ ] Widget IDs have comments explaining the widget
+- [ ] Configs have comments explaining what the config represents
+- [ ] Code has been ran successfuly on an account fully
+- [ ] Code has been reviewed by submitter
+- [ ] Code has been reviewed by reviewer
+- [ ] Ready to Merge
