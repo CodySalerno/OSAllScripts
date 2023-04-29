@@ -1,0 +1,9 @@
+- [ ] all inventory.Contains(any) in one line together
+- [ ] Code paths in onLoop return sleep amounts
+- [ ] Sleep.sleepuntil() uses lambda expresions
+- [ ] Functions are used for repeated code
+- [ ] Item IDs are commented explaining name
+- [ ] Widget IDs are commented explaining 
+- [ ] Reviewed by submitter
+- [ ] Reviewed by reviewer
+- [ ] Ready to Merge
