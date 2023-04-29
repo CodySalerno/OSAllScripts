@@ -374,6 +374,10 @@ public class ImprovedBlastFurnace extends Script {
                 }
             }
         }
+        if (keldagrim.contains(myPosition()))
+        {
+            getBackToFurnace();
+        }
 
         if (configs.get(545) != 0)
         {
@@ -717,16 +721,7 @@ public class ImprovedBlastFurnace extends Script {
         else return;
     }
     private void getBackToFurnace() throws InterruptedException {
-        if (keldagrim.contains(myPosition()))
-        {
-            log("walking to stairs");
-            walking.webWalk(nearStairs);
-            if (nearStairs.contains(myPosition()))
-            {
-                objects.closest(9084).interact();
-            }
-        }
-        else if (!keldagrim.contains(myPosition()) && !blastFurnace.contains(myPosition()) && !needMaterials)
+        if (!keldagrim.contains(myPosition()) && !blastFurnace.contains(myPosition()) && !needMaterials)
         {
             log("in neither");
             if (bank.isOpen())
@@ -757,6 +752,15 @@ public class ImprovedBlastFurnace extends Script {
                         }
                     }
                 }
+            }
+        }
+        if (keldagrim.contains(myPosition()))
+        {
+            log("walking to stairs");
+            walking.webWalk(nearStairs);
+            if (nearStairs.contains(myPosition()))
+            {
+                objects.closest(9084).interact();
             }
         }
     }

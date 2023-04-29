@@ -157,7 +157,8 @@ public class MotherloadMine extends Script
             if (inventory.contains("Pay-dirt")) {
                 log("walking to hopperArea area");
                 walking.webWalk(hopperArea);
-                if (hopperArea.contains(myPosition()) && inventory.contains("Pay-dirt")) {
+                if (hopperArea.contains(myPosition()) && inventory.contains("Pay-dirt"))
+                {
                     log("deposit hopper");
                     objects.closest("Hopper").interact();
                     sleep(random(2400, 3000));
@@ -228,7 +229,7 @@ public class MotherloadMine extends Script
             //logs out if players are in my mining area.
             if (getPlayers().closest(p -> p != null && !p.equals(myPlayer()) && northMiningArea.contains(p)) != null)
             {
-
+                Sleep.sleepUntil(() -> timeSinceLastAnimation != 0, 20000);
                 log("player in my area hopping worlds.");
                 worlds.hopToP2PWorld();
                 sleep(10000);
