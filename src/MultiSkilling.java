@@ -1,9 +1,4 @@
-import javafx.geometry.Pos;
-import org.osbot.Be;
-import org.osbot.P;
-import org.osbot.Sk;
 import org.osbot.rs07.api.map.Area;
-import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
@@ -13,9 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 
 @ScriptManifest(name = "MultiSkilling0.21", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
@@ -25,7 +17,6 @@ public class MultiSkilling extends Script
     String skill;
     Integer level;
     Supply supply = new Supply(this);
-    BetterSupply betterSupply = new BetterSupply(this);
     GEHelper geHelp = new GEHelper(this);
     TalkCareful talker = new TalkCareful(this);
     DaddysHome daddy = new DaddysHome(this);
@@ -152,7 +143,7 @@ public class MultiSkilling extends Script
         else
         {
             log("going to cooking trainer.");
-            cookingTrainer.TrainCooking(geHelp,betterSupply,talker, level);
+            cookingTrainer.TrainCooking(geHelp,supply,talker, level);
         }
     }
 
@@ -468,7 +459,9 @@ public class MultiSkilling extends Script
         String[] supplyName = {"Plank", "Steel nails", "Oak plank", "Teleport to house", "Hammer", "Saw", "Coins"};
         int[] supplyPrice = {300, 50, 500, 1000, 1000, 1000, 1};
         int[] supplyQuantity = {plankAmount, steelNailAmount, oakPlankAmount, 1, 1, 1, ((plankAmount+oakPlankAmount)*5)+20000};
-        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+        boolean withdraw = true;
+        boolean[] withdraw_noted = {true, false, true, false, false, false, false};
+        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
     }
 
     private void farm()

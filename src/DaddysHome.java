@@ -30,7 +30,9 @@ public class DaddysHome
             String[] supplyName = {"Plank", "Bolt of cloth", "Steel nails", "Hammer", "Saw", "Varrock teleport", "Stamina potion", "Lumberyard teleport"};
             int[] supplyPrice = {500, 1500, 50, 1000, 1000, 700, 10000, 10000};
             int[] supplyQuantity = {10, 5, 100, 1, 1, 20, 2, 2};
-            supplied = supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+            boolean withdraw = false;
+            boolean[] withdraw_noted = {};
+            supplied = supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
         }
         if (supplied && daddysHomeProg == 0)
         {

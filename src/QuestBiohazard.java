@@ -4,10 +4,7 @@ import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 
-import util.BetterWalk;
-import util.EnergyCheck;
-import util.Sleep;
-import util.TalkCareful;
+import util.*;
 
 import java.util.ArrayList;
 
@@ -18,10 +15,14 @@ public class QuestBiohazard extends Script
     TalkCareful talker = new TalkCareful(this);
     boolean supplied = false;
     boolean has_gas = false;
+    GEHelper geHelper = new GEHelper(this);
+    Supply supply = new Supply(this);
     final int[] supplyID = {1387, 558, 556, 8011, 8007, 12625};
     final String[] supplyName = {"Staff of fire", "Mind rune", "Air rune", "Ardougne teleport",  "Varrock teleport", "Stamina potion(4)"};
     final int[] supplyPrice = {3000, 10, 10, 500, 700, 10000};
     final int[] supplyQuantity = {1, 100, 200, 9, 10, 5};
+    boolean withdraw = true;
+    boolean[] withdraw_noted = {false, false, false, false, false, false};
     private final Area GeArea = new Area(3159,3482,3168,3492);
     private final Area ArdougneArea = new Area(2600,3300,2700,3500);
     private final Area ElenaArea = new Area(2590,3334,2592,3338);
@@ -71,16 +72,9 @@ public class QuestBiohazard extends Script
         switch (BiohazardProg)
         {
         case 0:
-            for (int i = 0; i < supplyID.length; i++)
+            if (!supplied)
             {
-                if (!(inventory.getAmount(supplyID[i]) >= supplyQuantity[i]) && !supplied)
-                {
-                    supplied = Supply();
-                }
-                else
-                {
-                    supplied = true;
-                }
+                supply.supply(supplyID, supplyName, supplyPrice, supplyQuantity, geHelper, withdraw, withdraw_noted);
             }
             if (supplied)
             {
@@ -577,89 +571,5 @@ public class QuestBiohazard extends Script
         return random(1200, 1800);
     }
 
-    public boolean Supply() throws InterruptedException
-    {
-        ArrayList<Integer> itemsNeededIndexes = new ArrayList<>();
-        boolean need_to_buy = true;
-        walking.webWalk(GeArea);
-        sleep(random(1800,2400));
-        npcs.closest("Banker").interact("Bank");
-        Sleep.sleepUntil(() -> bank.isOpen(), 2400);
-        if (bank.isOpen())
-        {
-            bank.depositWornItems();
-            sleep(random(600,800));
-            bank.depositAll();
-            sleep(random(600,800));
 
-            for (int i = 0; i < supplyID.length; i++)
-            {
-
-                if (bank.getAmount(supplyID[i]) >= supplyQuantity[i])
-                {
-                    log("Have enough");
-                    log(supplyID[i]);
-                    bank.withdraw(supplyID[i], supplyQuantity[i]);
-                }
-                else if (bank.contains(supplyID))
-                {
-                    log("not enough");
-                    bank.withdrawAll(supplyID[i]);
-                    itemsNeededIndexes.add(i);
-                    log(itemsNeededIndexes.size());
-                }
-                else
-                {
-                    itemsNeededIndexes.add(i);
-                    log(itemsNeededIndexes.size());
-                }
-                if (bank.contains("Gas mask"))
-                {
-                    bank.withdraw("Gas mask", 1);
-                    has_gas = true;
-                }
-            }
-            if (itemsNeededIndexes.size() == 0)
-            {
-                need_to_buy = false;
-            }
-            else
-            {
-                bank.withdrawAll("Coins");
-            }
-            sleep(random(600,800));
-            log("closing bank");
-            bank.close();
-
-        }
-        else
-        {
-            return false;
-        }
-        if (need_to_buy)
-        {
-            log("buying items");
-            sleep(random(1200,1400));
-            npcs.closest("Grand Exchange clerk").interact("Exchange");
-            sleep(random(1200,1400));
-            log("opened exchange");
-            for (int i: itemsNeededIndexes)
-            {
-                log("Buying item");
-                grandExchange.buyItem(supplyID[i],supplyName[i],supplyPrice[i],
-                                      supplyQuantity[i] -(int) inventory.getAmount(supplyID[i]));
-                sleep(random(1800,2400));
-            }
-            grandExchange.collect();
-            sleep(random(1800,2400));
-        }
-        for (int i = 0; i < supplyID.length; i++)
-        {
-            if (inventory.getAmount(supplyID[i]) < supplyQuantity[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 }

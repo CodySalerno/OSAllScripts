@@ -24,7 +24,7 @@ public class CookingTrainer
         this.methods = methods;
     }
 
-    public void TrainCooking(GEHelper geHelp, BetterSupply supply, TalkCareful talker, int goalLevel) throws InterruptedException
+    public void TrainCooking(GEHelper geHelp, Supply supply, TalkCareful talker, int goalLevel) throws InterruptedException
     {
         int currentLevel = methods.skills.getStatic(Skill.COOKING);
         if (!supplied)
@@ -235,7 +235,7 @@ public class CookingTrainer
         }
         else return  true;
     }
-    private boolean cookingSupplier(int goalLevel, GEHelper geHelp, BetterSupply supply) throws InterruptedException {
+    private boolean cookingSupplier(int goalLevel, GEHelper geHelp, Supply supply) throws InterruptedException {
         int shrimXp;
         int herringXp;
         int troutXp;
@@ -286,6 +286,8 @@ public class CookingTrainer
         String[] supplyName = {"Raw shrimps", "Raw herring", "Raw trout", "Raw salmon", "Jug of water", "Grapes", "Camelot teleport"};
         int[] supplyPrice = {200, 200, 100, 100, 50, 50, 2000};
         int[] supplyQuantity = {fishNeeded[0], fishNeeded[1], fishNeeded[2], fishNeeded[3], fishNeeded[4]+fishNeeded[5], fishNeeded[4]+fishNeeded[5], 1};
+        boolean withdraw = false;
+        boolean[] withdraw_noted = {};
 
         if (camelot.contains(methods.myPosition()))
         {
@@ -316,7 +318,7 @@ public class CookingTrainer
 
             }
         }
-        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp);
+        return supply.supply(supplyId, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
     }
 
 

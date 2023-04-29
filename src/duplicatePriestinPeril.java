@@ -1,5 +1,3 @@
-import javafx.geometry.Pos;
-import org.osbot.P;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.event.WalkingEvent;
@@ -40,13 +38,15 @@ public class duplicatePriestinPeril extends Script
                            "Mind rune", "Fire rune", "Staff of air", "Lobster"};
     int[] supplyPrice = {50, 25, 10, 5, 500, 5, 10, 2000, 200};
     int[] supplyQuantity = {400, 3000, 1, 50, 10, 400, 1200, 1, 20};
+    boolean withdraw = false;
+    boolean[] withdraw_noted = {false, false, false, false, false, false, false, false, false};
 
 
     public int onLoop() throws InterruptedException
     {
         if (!supplied)
         {
-            supplied = supply.supply(supplyID, supplyName, supplyPrice, supplyQuantity, geHelp);
+            supplied = supply.supply(supplyID, supplyName, supplyPrice, supplyQuantity, geHelp, withdraw, withdraw_noted);
         }
         if (configs.get(302) == 0)
         {
