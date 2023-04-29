@@ -29,6 +29,7 @@ public class QuestUndergroundPass extends Script
 
     public int onLoop() throws InterruptedException
     {
+        log("Please");
 
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
