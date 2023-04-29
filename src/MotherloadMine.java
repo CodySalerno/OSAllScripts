@@ -229,7 +229,6 @@ public class MotherloadMine extends Script
             //logs out if players are in my mining area.
             if (getPlayers().closest(p -> p != null && !p.equals(myPlayer()) && northMiningArea.contains(p)) != null)
             {
-                Sleep.sleepUntil(() -> timeSinceLastAnimation != 0, 20000);
                 log("player in my area hopping worlds.");
                 worlds.hopToP2PWorld();
                 sleep(10000);
