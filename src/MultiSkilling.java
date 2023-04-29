@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 
 @ScriptManifest(name = "MultiSkilling0.21", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
@@ -23,12 +24,8 @@ public class MultiSkilling extends Script
     CookingTrainer cookingTrainer = new CookingTrainer(this);
     EnergyCheck useStamina = new EnergyCheck(this);
     Area marloHouse = new Area(3238,3471,3242,3476);
-    Area yarloHouse = new Area(3236,3391,3248,3399);
-    Area sawMill = new Area(3294,3479,3310,3492);
     Area rimmingtonHouseArea = new Area(2953, 3221, 2957, 3226);
     Area phialsLocation = new Area(2946,3212, 2950, 3218);
-    boolean rimmingtonHouse = false;
-    boolean daddysHomeSupplied = false;
     boolean constructionSupplied = false;
     String runningTime;
     long startTime;
@@ -51,7 +48,7 @@ public class MultiSkilling extends Script
         lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(lbl);
 
-        final JComboBox<String> cb = new JComboBox<String>(skills);
+        final JComboBox<String> cb = new JComboBox<>(skills);
         cb.setMaximumSize(cb.getPreferredSize()); // added code
         cb.setAlignmentX(Component.CENTER_ALIGNMENT);// added code
         panel.add(cb);
@@ -143,7 +140,7 @@ public class MultiSkilling extends Script
         else
         {
             log("going to cooking trainer.");
-            cookingTrainer.TrainCooking(geHelp,supply,talker, level);
+            cookingTrainer.TrainCooking(geHelp,supply, level);
         }
     }
 
@@ -355,10 +352,7 @@ public class MultiSkilling extends Script
 
     }
 
-    private void bank()
-    {
 
-    }
 
     private void buildKitchen() throws InterruptedException {
         log("under 15 gl build me a ktichen pls.");
