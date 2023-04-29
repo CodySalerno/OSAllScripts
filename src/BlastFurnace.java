@@ -72,6 +72,7 @@ public class BlastFurnace extends Script {
             log("Using bank");
             objects.closest("Bank chest").interact("Use");
             Sleep.sleepUntil(() -> (bank.isOpen()), 10000);
+
             if (players.settings.getRunEnergy() < 20)
             {
                 if (inventory.isFull())
@@ -140,6 +141,8 @@ public class BlastFurnace extends Script {
             log("Using bank");
             objects.closest("Bank chest").interact("Use");
             Sleep.sleepUntil(() -> (bank.isOpen()), 10000);
+
+
             if (players.settings.getRunEnergy() < 20)
             {
                 if (inventory.isFull())
@@ -175,6 +178,12 @@ public class BlastFurnace extends Script {
 
         else if (bankPosition.equals(myPosition()) && inventory.contains("Steel bar") && bank.isOpen())
         {
+
+            if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+            {
+                stop();
+            }
+
             log("Bank all steel bars");
             bank.depositAll("Steel bar");
             Sleep.sleepUntil(() -> (!inventory.contains("Steel bar")), 10000);
@@ -212,6 +221,10 @@ public class BlastFurnace extends Script {
 
         else if (bankPosition.equals(myPosition()) && !inventory.contains("Iron ore") && bank.isOpen() && !needBars)
         {
+            if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+            {
+                stop();
+            }
             log("Get ore from bank");
             if (players.settings.getRunEnergy() < 20)
             {

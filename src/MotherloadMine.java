@@ -2,6 +2,7 @@ import org.osbot.P;
 import org.osbot.rs07.api.filter.AreaFilter;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.RS2Object;
+import org.osbot.rs07.api.ui.Tab;
 import util.FormattingForPaint;
 import util.Sleep;
 
@@ -16,7 +17,7 @@ import java.awt.*;
 import java.util.Collection;
 
 //config 375 = bag
-@ScriptManifest(name = "Motherload Mine1.0", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
+@ScriptManifest(name = "Motherload Mine1.03", author = "Iownreality1", info = "Mines at motherload mine", version = 0.1, logo = "")
 public class MotherloadMine extends Script
 {
     Entity rock1;
@@ -94,6 +95,8 @@ public class MotherloadMine extends Script
     @Override
     public void onStart()
     {
+
+        lastAnimation = System.currentTimeMillis();
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.MINING);
         thread1.start();
@@ -101,6 +104,43 @@ public class MotherloadMine extends Script
     @Override
     public int onLoop() throws InterruptedException
     {
+        if (!tabs.isOpen(Tab.INVENTORY))
+        {
+            tabs.open(Tab.INVENTORY);
+        }
+        log("Thread state: " + thread1.getState());
+        if (thread1.getState() == Thread.State.TERMINATED)
+        {
+            lastAnimation = System.currentTimeMillis();
+            thread1 = new Thread(() ->
+            {
+                while (getBot().getScriptExecutor().isRunning() && !getBot().getScriptExecutor().isPaused() && !getBot().getScriptExecutor().isSuspended())
+                {
+
+                    if (myPlayer().isAnimating())
+                    {
+                        lastAnimation = System.currentTimeMillis();
+                    }
+                    timeSinceLastAnimation = System.currentTimeMillis() - lastAnimation;
+
+                    try
+                    {
+                        Thread.sleep(50);
+                    }
+                    catch (InterruptedException e)
+                    {
+
+                    }
+                }
+            });
+            thread1.start();
+        }
+        log("Time since last animation: " + timeSinceLastAnimation);
+        if (totalNuggets >= 100 || timeSinceLastAnimation > 900000)
+        {
+            stop();
+        }
+
         if (settings.getRunEnergy() > 20 && settings.isRunning() == false)
         {
             settings.setRunning(true);
@@ -194,7 +234,6 @@ public class MotherloadMine extends Script
                 sleep(10000);
 
             }
-
             miningRocks = objects.closest(northMiningRocks, "Ore vein"); //this should be all the area I want to mine in.
             if (camera.getPitchAngle() != 67)
             {
@@ -211,7 +250,7 @@ public class MotherloadMine extends Script
                 rockPosition = miningRocks.getPosition();
                 rockArea = new Area(rockPosition.getX(), rockPosition.getY(), rockPosition.getX(), rockPosition.getY());
             }
-            if (miningRocks != null && !myPlayer().isAnimating() && timeSinceLastAnimation > 2500)
+            if (miningRocks != null && !myPlayer().isAnimating() && timeSinceLastAnimation > 2400)
             {
                 log("mining pay dirt");
                 miningRocks.interact("Mine");
