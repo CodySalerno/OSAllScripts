@@ -6,6 +6,7 @@ import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
 import util.FormattingForPaint;
+import util.Sleep;
 
 import java.awt.*;
 
@@ -55,10 +56,9 @@ public class IronMining extends Script
         {
             if (rock1.hasAction("Mine") && !myPlayer().isAnimating() && rock1 != null && !inventory.isFull())
             {
-                sleep(random(1000,1400));
                 log("Mine north rock");
                 rock1.interact("Mine");
-                sleep(random(2400,3200));
+                Sleep.sleepUntil(() -> objects.closest(new Area(2969,3240,2969,3240),11364) != null, 20000);
                 oreMined++;
             }
         }
@@ -67,10 +67,9 @@ public class IronMining extends Script
         {
             if (rock2.hasAction("Mine") && !myPlayer().isAnimating() && !inventory.isFull())
             {
-                sleep(random(1000,1400));
                 log("Mine west rock");
                 rock2.interact("Mine");
-                sleep(random(2400,3200));
+                Sleep.sleepUntil(() -> objects.closest(new Area(2968,3239,2968,3239),11365) != null, 20000);
                 oreMined++;
             }
         }

@@ -22,7 +22,7 @@ public class EnergyCheck //extends MethodProvider
                 if (methods.inventory.contains(potion))
                 {
                     methods.log("Drinking stamina");
-                    methods.inventory.getItem(potion).interact();
+                    methods.inventory.getItem(potion).interact("Drink");
                     break;
                 }
             }
