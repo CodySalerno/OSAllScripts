@@ -34,6 +34,7 @@ public class QuestPlagueCity extends Script
 
     public int onLoop() throws InterruptedException
     {
+        log("WTF");
         if ((settings.getRunEnergy() < 20) || (!settings.isRunning()))
         {
             inventory.getItem("Stamina potion(4)").interact();
