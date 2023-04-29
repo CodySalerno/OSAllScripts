@@ -29,5 +29,4 @@ bin/
 .DS_Store
 
 ### OSBot Jar ###
-Testproject.iml
-OSBot_Module.iml
+.idea/
