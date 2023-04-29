@@ -24,6 +24,7 @@ public class QuestUndergroundPass extends Script
 
     public void onStart()
     {
+        log("Final Test");
         //set planes
     }
 
