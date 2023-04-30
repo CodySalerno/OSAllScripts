@@ -44,23 +44,28 @@ public class EchoMultiServer
 
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
+                    System.out.println("input line: " + inputLine);
                     if (".".equals(inputLine))
                     {
                         break;
                     }
-                    if ("Trade".equals(inputLine));
+                    else if ("Trade".equals(inputLine))
                     {
+                        System.out.println("Setting needsToTrade to true:");
                         needsToTrade = true;
                     }
-                    if ("?".equals(inputLine) && needsToTrade)
+                    else if ("?".equals(inputLine) && needsToTrade)
                     {
+                        System.out.println("Sent ? returning Yes");
+                        System.out.println(needsToTrade);
                         out.println("Yes");
                     }
-                    if ("?".equals(inputLine) && !needsToTrade)
+                    else if ("?".equals(inputLine) && !needsToTrade)
                     {
+                        System.out.println("Sent ? returning No");
                         out.println("No");
                     }
-                    if ("Finished".equals(inputLine))
+                    else if ("Finished".equals(inputLine))
                     {
                         needsToTrade = false;
                     }
