@@ -51,7 +51,16 @@ public class EchoMultiServer
                     if ("Trade".equals(inputLine));
                     {
                         needsToTrade = true;
+                        System.out.println("needToTrade: " + needsToTrade);
                         ScriptServer.setTrade();
+                    }
+                    if ("?".equals(inputLine) && needsToTrade)
+                    {
+                        out.println("Yes");
+                    }
+                    if ("?".equals(inputLine) && !needsToTrade)
+                    {
+                        out.println("No");
                     }
                 }
 

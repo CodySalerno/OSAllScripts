@@ -8,11 +8,12 @@ import util.ScriptServer;
 import java.io.File;
 import java.io.IOException;
 import java.io.*;
+import java.util.Locale;
 
 @ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs Mule as needed", version = 0.1, logo = "")
 public final class Muling extends Script
 {
-
+    EchoClient client1 = new EchoClient();
     boolean loggingIn = false;
     public boolean needToTrade = false;
     Thread thread1 = new Thread();
@@ -27,14 +28,23 @@ public final class Muling extends Script
     {
         createThread();
         log("Starting onLoop: Login State = " + client.getLoginUIState());
-        log(ScriptServer.returnTrade());
-        /*
-        if (ScriptServer.returnTrade())
-        {
-            log("sever says to trade");
-        }
-    */
 
+        try
+        {
+            log("Sending ?");
+            client1.startConnection("127.0.0.1", 6666);
+            String s = client1.sendMessageReturn("?");
+            log("s = " + s);
+            if (s.equals("Yes"))
+            {
+                log("Returned yes time to trade.");
+                needToTrade = true;
+            }
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
         if (client.getLoginUIState() == 2 && needToTrade)
         {
             TradeMain();

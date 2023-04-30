@@ -22,6 +22,11 @@ public class EchoClient
     {
         out.println(msg);
     }
+    public String sendMessageReturn(String msg) throws IOException
+    {
+        out.println(msg);
+        return in.readLine();
+    }
 
     public void stopConnection() throws IOException
     {
