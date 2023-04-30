@@ -95,7 +95,6 @@ public class MotherloadMine extends Script
     @Override
     public void onStart()
     {
-
         lastAnimation = System.currentTimeMillis();
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.MINING);

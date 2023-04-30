@@ -1,5 +1,9 @@
+import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import util.EchoClient;
+import util.EchoMultiServer;
+import util.ScriptServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,38 +12,61 @@ import java.io.*;
 @ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs Mule as needed", version = 0.1, logo = "")
 public final class Muling extends Script
 {
-    boolean loggingIn = false;
-    static boolean needToTrade = false;
 
+    boolean loggingIn = false;
+    public boolean needToTrade = false;
+    Thread thread1 = new Thread();
+
+    @Override
+    public void onStart()
+    {
+
+    }
     @Override
     public int onLoop() throws InterruptedException
     {
+        createThread();
         log("Starting onLoop: Login State = " + client.getLoginUIState());
-        if (!loggingIn && client.getLoginUIState() == 0)
+        log(ScriptServer.returnTrade());
+        /*
+        if (ScriptServer.returnTrade())
         {
-            CheckGoldAmounts();
+            log("sever says to trade");
         }
-        if (client.getLoginUIState() == 1)
-        {
+    */
 
-        }
-        if (client.getLoginUIState() == 2)
+        if (client.getLoginUIState() == 2 && needToTrade)
         {
-            CheckGoldAmounts();
             TradeMain();
         }
         if (!needToTrade && client.getLoginUIState() == 2)
-        {
-
-        }
         {
             logoutTab.open();
             sleep(random(10000,12000));
             logoutTab.logOut();
         }
         log("sleeping 40-50");
-        return(random(20000,30000));
+        return(random(2000,5000));
     }
+
+    private void createThread()
+    {
+        thread1 = new Thread(() ->
+        {
+            while (getBot().getScriptExecutor().isRunning() && !getBot().getScriptExecutor().isPaused() && !getBot().getScriptExecutor().isSuspended())
+            {
+                /*
+                if (ScriptServer.returnTrade())
+                {
+                    log("sever says to trade");
+                }
+                */
+
+            }
+        });
+        thread1.start();
+    }
+
 
     private void loginToAccount(String username, String password)
     {
@@ -60,7 +87,7 @@ public final class Muling extends Script
             fr.read(chars); //TODO: Convince zack to remove
             String fileContent = new String(chars);
             needToTrade = fileContent.equals("T");
-            log("need to trade" + needToTrade);
+            log("need to trade " + needToTrade);
         }
         catch (IOException e)
         {
@@ -119,6 +146,7 @@ public final class Muling extends Script
                         log("Other Played accepted im accepting.");
                         trade.acceptTrade();
                         tradeComplete = true;
+                        needToTrade = false;
                         sleep(random(8000,12000));
                     }
                 }
@@ -129,4 +157,5 @@ public final class Muling extends Script
             }
         }
     }
+
 }
