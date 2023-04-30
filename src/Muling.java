@@ -26,9 +26,7 @@ public final class Muling extends Script
     @Override
     public int onLoop() throws InterruptedException
     {
-        createThread();
         log("Starting onLoop: Login State = " + client.getLoginUIState());
-
         try
         {
             log("Sending ?");
@@ -37,7 +35,6 @@ public final class Muling extends Script
             log("s = " + s);
             if (s.equals("Yes"))
             {
-                log("Returned yes time to trade.");
                 needToTrade = true;
             }
         }
@@ -45,9 +42,20 @@ public final class Muling extends Script
         {
             throw new RuntimeException(e);
         }
+        if (client.getLoginUIState() == 0 && needToTrade)
+        {
+            CheckGoldAmounts();
+        }
         if (client.getLoginUIState() == 2 && needToTrade)
         {
-            TradeMain();
+            try
+            {
+                TradeMain();
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
         if (!needToTrade && client.getLoginUIState() == 2)
         {
@@ -58,25 +66,6 @@ public final class Muling extends Script
         log("sleeping 40-50");
         return(random(2000,5000));
     }
-
-    private void createThread()
-    {
-        thread1 = new Thread(() ->
-        {
-            while (getBot().getScriptExecutor().isRunning() && !getBot().getScriptExecutor().isPaused() && !getBot().getScriptExecutor().isSuspended())
-            {
-                /*
-                if (ScriptServer.returnTrade())
-                {
-                    log("sever says to trade");
-                }
-                */
-
-            }
-        });
-        thread1.start();
-    }
-
 
     private void loginToAccount(String username, String password)
     {
@@ -89,21 +78,6 @@ public final class Muling extends Script
     private void CheckGoldAmounts() throws InterruptedException
     {
         loggingIn = true;
-        log("still working?");
-        File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
-        try (FileReader fr = new FileReader(file))//TODO: Convince zack to remove
-        {
-            char[] chars = new char[(int) file.length()];
-            fr.read(chars); //TODO: Convince zack to remove
-            String fileContent = new String(chars);
-            needToTrade = fileContent.equals("T");
-            log("need to trade " + needToTrade);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
         while (needToTrade && client.getLoginUIState() ==0)
         {
             log("going to log in now");
@@ -114,8 +88,7 @@ public final class Muling extends Script
         loggingIn = false;
     }
 
-    private void TradeMain() throws InterruptedException
-    {
+    private void TradeMain() throws InterruptedException, IOException {
         log("in trading main method");
         boolean tradeComplete = false;
         boolean tradeCancelled = false;
@@ -157,6 +130,7 @@ public final class Muling extends Script
                         trade.acceptTrade();
                         tradeComplete = true;
                         needToTrade = false;
+                        client1.sendMessage("Finished");
                         sleep(random(8000,12000));
                     }
                 }

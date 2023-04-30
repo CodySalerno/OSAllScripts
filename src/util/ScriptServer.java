@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 
 public class ScriptServer
 {
-    public static boolean needsTrade;
     static EchoMultiServer server = new EchoMultiServer();
 
     public static void main(String[] args)
@@ -28,26 +27,4 @@ public class ScriptServer
             thread1.start();
         }
     }
-
-
-    public void startServer() throws IOException
-    {
-        server.start(6666);
-    }
-
-    public static boolean setTrade()
-    {
-        needsTrade = server.returnTrade();
-        System.out.println(needsTrade);
-        System.out.print(server.toString());
-        return needsTrade;
-    }
-
-    public static String returnTrade()
-    {
-        System.out.println("FROM BOT: " + needsTrade);
-        System.out.print("FROM BOT: " + server.toString());
-        return "FROM BOT: " + server.toString();
-    }
-
 }

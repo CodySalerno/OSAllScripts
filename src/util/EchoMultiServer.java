@@ -14,6 +14,7 @@ public class EchoMultiServer
 
     public void start(int port) throws IOException
     {
+        System.out.println(needsToTrade);
         serverSocket = new ServerSocket(port);
         while (true)
             new EchoClientHandler(serverSocket.accept()).start();
@@ -29,7 +30,6 @@ public class EchoMultiServer
         private Socket clientSocket;
         private PrintWriter out;
         private BufferedReader in;
-        public boolean needsTrade = false;
 
         public EchoClientHandler(Socket socket) {
             this.clientSocket = socket;
@@ -51,8 +51,6 @@ public class EchoMultiServer
                     if ("Trade".equals(inputLine));
                     {
                         needsToTrade = true;
-                        System.out.println("needToTrade: " + needsToTrade);
-                        ScriptServer.setTrade();
                     }
                     if ("?".equals(inputLine) && needsToTrade)
                     {
@@ -61,6 +59,10 @@ public class EchoMultiServer
                     if ("?".equals(inputLine) && !needsToTrade)
                     {
                         out.println("No");
+                    }
+                    if ("Finished".equals(inputLine))
+                    {
+                        needsToTrade = false;
                     }
                 }
 
@@ -75,12 +77,4 @@ public class EchoMultiServer
         }
     }
 
-    public boolean returnTrade()
-    {
-        return needsToTrade;
-    }
-    public void setTrade()
-    {
-        needsToTrade = false;
-    }
 }
