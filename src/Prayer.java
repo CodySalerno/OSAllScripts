@@ -35,7 +35,7 @@ public class Prayer extends Script
     {
         log("Loop");
         level = skills.getStatic(Skill.PRAYER);
-        if (level >= 99)
+        if (level >= 43)
         {
             if (geArea.contains(myPosition()))
             {
@@ -44,6 +44,10 @@ public class Prayer extends Script
             else if (ChaosTemple.contains(myPosition()))
             {
                 suicide();
+            }
+            else
+            {
+                stop();
             }
         }
         else if (inventory.getAmount("Dragon bones") == 27 &&

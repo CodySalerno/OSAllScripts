@@ -22,6 +22,8 @@ public class MultiSkilling extends Script
     TalkCareful talker = new TalkCareful(this);
     DaddysHome daddy = new DaddysHome(this);
     CookingTrainer cookingTrainer = new CookingTrainer(this);
+    FletchingTrainer fletchingTrainer = new FletchingTrainer(this);
+    HerbloreTrainer herbloreTrainer = new HerbloreTrainer(this);
     EnergyCheck useStamina = new EnergyCheck(this);
     Area marloHouse = new Area(3238,3471,3242,3476);
     Area rimmingtonHouseArea = new Area(2953, 3221, 2957, 3226);
@@ -34,7 +36,7 @@ public class MultiSkilling extends Script
 
     public void onStart() throws InterruptedException {
         log(inventory.getAmount("Oak plank"));
-        String[] skills = {"Construction", "Farming", "Cooking"};
+        String[] skills = {"Construction", "Farming", "Cooking", "Fletching", "Herblore"};
         JFrame frame = new JFrame("Select a skill");
         frame.setVisible(true);
         frame.setSize(250, 250);
@@ -94,6 +96,8 @@ public class MultiSkilling extends Script
         frame.setVisible(true); // added code
         startTime = System.currentTimeMillis();
         getExperienceTracker().start(Skill.COOKING);
+        getExperienceTracker().start(Skill.FLETCHING);
+        getExperienceTracker().start(Skill.HERBLORE);
     }
 
     @Override
@@ -108,6 +112,24 @@ public class MultiSkilling extends Script
             g.drawString("Cooking xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.COOKING)),10,270);
             g.drawString("Cooking xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.COOKING)),10,290);
             g.drawString("Current Cooking level: " + skills.getStatic(Skill.COOKING), 10,310);
+        }
+        if (skill == "Fletching")
+        {
+            g.setFont(font);
+            g.setColor(Color.green);
+            g.drawString("Running Time: " + runningTime,10,250);
+            g.drawString("Fletching xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.FLETCHING)),10,270);
+            g.drawString("Fletching xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.FLETCHING)),10,290);
+            g.drawString("Current Fletching level: " + skills.getStatic(Skill.FLETCHING), 10,310);
+        }
+        if (skill == "Herblore")
+        {
+            g.setFont(font);
+            g.setColor(Color.green);
+            g.drawString("Running Time: " + runningTime,10,250);
+            g.drawString("Herblore xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.HERBLORE)),10,270);
+            g.drawString("Herblore xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.HERBLORE)),10,290);
+            g.drawString("Current Herblore level: " + skills.getStatic(Skill.HERBLORE), 10,310);
         }
     }
     @Override
@@ -125,11 +147,43 @@ public class MultiSkilling extends Script
                 case "Cooking":
                     Cook();
                     break;
+                case "Fletching":
+                    Fletch();
+                    return 0;
+                case "Herblore":
+                    Herb();
+                    break;
             }
         }
         return random(400,800);
     }
 
+    private void Herb() throws InterruptedException {
+        int currentLevel = skills.getStatic(Skill.HERBLORE);
+        log("in Herblore");
+        if (currentLevel >= level)
+        {
+            stop();
+        }
+        else
+        {
+            log("going to herblore trainer.");
+            herbloreTrainer.TrainHerblore(geHelp,supply, level);
+        }
+    }
+    private void Fletch() throws InterruptedException {
+        int currentLevel = skills.getStatic(Skill.FLETCHING);
+        log("in fletching");
+        if (currentLevel >= level)
+        {
+            stop();
+        }
+        else
+        {
+            log("going to fletching trainer.");
+            fletchingTrainer.TrainFletching(geHelp,supply, level);
+        }
+    }
     private void Cook() throws InterruptedException {
         int currentLevel = skills.getStatic(Skill.COOKING);
         log("in cooking");

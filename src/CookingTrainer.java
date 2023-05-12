@@ -273,7 +273,7 @@ public class CookingTrainer
         int[] supplyPrice = {200, 200, 100, 100, 50, 50, 2000};
         int[] supplyQuantity = {fishNeeded[0], fishNeeded[1], fishNeeded[2], fishNeeded[3], fishNeeded[4]+fishNeeded[5], fishNeeded[4]+fishNeeded[5], 1};
         boolean withdraw = false;
-        boolean[] withdraw_noted = {};
+        boolean[] withdraw_noted = {false, false, false, false, false, false, false};
 
         if (camelot.contains(methods.myPosition()))
         {
