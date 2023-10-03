@@ -3,6 +3,8 @@ package util;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 
+import java.awt.*;
+
 public class constantVariables
 {
     public static Area westBank = new Area(3180, 3433, 3185, 3446);
@@ -14,6 +16,7 @@ public class constantVariables
     public static Area nearGuardian = new Area(3403,9895,3407,9906);
     public static Position guardianSafeSpot = new Position(3406,9906,0);
     public static Area varTeleport = new Area(3207,3418,3223,3437);
+    public static Font font = new Font("Open Sans", Font.BOLD, 18);
 
 
 }

@@ -27,8 +27,8 @@ public class Supply
      */
     public boolean supply(int[] supplyID, String[] supplyName, int[] supplyPrice, int[] supplyQuantity, GEHelper geHelper, boolean withdrawItems, boolean[] withdrawNoted) throws InterruptedException
     {
-
-        if (!((supplyID.length == supplyName.length)  && (supplyName.length == supplyPrice.length) && (supplyPrice.length == supplyQuantity.length) && (withdrawItems && supplyID.length == withdrawNoted.length)))
+        methods.log(supplyID.length + " " + supplyName.length+ " " + supplyPrice.length + " " + supplyQuantity.length+ " " + withdrawNoted.length);
+        if (!((supplyID.length == supplyName.length)  && (supplyName.length == supplyPrice.length) && (supplyPrice.length == supplyQuantity.length) && (!withdrawItems || supplyID.length == withdrawNoted.length)))
         {
 
             methods.log("Not all same sizes");
@@ -114,7 +114,7 @@ public class Supply
                     sleep(random(900,1300));
                     offerCount = geHelper.offersPending();
                 }
-                methods.log("Buying item");
+                methods.log("Buying item " + supplyID[i] + " " + supplyName[i] + " " + supplyPrice[i] + " " + supplyQuantityNeeded[i]);
                 methods.grandExchange.buyItem(supplyID[i],supplyName[i],supplyPrice[i],
                         supplyQuantityNeeded[i]);
                 sleep(random(1800,2400));

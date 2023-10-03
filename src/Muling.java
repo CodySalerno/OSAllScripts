@@ -1,44 +1,71 @@
+import org.osbot.rs07.api.Client;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import util.EchoClient;
+import util.Sleep;
+import util.UsefulAreas;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.*;
 
 @ScriptManifest(name = "Muling", author = "Iownreality1", info = "Logs Mule as needed", version = 0.1, logo = "")
 public final class Muling extends Script
 {
-    boolean loggingIn = false;
-    static boolean needToTrade = false;
+    EchoClient client1 = new EchoClient();
+    public boolean needToTrade = false;
+    Thread thread1 = new Thread();
 
+    @Override
+    public void onStart()
+    {
+
+    }
     @Override
     public int onLoop() throws InterruptedException
     {
-        log("Starting onLoop: Login State = " + client.getLoginUIState());
-        if (!loggingIn && client.getLoginUIState() == 0)
+        log("Starting onLoop: Login State = " + client.getGameState());
+        try
         {
-            CheckGoldAmounts();
+            //log("Sending ?");
+            client1.startConnection("127.0.0.1", 6666);
+            String s = client1.sendMessageReturn("?");
+            //log("s = " + s);
+            if (s.equals("Yes"))
+            {
+                needToTrade = true;
+            }
         }
-        if (client.getLoginUIState() == 1)
+        catch (IOException e)
         {
-
+            throw new RuntimeException(e);
         }
-        if (client.getLoginUIState() == 2)
+        if (client.getGameState() == Client.GameState.LOGGED_OUT && needToTrade)
         {
-            CheckGoldAmounts();
-            TradeMain();
+            areYouLoggedIn();
         }
-        if (!needToTrade && client.getLoginUIState() == 2)
+        if (client.getGameState() == Client.GameState.LOGGED_IN && widgets.get(378,73) != null)
         {
-
+            widgets.get(378,73).interact();
         }
+        if (areYouLoggedIn() && needToTrade && widgets.get(378,73) == null)
+        {
+            try
+            {
+                log("trading main");
+                TradeMain();
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        if (!needToTrade && client.getGameState() == Client.GameState.LOGGED_IN)
         {
             logoutTab.open();
             sleep(random(10000,12000));
             logoutTab.logOut();
         }
-        log("sleeping 40-50");
-        return(random(20000,30000));
+        //log("sleeping 40-50");
+        return(random(1000,1500));
     }
 
     private void loginToAccount(String username, String password)
@@ -49,36 +76,24 @@ public final class Muling extends Script
         execute(loginEvent);
     }
 
-    private void CheckGoldAmounts() throws InterruptedException
+    private boolean areYouLoggedIn() throws InterruptedException
     {
-        loggingIn = true;
-        log("still working?");
-        File file = new File("C:\\Users\\zjmnk\\OSBot\\Data\\NeedsTrade.txt");
-        try (FileReader fr = new FileReader(file))//TODO: Convince zack to remove
-        {
-            char[] chars = new char[(int) file.length()];
-            fr.read(chars); //TODO: Convince zack to remove
-            String fileContent = new String(chars);
-            needToTrade = fileContent.equals("T");
-            log("need to trade" + needToTrade);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        while (needToTrade && client.getLoginUIState() ==0)
+        //log("does banker have action " + client.getLoginState());
+        if (needToTrade && client.getGameState() == Client.GameState.LOGGED_OUT)
         {
             log("going to log in now");
             loginToAccount("Fierceskunk+1@yahoo.com","applepieislife1600");
             log("sleeping");
-            sleep(25000);
+            Sleep.sleepUntil(() -> client.getGameState() == Client.GameState.LOGGED_IN, 15000);
         }
-        loggingIn = false;
+        if (client.getGameState() == Client.GameState.LOGGED_IN)
+        {
+            return true;
+        }
+        else return false;
     }
 
-    private void TradeMain() throws InterruptedException
-    {
+    private void TradeMain() throws InterruptedException, IOException {
         log("in trading main method");
         boolean tradeComplete = false;
         boolean tradeCancelled = false;
@@ -119,6 +134,8 @@ public final class Muling extends Script
                         log("Other Played accepted im accepting.");
                         trade.acceptTrade();
                         tradeComplete = true;
+                        needToTrade = false;
+                        client1.sendMessage("Finished");
                         sleep(random(8000,12000));
                     }
                 }
@@ -129,4 +146,5 @@ public final class Muling extends Script
             }
         }
     }
+
 }

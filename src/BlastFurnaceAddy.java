@@ -17,8 +17,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-@ScriptManifest(name = "Improved Blast Furnace1.07", author = "Iownreality1", info = "Creates bar", version = 0.1, logo = "")
-public class ImprovedBlastFurnace extends Script {
+@ScriptManifest(name = "Addy Blast Furnace", author = "Iownreality1", info = "Creates bar", version = 0.1, logo = "")
+public class BlastFurnaceAddy extends Script {
     EchoClient client1 = new EchoClient();
 
     Position bankPosition = new Position(1948,4957,0);
@@ -62,8 +62,8 @@ public class ImprovedBlastFurnace extends Script {
         g.drawString("Smithing xp Gained: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXP(Skill.SMITHING)),10,270);
         g.drawString("Smithing xp/hr: " + FormattingForPaint.formatValue(getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)),10,290);
         g.drawString("Current Smithing level: " + skills.getStatic(Skill.SMITHING), 10,310);
-        g.drawString("Bars Created  " + (int)(getExperienceTracker().getGainedXP(Skill.SMITHING)/17.5), 10,330);
-        g.drawString("Bars per hour  " + (int)(getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)/17.5), 10,350);
+        g.drawString("Bars Created  " + (int)(getExperienceTracker().getGainedXP(Skill.SMITHING)/37.5), 10,330);
+        g.drawString("Bars per hour  " + (int)(getExperienceTracker().getGainedXPPerHour(Skill.SMITHING)/37.5), 10,350);
     }
 
     public void onStart()
@@ -122,7 +122,7 @@ public class ImprovedBlastFurnace extends Script {
             }
             return random(400,700);
         }
-        if (configs.get(547) == 0)
+        if (configs.get(547) < 81 && blastFurnace.contains(myPosition()) && !objects.closest("Bar dispenser").hasAction("Take"))
         {
             useCoal();
             return (random(400,700));
@@ -163,7 +163,7 @@ public class ImprovedBlastFurnace extends Script {
                     if (widgets.get(270,14,38) != null)
                     {
                         widgets.get(270,14,38).interact();
-                        Sleep.sleepUntil(() -> inventory.contains("Steel bar"), 1000);
+                        Sleep.sleepUntil(() -> inventory.contains("Adamantite bar"), 1000);
                         if (dialogues.isPendingContinuation())
                         {
                             dialogues.completeDialogue();
@@ -190,7 +190,7 @@ public class ImprovedBlastFurnace extends Script {
             else //everything else happens here.
             {
                 log("in else");
-                if (inventory.contains("Steel bar"))
+                if (inventory.contains("Adamantite bar"))
                 {
                     log("Banking bars");
                     if (!bank.isOpen())
@@ -202,16 +202,16 @@ public class ImprovedBlastFurnace extends Script {
                             walking.webWalk(bankPosition);
                         }
                     }
-                    if (bank.isOpen() && inventory.contains("Steel bar"))
+                    if (bank.isOpen() && inventory.contains("Adamantite bar"))
                     {
-                        if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                        if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                         {
                             //stop();
                             if (bank.depositAllExcept("Coal bag"))
                             {
                                 if (bank.depositAllExcept("Coal bag"))
                                 {
-                                    if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                                    if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                                     {
                                         needMaterials = true;
                                         checkedBank = false;
@@ -220,8 +220,8 @@ public class ImprovedBlastFurnace extends Script {
                                 }
                             }
                         }
-                        bank.depositAll("Steel bar");
-                        Sleep.sleepUntil(() -> !inventory.contains("Steel bar"), 3000);
+                        bank.depositAll("Adamantite bar");
+                        Sleep.sleepUntil(() -> !inventory.contains("Adamantite bar"), 3000);
                         staminaCheck();
                     }
                 }
@@ -234,12 +234,12 @@ public class ImprovedBlastFurnace extends Script {
                 }
                 if (bank.isOpen() && inventory.onlyContains("Coal bag"))
                 {
-                    if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                    if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                     {
                         //stop();
                         if (bank.depositAllExcept("Coal bag"))
                         {
-                            if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                            if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                             {
                                 needMaterials = true;
                                 checkedBank = false;
@@ -253,16 +253,16 @@ public class ImprovedBlastFurnace extends Script {
                     {
                         inventory.getItem("Coal bag").interact("Fill");
                     }
-                    bank.withdrawAll("Iron ore");
+                    bank.withdrawAll("Adamantite ore");
                     walking.webWalk(bottomConveyor);
                 }
-                if (inventory.contains("Iron ore") &&  (!nearConveyor.contains(myPosition())) && (!objects.closest("Bar dispenser").hasAction("Take")))
+                if (inventory.contains("Adamantite ore") &&  (!nearConveyor.contains(myPosition())) && (!objects.closest("Bar dispenser").hasAction("Take")))
                 {
                     log("walking with ore to conveyor");
                     walking.webWalk(nearConveyor);
                     //betterWalk.MyWalkingEvent(bottomConveyor);
                 }
-                if (nearConveyor.contains(myPosition()) && inventory.contains("Iron ore") && (!objects.closest("Bar dispenser").hasAction("Take")))
+                if (nearConveyor.contains(myPosition()) && inventory.contains("Adamantite ore") && (!objects.closest("Bar dispenser").hasAction("Take")))
                 {
                     log("depositing ore to conveyor");
                     //objects.closest(9100).interact("Put-ore-on"); //conveyor belt
@@ -279,9 +279,9 @@ public class ImprovedBlastFurnace extends Script {
                         }
                         else inventory.hover(1);
                     }
-                    Sleep.sleepUntil(() -> !inventory.contains("Iron ore"), 5000);
+                    Sleep.sleepUntil(() -> !inventory.contains("Adamantite ore"), 5000);
                 }
-                if (!inventory.contains("Iron ore") && !coalBagEmptied && conveyorPosition.equals(myPosition()))
+                if (!inventory.contains("Adamantite ore") && !coalBagEmptied && conveyorPosition.equals(myPosition()))
                 {
                     log("Emptying coal bag");
                     inventory.getItem("Coal bag").interact("Empty");
@@ -315,19 +315,19 @@ public class ImprovedBlastFurnace extends Script {
 
                     Sleep.sleepUntil(() -> !inventory.contains("Coal"), 3000);
                 }
-                if (nearConveyor.contains(myPosition()) && !inventory.contains("Iron ore") && coalBagEmptied)
+                if (nearConveyor.contains(myPosition()) && !inventory.contains("Adamantite ore") && coalBagEmptied)
                 {
-                    log("no iron ore going to bar position");
+                    log("no Adamantite ore going to bar position");
                     walking.webWalk(barPosition);
-                    Sleep.sleepUntil(() -> configs.get(545) != 0, 5000);
-                    if (configs.get(545) != 0)
+                    Sleep.sleepUntil(() -> objects.closest("Bar dispenser").hasAction("Take"), 5000);
+                    if (objects.closest("Bar dispenser").hasAction("Take"))
                     {
                         objects.closest("Bar dispenser").interact("Take");
                         Sleep.sleepUntil(() -> widgets.get(270,14,38) != null, 7000);
                         if (widgets.get(270,14,38) != null)
                         {
                             widgets.get(270,14,38).interact();
-                            Sleep.sleepUntil(() -> inventory.contains("Steel bar"), 1000);
+                            Sleep.sleepUntil(() -> inventory.contains("Adamantite bar"), 1000);
                             if (dialogues.isPendingContinuation())
                             {
                                 dialogues.completeDialogue();
@@ -335,7 +335,7 @@ public class ImprovedBlastFurnace extends Script {
                         }
                     }
                 }
-                if ((!bank.isOpen() && !inventory.isEmptyExcept("Iron ore", "Steel bar", "Coal", "Coal bag") ))
+                if ((!bank.isOpen() && !inventory.isEmptyExcept("Adamantite ore", "Adamantite bar", "Coal", "Coal bag") ))
                 {
                     log("weird item in inventory banking");
                     betterWalk.MyWalkingEvent(bankPosition);
@@ -343,12 +343,12 @@ public class ImprovedBlastFurnace extends Script {
                     Sleep.sleepUntil(() -> bank.isOpen(), 3000);
                     if (bank.isOpen())
                     {
-                        if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                        if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                         {
                             //stop();
                             if (bank.depositAllExcept("Coal bag"))
                             {
-                                if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                                if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                                 {
                                     needMaterials = true;
                                     checkedBank = false;
@@ -370,12 +370,12 @@ public class ImprovedBlastFurnace extends Script {
                 Sleep.sleepUntil(() -> bank.isOpen(), 8000);
                 if (bank.isOpen())
                 {
-                    if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                    if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                     {
                         //stop();
                         if (bank.depositAllExcept("Coal bag"))
                         {
-                            if (!bank.contains("Iron ore") || !bank.contains("Coal"))
+                            if (!bank.contains("Adamantite ore") || !bank.contains("Coal"))
                             {
                                 needMaterials = true;
                                 checkedBank = false;
@@ -409,82 +409,7 @@ public class ImprovedBlastFurnace extends Script {
     }
 
 
-    private boolean steelBarInitializing()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.INITIALIZING_SALE)
-        {
-            return true;
-        }
-        else return false;
 
-    }
-    private boolean coalInitializing()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.INITIALIZING_BUY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-    private boolean coalPending()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.PENDING_BUY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-    private boolean coalEmpty()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.EMPTY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-
-    private boolean ironOreInitializing()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.INITIALIZING_BUY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-    private boolean ironOrePending()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.PENDING_BUY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-
-    private boolean ironOreEmpty()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.EMPTY)
-        {
-            return  true;
-        }
-        else return false;
-    }
-
-    private boolean steelBarPending()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.PENDING_SALE)
-        {
-            return  true;
-        }
-        else return false;
-    }
-    private boolean steelBarCompleted()
-    {
-        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.COMPLETING_SALE)
-        {
-            return  true;
-        }
-        else return false;
-    }
     private boolean getMaterials() throws InterruptedException, IOException {
 
         if (blastFurnace.contains(myPosition()))
@@ -493,12 +418,12 @@ public class ImprovedBlastFurnace extends Script {
             {
                 if (bank.contains("Varrock teleport"))
                 {
-                    log("Withdraw varrock teleport, steel bars, and coins to resupply.");
+                    log("Withdraw varrock teleport, Adamantite bars, and coins to resupply.");
                     bank.withdraw("Varrock teleport", 1);
-                    if (bank.contains("Steel bar"))
+                    if (bank.contains("Adamantite bar"))
                     {
                         bank.enableMode(Bank.BankMode.WITHDRAW_NOTE);
-                        bank.withdrawAll("Steel Bar");
+                        bank.withdrawAll("Adamantite bar");
                     }
                     if (bank.contains("Coins"))
                     {
@@ -542,26 +467,26 @@ public class ImprovedBlastFurnace extends Script {
                     {
                         bank.withdrawAll("Coins");
                     }
-                    if (bank.contains("Steel bar"))
+                    if (bank.contains("Adamantite bar"))
                     {
                         if (bank.enableMode(Bank.BankMode.WITHDRAW_NOTE))
                         {
-                            bank.withdrawAll("Steel bar");
+                            bank.withdrawAll("Adamantite bar");
                         }
                     }
-                    if (!bank.contains("Coins") && !bank.contains("Steel bar"))
+                    if (bank.contains("Coal"))
+                    {
+                        if (bank.enableMode(Bank.BankMode.WITHDRAW_NOTE))
+                        {
+                            bank.withdrawAll("Coal");
+                        }
+                    }
+                    if (!bank.contains("Coins") && !bank.contains("Adamantite bar"))
                     {
                         checkedBank = true;
                         return true;
                     }
                 }
-            }
-            if (inventory.getAmount("Coins") > 50000000)
-            {
-                log("time to trade mule");
-                int amountToMule = (int)inventory.getAmount("Coins") - 4000000;
-                TradeMule(amountToMule);
-                return true;
             }
             else if (!grandExchange.isOpen())
             {
@@ -572,14 +497,14 @@ public class ImprovedBlastFurnace extends Script {
             else if (grandExchange.isOpen())
             {
                 log("GE open resupplying.");
-                if (inventory.contains("Steel bar"))
+                if (inventory.contains("Adamantite bar"))
                 {
-                    log("selling steel bars");
-                    grandExchange.sellItem(2354,395,(int)inventory.getAmount("Steel bar"));
+                    log("selling Adamantite bars");
+                    grandExchange.sellItem(2362,1910,(int)inventory.getAmount("Adamantite bar"));
                 }
                 else if (steelBarPending() || steelBarInitializing())
                 {
-                    log("waiting for steel bars to sell.");
+                    log("waiting for Adamantite bars to sell.");
                     Sleep.sleepUntil(() -> grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.FINISHED_SALE, 50000);
                     if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.FINISHED_SALE)
                     {
@@ -597,59 +522,37 @@ public class ImprovedBlastFurnace extends Script {
                     sleep(random(1800,2400));
                 }
                 else if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.EMPTY
-                        && !inventory.contains("Steel bar") && inventory.contains("Coins") && !inventory.contains("Iron ore"))
+                        && !inventory.contains("Adamantite bar") && inventory.contains("Coins") && !inventory.contains("Adamantite ore"))
                 {
-                    log("no steel bars, and box 1 is empty. time to buy iron.");
+                    log("no Adamantite bars, and box 1 is empty. time to buy rune.");
                     int coins = (int)inventory.getAmount("Coins");
                     if (amountOfOre == 0)
                     {
-                        amountOfOre = coins/350;
-                        if (amountOfOre > 13000)
+                        amountOfOre = coins/1150;
+                        if (amountOfOre > 1500)
                         {
-                            amountOfOre = 13000;
+                            amountOfOre = 1500;
                         }
                     }
                     if (amountOfOre != 0)
                     {
-                        grandExchange.buyItem(440, "Iron ore", 130,amountOfOre);
+                        grandExchange.buyItem(449, "Adamantite ore", 1110,amountOfOre);
                         sleep(random(1200,1800));
                     }
 
                 }
-                else if ((grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.EMPTY) &&
-                        (!steelBarInitializing() && !steelBarPending() && !steelBarCompleted())
-                        && (!inventory.contains("Steel bar")) && (inventory.contains("Coins")) && !inventory.contains("Coal"))
+                else if ((ironOrePending() || ironOreInitializing()))
                 {
-                    log("no steel bars, and box 1 is empty. time to buy coal.");
-                    int coins = (int)inventory.getAmount("Coins");
-                    if (amountOfOre == 0)
-                    {
-                        amountOfOre = coins/350;
-                        if (amountOfOre > 13000)
-                        {
-                            amountOfOre = 13000;
-                        }
-                    }
-                    if (amountOfOre != 0)
-                    {
-                        grandExchange.buyItem(453, "Coal", 170, amountOfOre);
-                        sleep(random(1200,1800));
-                    }
-                }
-                else if ((coalPending() || coalInitializing()) && (ironOrePending() || ironOreInitializing()))
-                {
-                    log("sleep waiting until both iron and coal buy");
-                    Sleep.sleepUntil(() -> (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.FINISHED_BUY &&
-                            grandExchange.getStatus(GrandExchange.Box.BOX_1) != GrandExchange.Status.FINISHED_BUY), 50000);
+                    log("sleep waiting until rune ore buys");
+                    Sleep.sleepUntil(() -> (grandExchange.getStatus(GrandExchange.Box.BOX_1) != GrandExchange.Status.FINISHED_BUY), 50000);
                     return true;
                 }
-                else if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.FINISHED_BUY &&
-                        grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.FINISHED_BUY)
+                else if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.FINISHED_BUY)
                 {
                     grandExchange.collect();
-                    Sleep.sleepUntil(() -> inventory.contains("Coal") && inventory.contains("Iron ore"), 5000);
+                    Sleep.sleepUntil(() -> inventory.contains("Coal") && inventory.contains("Adamantite ore"), 5000);
                 }
-                else if (inventory.contains("Coal") && inventory.contains("Iron ore"))
+                else if (inventory.contains("Coal") && inventory.contains("Adamantite ore"))
                 {
                     amountOfOre = 0;
                     return false;
@@ -663,7 +566,6 @@ public class ImprovedBlastFurnace extends Script {
         }
         return  true;
     }
-
 
     private void useCoal()
     {
@@ -700,11 +602,6 @@ public class ImprovedBlastFurnace extends Script {
                     if (menu.selectAction("Put-ore-on"))
                     {
                         Sleep.sleepUntil(() -> !inventory.contains("Coal"), 3000);
-                        if (mustPayForeman())
-                        {
-                            log("hit must pay foreman");
-                            return;
-                        }
                         inventory.getItem("Coal bag").interact("Empty");
                         Sleep.sleepUntil(() -> inventory.contains("Coal"), 1000);
                     }
@@ -727,13 +624,6 @@ public class ImprovedBlastFurnace extends Script {
                     if (menu.selectAction("Put-ore-on"))
                     {
                         Sleep.sleepUntil(() -> !inventory.contains("Coal"), 3000);
-                        if (mustPayForeman())
-                        {
-                            log("hit must pay foreman");
-                            return;
-                        }
-                        inventory.getItem("Coal bag").interact("Empty");
-                        Sleep.sleepUntil(() -> inventory.contains("Coal"), 1000);
                     }
                     else
                     {
@@ -925,6 +815,80 @@ public class ImprovedBlastFurnace extends Script {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private boolean steelBarInitializing()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.INITIALIZING_SALE)
+        {
+            return true;
+        }
+        else return false;
+
+    }
+    private boolean coalInitializing()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.INITIALIZING_BUY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean coalPending()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.PENDING_BUY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean coalEmpty()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_2) == GrandExchange.Status.EMPTY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean ironOreInitializing()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.INITIALIZING_BUY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean ironOrePending()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.PENDING_BUY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean ironOreEmpty()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.EMPTY)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean steelBarPending()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.PENDING_SALE)
+        {
+            return  true;
+        }
+        else return false;
+    }
+    private boolean steelBarCompleted()
+    {
+        if (grandExchange.getStatus(GrandExchange.Box.BOX_1) == GrandExchange.Status.COMPLETING_SALE)
+        {
+            return  true;
+        }
+        else return false;
     }
 
 }
